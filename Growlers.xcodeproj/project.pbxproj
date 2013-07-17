@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		35BE3632AF8B44CF8E0D4122 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A2C661DB9B47E4BEFFE41C /* libPods.a */; };
 		C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D117967D470086A7E2 /* Foundation.framework */; };
 		C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D317967D470086A7E2 /* CoreGraphics.framework */; };
 		C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
@@ -21,6 +22,7 @@
 		C3DD53F317967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
 		C3DD53FB17967D470086A7E2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C3DD53F917967D470086A7E2 /* InfoPlist.strings */; };
 		C3DD53FD17967D470086A7E2 /* GrowlersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3DD53FC17967D470086A7E2 /* GrowlersTests.m */; };
+		C3DD540817967DAC0086A7E2 /* DMTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3DD540717967DAC0086A7E2 /* DMTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3066D4AF570043AE81036398 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		B6A2C661DB9B47E4BEFFE41C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DD53CE17967D470086A7E2 /* Growlers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Growlers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DD53D117967D470086A7E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3DD53D317967D470086A7E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -53,6 +57,8 @@
 		C3DD53F817967D470086A7E2 /* GrowlersTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GrowlersTests-Info.plist"; sourceTree = "<group>"; };
 		C3DD53FA17967D470086A7E2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C3DD53FC17967D470086A7E2 /* GrowlersTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GrowlersTests.m; sourceTree = "<group>"; };
+		C3DD540617967DAC0086A7E2 /* DMTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMTableViewController.h; sourceTree = "<group>"; };
+		C3DD540717967DAC0086A7E2 /* DMTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +69,7 @@
 				C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */,
 				C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */,
 				C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */,
+				35BE3632AF8B44CF8E0D4122 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +93,7 @@
 				C3DD53F617967D470086A7E2 /* GrowlersTests */,
 				C3DD53D017967D470086A7E2 /* Frameworks */,
 				C3DD53CF17967D470086A7E2 /* Products */,
+				3066D4AF570043AE81036398 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,6 +113,7 @@
 				C3DD53D317967D470086A7E2 /* CoreGraphics.framework */,
 				C3DD53D517967D470086A7E2 /* UIKit.framework */,
 				C3DD53F017967D470086A7E2 /* XCTest.framework */,
+				B6A2C661DB9B47E4BEFFE41C /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -116,6 +125,8 @@
 				C3DD53E117967D470086A7E2 /* DMAppDelegate.m */,
 				C3DD53E317967D470086A7E2 /* Main.storyboard */,
 				C3DD53E617967D470086A7E2 /* DMViewController.h */,
+				C3DD540617967DAC0086A7E2 /* DMTableViewController.h */,
+				C3DD540717967DAC0086A7E2 /* DMTableViewController.m */,
 				C3DD53E717967D470086A7E2 /* DMViewController.m */,
 				C3DD53E917967D470086A7E2 /* Images.xcassets */,
 				C3DD53D817967D470086A7E2 /* Supporting Files */,
@@ -159,9 +170,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C3DD540017967D470086A7E2 /* Build configuration list for PBXNativeTarget "Growlers" */;
 			buildPhases = (
+				37B8E0B7718D4278AFF3DFC6 /* Check Pods Manifest.lock */,
 				C3DD53CA17967D470086A7E2 /* Sources */,
 				C3DD53CB17967D470086A7E2 /* Frameworks */,
 				C3DD53CC17967D470086A7E2 /* Resources */,
+				69FF23395AD54E6092E5E5BD /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -245,6 +258,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		37B8E0B7718D4278AFF3DFC6 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		69FF23395AD54E6092E5E5BD /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C3DD53CA17967D470086A7E2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -252,6 +298,7 @@
 			files = (
 				C3DD53DE17967D470086A7E2 /* main.m in Sources */,
 				C3DD53E817967D470086A7E2 /* DMViewController.m in Sources */,
+				C3DD540817967DAC0086A7E2 /* DMTableViewController.m in Sources */,
 				C3DD53E217967D470086A7E2 /* DMAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -372,6 +419,7 @@
 		};
 		C3DD540117967D470086A7E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3066D4AF570043AE81036398 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -385,6 +433,7 @@
 		};
 		C3DD540217967D470086A7E2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3066D4AF570043AE81036398 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -455,6 +504,7 @@
 				C3DD540217967D470086A7E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C3DD540317967D470086A7E2 /* Build configuration list for PBXNativeTarget "GrowlersTests" */ = {
 			isa = XCConfigurationList;
@@ -463,6 +513,7 @@
 				C3DD540517967D470086A7E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
