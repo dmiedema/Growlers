@@ -7,10 +7,13 @@
 //
 
 #import "DMTableViewController.h"
-#import <AFNetworking/AFNetworking.h>
+#import "DMGrowlerTableViewCell.h"
+#import "DMAboutViewController.h"
 
 @interface DMTableViewController ()
 @property (nonatomic, strong) NSArray *beers;
+- (void)loadBeers;
+- (void)about:(id)sender;
 @end
 
 @implementation DMTableViewController
@@ -27,7 +30,35 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
+    //    [[self tableView] registerNib:[UINib nibWithNibName:@"RepositoryTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"Repository Cell"];
 
+    [self loadBeers];
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
+    self.navigationItem.leftBarButtonItem = info;
+    
+    [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)loadBeers {
+    // if we're spinnin' and refreshin'
+    // stop it.
+    if (self.refreshControl.refreshing) {
+        [self.refreshControl endRefreshing];
+    }
+    
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://192.168.1.107:8000"]];
     
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -38,17 +69,6 @@
         NSLog(@"Error: %@", error);
     }];
     [operation start];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -67,17 +87,24 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"growlerCell";
+    DMGrowlerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+
     NSDictionary *beer = _beers[indexPath.row];
     // Configure the cell...
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@", beer[@"name"], beer[@"brewer"]];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@", beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
-    cell.detailTextLabel.textColor = [UIColor darkGrayColor];
+    
+    cell.beerName.text = beer[@"name"];
+    cell.brewery.text  = beer[@"brewer"];
+    cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
+                                 beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
     
     return cell;
 }
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 64.0;
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -128,5 +155,11 @@
 }
 
  */
+
+- (void)about:(id)sender {
+    NSLog(@"ABOUT HERE");
+    DMAboutViewController *aboutView = [self.storyboard instantiateViewControllerWithIdentifier:@"DMAboutViewController"];
+    [self.navigationController pushViewController:aboutView animated:YES];
+}
 
 @end
