@@ -20,14 +20,14 @@
 
         //[SparkInspector enableObservation];
 
-        NSString *id;
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        id = [defaults objectForKey:@"Growler-UUID"];
-        if (id == nil) {
-            id = [[NSUUID UUID] UUIDString];
-            [defaults setObject:id forKey:@"Growler-UUID"];
-            [defaults synchronize];
-        }
+    NSString *id;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    id = [defaults objectForKey:@"Growler-UUID"];
+    if (id == nil) {
+        id = [[NSUUID UUID] UUIDString];
+        [defaults setObject:id forKey:@"Growler-UUID"];
+        [defaults synchronize];
+    }
     [TestFlight setDeviceIdentifier:id];
     [TestFlight takeOff:@"e2abc70f2571156bee86eeb5d5a48d6b_MjQ5ODM0MjAxMy0wNy0xOCAwMTo1MTozOC44NDE0MzM"];
     #endif
