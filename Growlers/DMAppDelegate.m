@@ -29,7 +29,7 @@
         [defaults synchronize];
     }
     [TestFlight setDeviceIdentifier:id];
-    [TestFlight takeOff:@"e2abc70f2571156bee86eeb5d5a48d6b_MjQ5ODM0MjAxMy0wNy0xOCAwMTo1MTozOC44NDE0MzM"];
+    [TestFlight takeOff:@"c7dba094-f82f-48fc-ab26-525c33b91dae"];
     #endif
     
     return YES;
