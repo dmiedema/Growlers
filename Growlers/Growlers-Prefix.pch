@@ -17,4 +17,6 @@
     #import <MobileCoreServices/MobileCoreServices.h>
 
     #import <AFNetworking/AFNetworking.h>
+
+#define TESTING 1
 #endif
