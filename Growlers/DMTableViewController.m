@@ -12,6 +12,7 @@
 
 @interface DMTableViewController ()
 @property (nonatomic, strong) NSArray *beers;
+@property (nonatomic, strong) NSDate *lastUpdated;
 - (void)loadBeers;
 - (void)about:(id)sender;
 @end
@@ -43,7 +44,12 @@
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
     self.navigationItem.leftBarButtonItem = info;
     
+    // TODO: add text of last updated time
     [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
+    
+    // This helps subliment removing the back text from a pushed view controller.
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -54,7 +60,7 @@
 
 - (void)loadBeers {
     // if we're spinnin' and refreshin'
-    // stop it.
+    // ... stop it.
     if (self.refreshControl.refreshing) {
         [self.refreshControl endRefreshing];
     }
@@ -157,7 +163,6 @@
  */
 
 - (void)about:(id)sender {
-    NSLog(@"ABOUT HERE");
     DMAboutViewController *aboutView = [self.storyboard instantiateViewControllerWithIdentifier:@"DMAboutViewController"];
     [self.navigationController pushViewController:aboutView animated:YES];
 }

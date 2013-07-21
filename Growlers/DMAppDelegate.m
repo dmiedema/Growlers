@@ -17,7 +17,6 @@
     
     //
     #if TESTING
-
         //[SparkInspector enableObservation];
 
     NSString *id;
