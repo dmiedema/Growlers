@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		35BE3632AF8B44CF8E0D4122 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A2C661DB9B47E4BEFFE41C /* libPods.a */; };
 		C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC83179C5FD400F208AB /* QuartzCore.framework */; };
+		C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */; };
+		C33DAC8E179C8FF200F208AB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC8D179C8FF200F208AB /* CoreData.framework */; };
+		C33DAC95179C933F00F208AB /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = C33DAC94179C933F00F208AB /* Beer.m */; };
 		C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D117967D470086A7E2 /* Foundation.framework */; };
 		C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D317967D470086A7E2 /* CoreGraphics.framework */; };
 		C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
@@ -44,6 +47,10 @@
 		3066D4AF570043AE81036398 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		B6A2C661DB9B47E4BEFFE41C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C33DAC83179C5FD400F208AB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C33DAC8B179C8FCB00F208AB /* GrowlerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GrowlerModel.xcdatamodel; sourceTree = "<group>"; };
+		C33DAC8D179C8FF200F208AB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C33DAC93179C933F00F208AB /* Beer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beer.h; sourceTree = "<group>"; };
+		C33DAC94179C933F00F208AB /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
 		C3DD53CE17967D470086A7E2 /* Growlers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Growlers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DD53D117967D470086A7E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3DD53D317967D470086A7E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -77,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C33DAC8E179C8FF200F208AB /* CoreData.framework in Frameworks */,
 				C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */,
 				C3DD54191797BA620086A7E2 /* SystemConfiguration.framework in Frameworks */,
 				C3DD54171797BA5A0086A7E2 /* MobileCoreServices.framework in Frameworks */,
@@ -100,6 +108,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C33DAC92179C91AD00F208AB /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				C33DAC93179C933F00F208AB /* Beer.h */,
+				C33DAC94179C933F00F208AB /* Beer.m */,
+				C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
 		C3DD53C517967D470086A7E2 = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +141,7 @@
 		C3DD53D017967D470086A7E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C33DAC8D179C8FF200F208AB /* CoreData.framework */,
 				C33DAC83179C5FD400F208AB /* QuartzCore.framework */,
 				C3DD54181797BA620086A7E2 /* SystemConfiguration.framework */,
 				C3DD54161797BA5A0086A7E2 /* MobileCoreServices.framework */,
@@ -143,6 +162,7 @@
 				C3DD53E317967D470086A7E2 /* Main.storyboard */,
 				C3DD540617967DAC0086A7E2 /* DMTableViewController.h */,
 				C3DD540717967DAC0086A7E2 /* DMTableViewController.m */,
+				C33DAC92179C91AD00F208AB /* CoreData */,
 				C3DD54131797B7EB0086A7E2 /* DMAboutViewController.h */,
 				C3DD54141797B7EB0086A7E2 /* DMAboutViewController.m */,
 				C3DD53E917967D470086A7E2 /* Images.xcassets */,
@@ -324,7 +344,9 @@
 				C3DD53DE17967D470086A7E2 /* main.m in Sources */,
 				C3DD540817967DAC0086A7E2 /* DMTableViewController.m in Sources */,
 				C3DD53E217967D470086A7E2 /* DMAppDelegate.m in Sources */,
+				C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */,
 				C3DD54151797B7EB0086A7E2 /* DMAboutViewController.m in Sources */,
+				C33DAC95179C933F00F208AB /* Beer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,6 +565,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C33DAC8B179C8FCB00F208AB /* GrowlerModel.xcdatamodel */,
+			);
+			currentVersion = C33DAC8B179C8FCB00F208AB /* GrowlerModel.xcdatamodel */;
+			path = GrowlerModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C3DD53C617967D470086A7E2 /* Project object */;
 }
