@@ -104,35 +104,43 @@
     cell.brewery.text  = beer[@"brewer"];
     cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
                                  beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
-    if (indexPath.row == 1)
-        [self newBeerListing:cell];
+//    if (indexPath.row == 1)
+//        [self newBeerListing:cell];
     
     return cell;
 }
 
 - (void)newBeerListing:(DMGrowlerTableViewCell *)cell {
+    // Create my base yellow color
     UIColor *yellowColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.8];
+    // Setup a width to use throughout.
     float borderWidth = 1.0f;
     
+    // Set a border on the cell itself
     cell.layer.borderColor = [yellowColor CGColor];
     cell.layer.borderWidth = borderWidth;
     
+    // Create another border, but inset from original
     CALayer *blurLayer = [CALayer layer];
+    // maths. Set created border inside cells border
     blurLayer.frame = CGRectMake(borderWidth, borderWidth, cell.layer.frame.size.width-(borderWidth*2), cell.layer.frame.size.height-(borderWidth*2));
     blurLayer.opacity = .60f;
     blurLayer.borderWidth = borderWidth;
     blurLayer.borderColor = [yellowColor CGColor];
-    
+    // Add this one in above the cells layer (just adding works too)
     [cell.layer insertSublayer:blurLayer above:cell.layer];
     
+    // Same thing, again. Make *another* border.
     CALayer *clearLayer = [CALayer layer];
+    // set border inside, again.
     clearLayer.frame = CGRectMake((borderWidth*2), (borderWidth*2), cell.layer.frame.size.width-(borderWidth*2)*2, cell.layer.frame.size.height-(borderWidth*2)*2);
     clearLayer.opacity = .30f;
     clearLayer.borderWidth = borderWidth;
     clearLayer.borderColor = [yellowColor CGColor];
-    
+    // add this one too.
     [cell.layer insertSublayer:clearLayer above:cell.layer];
     
+    //// Text glow, if wanted.
 //    cell.beerName.layer.shadowColor = [yellowColor CGColor];
 //    cell.beerName.layer.shadowRadius = 6.0f;
 //    cell.beerName.layer.shadowOpacity = 1.0f;
