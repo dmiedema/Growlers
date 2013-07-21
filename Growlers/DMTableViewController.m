@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSArray *beers;
 @property (nonatomic, strong) NSDate *lastUpdated;
 - (void)loadBeers;
+- (void)newBeerListing:(DMGrowlerTableViewCell *)cell;
 - (void)about:(id)sender;
 @end
 
@@ -103,10 +104,53 @@
     cell.brewery.text  = beer[@"brewer"];
     cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
                                  beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
+    if (indexPath.row == 1)
+        [self newBeerListing:cell];
     
     return cell;
 }
 
+- (void)newBeerListing:(DMGrowlerTableViewCell *)cell {
+    UIColor *yellowColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.8];
+    float borderWidth = 1.0f;
+    
+    cell.layer.borderColor = [yellowColor CGColor];
+    cell.layer.borderWidth = borderWidth;
+    
+    CALayer *blurLayer = [CALayer layer];
+    blurLayer.frame = CGRectMake(borderWidth, borderWidth, cell.layer.frame.size.width-(borderWidth*2), cell.layer.frame.size.height-(borderWidth*2));
+    blurLayer.opacity = .60f;
+    blurLayer.borderWidth = borderWidth;
+    blurLayer.borderColor = [yellowColor CGColor];
+    
+    [cell.layer insertSublayer:blurLayer above:cell.layer];
+    
+    CALayer *clearLayer = [CALayer layer];
+    clearLayer.frame = CGRectMake((borderWidth*2), (borderWidth*2), cell.layer.frame.size.width-(borderWidth*2)*2, cell.layer.frame.size.height-(borderWidth*2)*2);
+    clearLayer.opacity = .30f;
+    clearLayer.borderWidth = borderWidth;
+    clearLayer.borderColor = [yellowColor CGColor];
+    
+    [cell.layer insertSublayer:clearLayer above:cell.layer];
+    
+//    cell.beerName.layer.shadowColor = [yellowColor CGColor];
+//    cell.beerName.layer.shadowRadius = 6.0f;
+//    cell.beerName.layer.shadowOpacity = 1.0f;
+//    cell.beerName.layer.shadowOffset = CGSizeZero;
+//    cell.beerName.layer.masksToBounds = NO;
+//    
+//    cell.brewery.layer.shadowColor = [yellowColor CGColor];
+//    cell.brewery.layer.shadowRadius = 2.0f;
+//    cell.brewery.layer.shadowOpacity = 0.75f;
+//    cell.brewery.layer.shadowOffset = CGSizeZero;
+//    cell.brewery.layer.masksToBounds = NO;
+//    
+//    cell.beerInfo.layer.shadowColor = [yellowColor CGColor];
+//    cell.beerInfo.layer.shadowRadius = 2.0f;
+//    cell.beerInfo.layer.shadowOpacity = 0.75f;
+//    cell.beerInfo.layer.shadowOffset = CGSizeZero;
+//    cell.beerInfo.layer.masksToBounds = NO;
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 64.0;
