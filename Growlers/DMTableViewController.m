@@ -93,18 +93,19 @@
     cell.brewery.text  = beer[@"brewer"];
     cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
                                  beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
-//    if (indexPath.row == 1)
-//        [self newBeerListing:cell];
     
     return cell;
 }
 
 - (void)newBeerListing:(DMGrowlerTableViewCell *)cell {
     // Create my base yellow color
-    UIColor *yellowColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.8];
+    UIColor *yellowColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
     // Setup a width to use throughout.
-    float borderWidth = 1.0f;
+//    float borderWidth = 1.0f;
     
+    cell.backgroundColor = yellowColor;
+    
+    /*
     // Set a border on the cell itself
     cell.layer.borderColor = [yellowColor CGColor];
     cell.layer.borderWidth = borderWidth;
@@ -128,7 +129,7 @@
     clearLayer.borderColor = [yellowColor CGColor];
     // add this one too.
     [cell.layer insertSublayer:clearLayer above:cell.layer];
-    
+    */
     //// Text glow, if wanted.
 //    cell.beerName.layer.shadowColor = [yellowColor CGColor];
 //    cell.beerName.layer.shadowRadius = 6.0f;
