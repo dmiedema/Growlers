@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DMGrowlerAPI.h"
 
-@interface DMTableViewController : UITableViewController
-
+@interface DMTableViewController : UITableViewController // <NSFetchedResultsControllerDelegate>
+//@property (nonatomic, strong) UIManagedDocument *beerDatabase;
+//@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @end

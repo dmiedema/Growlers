@@ -11,7 +11,10 @@
 		C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC83179C5FD400F208AB /* QuartzCore.framework */; };
 		C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */; };
 		C33DAC8E179C8FF200F208AB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC8D179C8FF200F208AB /* CoreData.framework */; };
-		C33DAC95179C933F00F208AB /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = C33DAC94179C933F00F208AB /* Beer.m */; };
+		C33DAC98179F7D5C00F208AB /* DMGrowlerAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C33DAC97179F7D5C00F208AB /* DMGrowlerAPI.m */; };
+		C33DAC9E179F7F2E00F208AB /* DMSyncEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = C33DAC9D179F7F2E00F208AB /* DMSyncEngine.m */; };
+		C33DACA1179FB18C00F208AB /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = C33DACA0179FB18C00F208AB /* Beer.m */; };
+		C33DACA4179FB1A500F208AB /* Beer+Beer_Create.m in Sources */ = {isa = PBXBuildFile; fileRef = C33DACA3179FB1A500F208AB /* Beer+Beer_Create.m */; };
 		C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D117967D470086A7E2 /* Foundation.framework */; };
 		C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D317967D470086A7E2 /* CoreGraphics.framework */; };
 		C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
@@ -49,8 +52,14 @@
 		C33DAC83179C5FD400F208AB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C33DAC8B179C8FCB00F208AB /* GrowlerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GrowlerModel.xcdatamodel; sourceTree = "<group>"; };
 		C33DAC8D179C8FF200F208AB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		C33DAC93179C933F00F208AB /* Beer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beer.h; sourceTree = "<group>"; };
-		C33DAC94179C933F00F208AB /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
+		C33DAC96179F7D5C00F208AB /* DMGrowlerAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMGrowlerAPI.h; sourceTree = "<group>"; };
+		C33DAC97179F7D5C00F208AB /* DMGrowlerAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMGrowlerAPI.m; sourceTree = "<group>"; };
+		C33DAC9C179F7F2E00F208AB /* DMSyncEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMSyncEngine.h; sourceTree = "<group>"; };
+		C33DAC9D179F7F2E00F208AB /* DMSyncEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMSyncEngine.m; sourceTree = "<group>"; };
+		C33DAC9F179FB18C00F208AB /* Beer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beer.h; sourceTree = "<group>"; };
+		C33DACA0179FB18C00F208AB /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
+		C33DACA2179FB1A500F208AB /* Beer+Beer_Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Beer+Beer_Create.h"; sourceTree = "<group>"; };
+		C33DACA3179FB1A500F208AB /* Beer+Beer_Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Beer+Beer_Create.m"; sourceTree = "<group>"; };
 		C3DD53CE17967D470086A7E2 /* Growlers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Growlers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DD53D117967D470086A7E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3DD53D317967D470086A7E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -111,11 +120,45 @@
 		C33DAC92179C91AD00F208AB /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				C33DAC93179C933F00F208AB /* Beer.h */,
-				C33DAC94179C933F00F208AB /* Beer.m */,
 				C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */,
+				C33DAC9F179FB18C00F208AB /* Beer.h */,
+				C33DACA0179FB18C00F208AB /* Beer.m */,
+				C33DACA2179FB1A500F208AB /* Beer+Beer_Create.h */,
+				C33DACA3179FB1A500F208AB /* Beer+Beer_Create.m */,
 			);
 			name = CoreData;
+			sourceTree = "<group>";
+		};
+		C33DAC99179F7D6000F208AB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C33DAC96179F7D5C00F208AB /* DMGrowlerAPI.h */,
+				C33DAC97179F7D5C00F208AB /* DMGrowlerAPI.m */,
+				C33DAC9C179F7F2E00F208AB /* DMSyncEngine.h */,
+				C33DAC9D179F7F2E00F208AB /* DMSyncEngine.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		C33DAC9A179F7D6700F208AB /* Growler Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C3DD540C1797AE220086A7E2 /* DMGrowlerTableViewCell.xib */,
+				C3DD54101797AEEB0086A7E2 /* DMGrowlerTableViewCell.h */,
+				C3DD54111797AEEB0086A7E2 /* DMGrowlerTableViewCell.m */,
+			);
+			name = "Growler Cell";
+			sourceTree = "<group>";
+		};
+		C33DAC9B179F7D7000F208AB /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C3DD540617967DAC0086A7E2 /* DMTableViewController.h */,
+				C3DD540717967DAC0086A7E2 /* DMTableViewController.m */,
+				C3DD54131797B7EB0086A7E2 /* DMAboutViewController.h */,
+				C3DD54141797B7EB0086A7E2 /* DMAboutViewController.m */,
+			);
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 		C3DD53C517967D470086A7E2 = {
@@ -160,16 +203,12 @@
 				C3DD53E017967D470086A7E2 /* DMAppDelegate.h */,
 				C3DD53E117967D470086A7E2 /* DMAppDelegate.m */,
 				C3DD53E317967D470086A7E2 /* Main.storyboard */,
-				C3DD540617967DAC0086A7E2 /* DMTableViewController.h */,
-				C3DD540717967DAC0086A7E2 /* DMTableViewController.m */,
+				C33DAC9B179F7D7000F208AB /* View Controllers */,
 				C33DAC92179C91AD00F208AB /* CoreData */,
-				C3DD54131797B7EB0086A7E2 /* DMAboutViewController.h */,
-				C3DD54141797B7EB0086A7E2 /* DMAboutViewController.m */,
 				C3DD53E917967D470086A7E2 /* Images.xcassets */,
 				C3DD53D817967D470086A7E2 /* Supporting Files */,
-				C3DD540C1797AE220086A7E2 /* DMGrowlerTableViewCell.xib */,
-				C3DD54101797AEEB0086A7E2 /* DMGrowlerTableViewCell.h */,
-				C3DD54111797AEEB0086A7E2 /* DMGrowlerTableViewCell.m */,
+				C33DAC9A179F7D6700F208AB /* Growler Cell */,
+				C33DAC99179F7D6000F208AB /* Model */,
 			);
 			path = Growlers;
 			sourceTree = "<group>";
@@ -341,12 +380,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3DD54121797AEEB0086A7E2 /* DMGrowlerTableViewCell.m in Sources */,
+				C33DAC9E179F7F2E00F208AB /* DMSyncEngine.m in Sources */,
 				C3DD53DE17967D470086A7E2 /* main.m in Sources */,
+				C33DACA1179FB18C00F208AB /* Beer.m in Sources */,
 				C3DD540817967DAC0086A7E2 /* DMTableViewController.m in Sources */,
+				C33DACA4179FB1A500F208AB /* Beer+Beer_Create.m in Sources */,
 				C3DD53E217967D470086A7E2 /* DMAppDelegate.m in Sources */,
 				C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */,
 				C3DD54151797B7EB0086A7E2 /* DMAboutViewController.m in Sources */,
-				C33DAC95179C933F00F208AB /* Beer.m in Sources */,
+				C33DAC98179F7D5C00F208AB /* DMGrowlerAPI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

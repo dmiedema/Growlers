@@ -9,16 +9,51 @@
 #import "DMTableViewController.h"
 #import "DMGrowlerTableViewCell.h"
 #import "DMAboutViewController.h"
+#import "Beer+Beer_Create.h"
 
 @interface DMTableViewController ()
 @property (nonatomic, strong) NSArray *beers;
 @property (nonatomic, strong) NSDate *lastUpdated;
+@property (nonatomic, strong) NSMutableArray *highlightedBeers;
 - (void)loadBeers;
 - (void)newBeerListing:(DMGrowlerTableViewCell *)cell;
 - (void)about:(id)sender;
 @end
 
 @implementation DMTableViewController
+
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    
+//    if (!_beerDatabase) {
+//        NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+//        documentsURL = [documentsURL URLByAppendingPathComponent:@"Default Beers Database"];
+//        _beerDatabase = [[UIManagedDocument alloc] initWithFileURL:documentsURL];
+//        
+//    }
+//}
+//
+//- (void)useDocument {
+//    if (![[NSFileManager defaultManager] fileExistsAtPath:_beerDatabase.fileURL.path]) {
+//        [_beerDatabase saveToURL:_beerDatabase.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
+//            [self loadBeersIntoDatabase:_beerDatabase];
+//        }];
+//    } else if (_beerDatabase.documentState == UIDocumentStateClosed) {
+//        [_beerDatabase openWithCompletionHandler:^(BOOL success) {
+//            [self loadBeersIntoDatabase:_beerDatabase];
+//        }];
+//    } else if (_beerDatabase.documentState == UIDocumentStateNormal) {
+//        [self loadBeersIntoDatabase:_beerDatabase];
+//    }
+//}
+//
+//- (void)loadBeersIntoDatabase:(UIManagedDocument *)document {
+//    [document.managedObjectContext performBlock:^{
+//        for (NSDictionary *beer in _beers) {
+//            [Beer beerWithInfo:beer inManagedObjectContext:document.managedObjectContext];
+//        }
+//    }];
+//}
 
 - (void)viewDidLoad
 {
@@ -30,6 +65,7 @@
     [self loadBeers];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
+    _highlightedBeers = [NSMutableArray new];
     
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
     self.navigationItem.leftBarButtonItem = info;
@@ -55,16 +91,26 @@
         [self.refreshControl endRefreshing];
     }
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http:/76.115.252.132:8000"]];
-    
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSLog(@"JSON: %@", JSON);
+    [[DMGrowlerAPI sharedInstance] getBeersWithSuccess:^(id JSON) {
         _beers = JSON;
+        [self checkForNewBeers];
         [self.tableView reloadData];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSLog(@"Error: %@", error);
+    } andFailure:^(id JSON) {
+        // Error
+        NSLog(@"Error - %@", JSON);
     }];
-    [operation start];
+}
+
+- (void)checkForNewBeers {
+    NSArray *existingBeers = [[NSUserDefaults standardUserDefaults] objectForKey:@"beers"];
+    for (NSDictionary *beer in _beers) {
+        if (![existingBeers containsObject:beer]) {
+            [_highlightedBeers addObject:beer[@"name"]];
+        }
+    }
+    // ugly hack, should be using CoreData.
+    [[NSUserDefaults standardUserDefaults] setObject:_beers forKey:@"beers"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Table view data source
@@ -91,8 +137,16 @@
     
     cell.beerName.text = beer[@"name"];
     cell.brewery.text  = beer[@"brewer"];
-    cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
-                                 beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
+    cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growlette: $%@  Growler: $%@",
+                                 beer[@"ibu"], beer[@"abv"], beer[@"growlette"], beer[@"growler"]];
+    
+    if ([_highlightedBeers containsObject:beer[@"name"]]) {
+        NSLog(@"Beer %@ is in highlighted beers", beer[@"name"]);
+        cell.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
+//        [self newBeerListing:cell];
+    } else {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
     
     return cell;
 }
