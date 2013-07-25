@@ -2,7 +2,7 @@
 //  Beer.m
 //  Growlers
 //
-//  Created by Daniel Miedema on 7/21/13.
+//  Created by Daniel Miedema on 7/23/13.
 //  Copyright (c) 2013 Daniel Miedema. All rights reserved.
 //
 
@@ -11,13 +11,13 @@
 
 @implementation Beer
 
-@dynamic name;
-@dynamic brewer;
-@dynamic growlerPrice;
-@dynamic growlettePrice;
-@dynamic brewerURL;
-@dynamic ibu;
 @dynamic abv;
 @dynamic added;
+@dynamic brewer;
+@dynamic brewerURL;
+@dynamic growlerPrice;
+@dynamic growlettePrice;
+@dynamic ibu;
+@dynamic name;
 
 @end
