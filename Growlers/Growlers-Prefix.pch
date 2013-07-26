@@ -18,6 +18,6 @@
     #import <CoreData/CoreData.h>
 
     #import <AFNetworking/AFNetworking.h>
-
+    #import <HockeySDK/HockeySDK.h>
 #define TESTING 1
 #endif

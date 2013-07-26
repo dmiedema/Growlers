@@ -19,6 +19,7 @@
     #if TESTING
         //[SparkInspector enableObservation];
 
+    // Testflight
     NSString *id;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     id = [defaults objectForKey:@"Growler-UUID"];
@@ -29,10 +30,25 @@
     }
     [TestFlight setDeviceIdentifier:id];
     [TestFlight takeOff:@"c7dba094-f82f-48fc-ab26-525c33b91dae"];
+
+    // Hockeyapp
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"d48bfa2df88def26d6eb9cf3e0603d66"
+                                                           delegate:self];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    
     #endif
     
     return YES;
 }
+
+/*
+- (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
+#ifndef CONFIGURATION_AppStore
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(uniqueIdentifier)])
+        return [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)];
+#endif
+    return nil;
+}*/
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
