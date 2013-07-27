@@ -17,6 +17,7 @@
 		C33DACA4179FB1A500F208AB /* Beer+Beer_Create.m in Sources */ = {isa = PBXBuildFile; fileRef = C33DACA3179FB1A500F208AB /* Beer+Beer_Create.m */; };
 		C33DACA617A2619700F208AB /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DACA517A2619700F208AB /* CoreText.framework */; };
 		C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DD34C17A3AD6300EAC24A /* MapKit.framework */; };
+		C37DD35217A3BE0D00EAC24A /* DMAcknowledgementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C37DD35117A3BE0D00EAC24A /* DMAcknowledgementsViewController.m */; };
 		C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D117967D470086A7E2 /* Foundation.framework */; };
 		C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D317967D470086A7E2 /* CoreGraphics.framework */; };
 		C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
@@ -64,6 +65,8 @@
 		C33DACA3179FB1A500F208AB /* Beer+Beer_Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Beer+Beer_Create.m"; sourceTree = "<group>"; };
 		C33DACA517A2619700F208AB /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		C37DD34C17A3AD6300EAC24A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		C37DD35017A3BE0D00EAC24A /* DMAcknowledgementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMAcknowledgementsViewController.h; sourceTree = "<group>"; };
+		C37DD35117A3BE0D00EAC24A /* DMAcknowledgementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMAcknowledgementsViewController.m; sourceTree = "<group>"; };
 		C3DD53CE17967D470086A7E2 /* Growlers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Growlers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DD53D117967D470086A7E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3DD53D317967D470086A7E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -163,6 +166,8 @@
 				C3DD540717967DAC0086A7E2 /* DMTableViewController.m */,
 				C3DD54131797B7EB0086A7E2 /* DMAboutViewController.h */,
 				C3DD54141797B7EB0086A7E2 /* DMAboutViewController.m */,
+				C37DD35017A3BE0D00EAC24A /* DMAcknowledgementsViewController.h */,
+				C37DD35117A3BE0D00EAC24A /* DMAcknowledgementsViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -391,6 +396,7 @@
 				C33DAC9E179F7F2E00F208AB /* DMSyncEngine.m in Sources */,
 				C3DD53DE17967D470086A7E2 /* main.m in Sources */,
 				C33DACA1179FB18C00F208AB /* Beer.m in Sources */,
+				C37DD35217A3BE0D00EAC24A /* DMAcknowledgementsViewController.m in Sources */,
 				C3DD540817967DAC0086A7E2 /* DMTableViewController.m in Sources */,
 				C33DACA4179FB1A500F208AB /* Beer+Beer_Create.m in Sources */,
 				C3DD53E217967D470086A7E2 /* DMAppDelegate.m in Sources */,
