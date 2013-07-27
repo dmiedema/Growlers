@@ -84,10 +84,12 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)loadBeers {
+- (void)loadBeers
+{
     // if we're spinnin' and refreshin'
     // ... stop it.
     if (self.refreshControl.refreshing) {
+        [_highlightedBeers removeAllObjects];
         [self.refreshControl endRefreshing];
     }
     
@@ -101,7 +103,8 @@
     }];
 }
 
-- (void)checkForNewBeers {
+- (void)checkForNewBeers
+{
     NSArray *existingBeers = [[NSUserDefaults standardUserDefaults] objectForKey:@"beers"];
     for (NSDictionary *beer in _beers) {
         if (![existingBeers containsObject:beer]) {
@@ -141,9 +144,7 @@
                                  beer[@"ibu"], beer[@"abv"], beer[@"growlette"], beer[@"growler"]];
     
     if ([_highlightedBeers containsObject:beer[@"name"]]) {
-        NSLog(@"Beer %@ is in highlighted beers", beer[@"name"]);
         cell.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
-//        [self newBeerListing:cell];
     } else {
         cell.backgroundColor = [UIColor whiteColor];
     }
@@ -204,8 +205,9 @@
 //    cell.beerInfo.layer.masksToBounds = NO;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 64.0;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 64.0f;
 }
 /*
 // Override to support conditional editing of the table view.
@@ -246,19 +248,11 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)about:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
-
-- (void)about:(id)sender {
     DMAboutViewController *aboutView = [self.storyboard instantiateViewControllerWithIdentifier:@"DMAboutViewController"];
     [self.navigationController pushViewController:aboutView animated:YES];
 }
