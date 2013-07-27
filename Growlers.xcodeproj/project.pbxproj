@@ -16,6 +16,7 @@
 		C33DACA1179FB18C00F208AB /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = C33DACA0179FB18C00F208AB /* Beer.m */; };
 		C33DACA4179FB1A500F208AB /* Beer+Beer_Create.m in Sources */ = {isa = PBXBuildFile; fileRef = C33DACA3179FB1A500F208AB /* Beer+Beer_Create.m */; };
 		C33DACA617A2619700F208AB /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DACA517A2619700F208AB /* CoreText.framework */; };
+		C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DD34C17A3AD6300EAC24A /* MapKit.framework */; };
 		C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D117967D470086A7E2 /* Foundation.framework */; };
 		C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D317967D470086A7E2 /* CoreGraphics.framework */; };
 		C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
@@ -62,6 +63,7 @@
 		C33DACA2179FB1A500F208AB /* Beer+Beer_Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Beer+Beer_Create.h"; sourceTree = "<group>"; };
 		C33DACA3179FB1A500F208AB /* Beer+Beer_Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Beer+Beer_Create.m"; sourceTree = "<group>"; };
 		C33DACA517A2619700F208AB /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		C37DD34C17A3AD6300EAC24A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C3DD53CE17967D470086A7E2 /* Growlers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Growlers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DD53D117967D470086A7E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3DD53D317967D470086A7E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -95,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */,
 				C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */,
 				C33DACA617A2619700F208AB /* CoreText.framework in Frameworks */,
 				C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */,
@@ -187,6 +190,7 @@
 		C3DD53D017967D470086A7E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C37DD34C17A3AD6300EAC24A /* MapKit.framework */,
 				C33DACA517A2619700F208AB /* CoreText.framework */,
 				C33DAC8D179C8FF200F208AB /* CoreData.framework */,
 				C33DAC83179C5FD400F208AB /* QuartzCore.framework */,

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface DMAboutViewController : UIViewController
-
+- (IBAction)checkUsOut:(UIButton *)sender;
 @end
