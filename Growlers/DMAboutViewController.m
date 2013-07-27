@@ -33,27 +33,13 @@
     
     // Removes the title from the back button when this view is pushed.
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Support" style:UIBarButtonItemStylePlain target:self action:@selector(supportEmail:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"License" style:UIBarButtonItemStylePlain target:self action:@selector(acknowledgements:)];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)supportEmail:(id)sender {
-    if ([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
-        [mailer setMailComposeDelegate:self];
-        NSArray *recipients = [NSArray arrayWithObjects:@"daniel@danielmiedema.com", nil];
-        [mailer setToRecipients:recipients];
-        [mailer setSubject:@"Growlers.app - Question/Bug Report/Feedback"];
-        [self presentViewController:mailer animated:YES completion:nil];
-    } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops" message:@"Looks like you can't send an email this way." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
-    }
 }
 
 - (IBAction)checkUsOut:(UIButton *)sender {
@@ -87,6 +73,19 @@
 - (IBAction)acknowledgements:(UIButton *)sender {
     DMAcknowledgementsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DMAcknowledgementsViewController"];
     [self.navigationController pushViewController:viewController animated:YES];
+}
+- (void)contactSupport:(UIButton *)sender {
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+        [mailer setMailComposeDelegate:self];
+        NSArray *recipients = [NSArray arrayWithObjects:@"daniel@danielmiedema.com", nil];
+        [mailer setToRecipients:recipients];
+        [mailer setSubject:@"Growlers.app - Question/Bug Report/Feedback"];
+        [self presentViewController:mailer animated:YES completion:nil];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops" message:@"Looks like you can't send an email this way." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+    }
 }
 
 
