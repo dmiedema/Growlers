@@ -10,4 +10,5 @@
 
 @interface DMAboutViewController : UIViewController
 - (IBAction)checkUsOut:(UIButton *)sender;
+- (IBAction)acknowledgements:(UIButton *)sender;
 @end

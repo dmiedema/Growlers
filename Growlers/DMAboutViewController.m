@@ -7,6 +7,7 @@
 //
 
 #import "DMAboutViewController.h"
+#import "DMAcknowledgementsViewController.h"
 #import <MapKit/MapKit.h>
 #import <MessageUI/MessageUI.h>
 
@@ -81,6 +82,11 @@
     } else {
         NSLog(@"Does not respond.");
     }
+}
+
+- (IBAction)acknowledgements:(UIButton *)sender {
+    DMAcknowledgementsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DMAcknowledgementsViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
