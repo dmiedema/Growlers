@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		35BE3632AF8B44CF8E0D4122 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A2C661DB9B47E4BEFFE41C /* libPods.a */; };
-		C315E4D517A5A20500E219A4 /* DMGrowlerTableViewCell-iOS6.xib in Resources */ = {isa = PBXBuildFile; fileRef = C315E4D417A5A20500E219A4 /* DMGrowlerTableViewCell-iOS6.xib */; };
 		C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC83179C5FD400F208AB /* QuartzCore.framework */; };
 		C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */; };
 		C33DAC8E179C8FF200F208AB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC8D179C8FF200F208AB /* CoreData.framework */; };
@@ -56,7 +55,6 @@
 /* Begin PBXFileReference section */
 		3066D4AF570043AE81036398 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		B6A2C661DB9B47E4BEFFE41C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		C315E4D417A5A20500E219A4 /* DMGrowlerTableViewCell-iOS6.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "DMGrowlerTableViewCell-iOS6.xib"; sourceTree = "<group>"; };
 		C33DAC83179C5FD400F208AB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C33DAC8B179C8FCB00F208AB /* GrowlerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GrowlerModel.xcdatamodel; sourceTree = "<group>"; };
 		C33DAC8D179C8FF200F208AB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -162,7 +160,6 @@
 		C33DAC9A179F7D6700F208AB /* Growler Cell */ = {
 			isa = PBXGroup;
 			children = (
-				C315E4D417A5A20500E219A4 /* DMGrowlerTableViewCell-iOS6.xib */,
 				C3DD540C1797AE220086A7E2 /* DMGrowlerTableViewCell.xib */,
 				C3DD54101797AEEB0086A7E2 /* DMGrowlerTableViewCell.h */,
 				C3DD54111797AEEB0086A7E2 /* DMGrowlerTableViewCell.m */,
@@ -356,7 +353,6 @@
 				C3DD53DC17967D470086A7E2 /* InfoPlist.strings in Resources */,
 				C3DD53E517967D470086A7E2 /* Main.storyboard in Resources */,
 				C3477C0E17A56E6F008900B5 /* Default-568h@2x.png in Resources */,
-				C315E4D517A5A20500E219A4 /* DMGrowlerTableViewCell-iOS6.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
