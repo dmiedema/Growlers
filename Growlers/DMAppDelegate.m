@@ -41,6 +41,18 @@
     return YES;
 }
 
+- (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
+#ifndef CONFIGURATION_AppStore
+    NSLog(@"CONFIGURATION_AppStore");
+
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(uniqueIdentifier)]) {
+        NSLog(@"%@", [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)]);
+        return [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)];
+    }
+#endif
+    return nil;
+}
+
 /*
 - (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
 #ifndef CONFIGURATION_AppStore
