@@ -9,31 +9,34 @@
 #import "DMAppDelegate.h"
 #import <TestFlightSDK/TestFlight.h>
 
+@interface DMAppDelegate ()
+@property (nonatomic, strong) NSString *generatedUDID;
+@end
+
 @implementation DMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    
     //
-    #if TESTING
-        //[SparkInspector enableObservation];
 
-    // Testflight
-    NSString *id;
+
+    _generatedUDID = [NSString string];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    id = [defaults objectForKey:@"Growler-UUID"];
-    if (id == nil) {
-        id = [[NSUUID UUID] UUIDString];
-        [defaults setObject:id forKey:@"Growler-UUID"];
+    _generatedUDID = [defaults objectForKey:@"Growler-UUID"];
+    if (_generatedUDID == nil) {
+        _generatedUDID = [[NSUUID UUID] UUIDString];
+        [defaults setObject:_generatedUDID forKey:@"Growler-UUID"];
         [defaults synchronize];
     }
-    [TestFlight setDeviceIdentifier:id];
+    
+    #if TESTING
+    // Testflight
+    [TestFlight setDeviceIdentifier:_generatedUDID];
     [TestFlight takeOff:@"c7dba094-f82f-48fc-ab26-525c33b91dae"];
 
     // Hockeyapp
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"d48bfa2df88def26d6eb9cf3e0603d66"
-                                                           delegate:self];
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"d48bfa2df88def26d6eb9cf3e0603d66" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
     
     #endif
@@ -44,11 +47,11 @@
 - (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
 #ifndef CONFIGURATION_AppStore
     NSLog(@"CONFIGURATION_AppStore");
-
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(uniqueIdentifier)]) {
-        NSLog(@"%@", [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)]);
-        return [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)];
-    }
+    return _generatedUDID;
+//    if ([[UIDevice currentDevice] respondsToSelector:@selector(uniqueIdentifier)]) {
+//        NSLog(@"%@", [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)]);
+//        return [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)];
+//    }
 #endif
     return nil;
 }
