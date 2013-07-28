@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSArray *beers;
 @property (nonatomic, strong) NSDate *lastUpdated;
 @property (nonatomic, strong) NSMutableArray *highlightedBeers;
+@property (nonatomic, strong) NSString *udid;
 - (void)loadBeers;
 - (void)newBeerListing:(DMGrowlerTableViewCell *)cell;
 - (void)about:(id)sender;
@@ -59,6 +60,9 @@
 {
     [super viewDidLoad];
     
+    // get my udid for favoriting
+    _udid = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_UUID];
+    
     // Load up my .xib 
     [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
 
@@ -80,7 +84,6 @@
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
-    
 }
 
 - (void)didReceiveMemoryWarning

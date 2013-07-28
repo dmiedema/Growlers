@@ -10,6 +10,7 @@
 #import <TestFlightSDK/TestFlight.h>
 
 @interface DMAppDelegate ()
+@property (nonatomic, strong) NSString *generatedUDID;
 @end
 
 @implementation DMAppDelegate
@@ -18,14 +19,12 @@
 {
     // Override point for customization after application launch.
     //
-
-
     _generatedUDID = [NSString string];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    _generatedUDID = [defaults objectForKey:@"Growler-UUID"];
+    _generatedUDID = [defaults objectForKey:kGrowler_UUID];
     if (_generatedUDID == nil) {
         _generatedUDID = [[NSUUID UUID] UUIDString];
-        [defaults setObject:_generatedUDID forKey:@"Growler-UUID"];
+        [defaults setObject:_generatedUDID forKey:kGrowler_UUID];
         [defaults synchronize];
     }
     
@@ -54,6 +53,7 @@
 #endif
     return nil;
 }
+
 
 /*
 - (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {

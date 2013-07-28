@@ -12,7 +12,4 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-// UDID
-@property (nonatomic, strong) NSString *generatedUDID;
-
 @end
