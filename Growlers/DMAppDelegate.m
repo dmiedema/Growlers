@@ -10,7 +10,6 @@
 #import <TestFlightSDK/TestFlight.h>
 
 @interface DMAppDelegate ()
-@property (nonatomic, strong) NSString *generatedUDID;
 @end
 
 @implementation DMAppDelegate
