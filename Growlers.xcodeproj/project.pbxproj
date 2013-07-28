@@ -18,6 +18,8 @@
 		C33DACA617A2619700F208AB /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DACA517A2619700F208AB /* CoreText.framework */; };
 		C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DD34C17A3AD6300EAC24A /* MapKit.framework */; };
 		C37DD35217A3BE0D00EAC24A /* DMAcknowledgementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C37DD35117A3BE0D00EAC24A /* DMAcknowledgementsViewController.m */; };
+		C38285C717A4D0700058D304 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C617A4D0700058D304 /* MessageUI.framework */; };
+		C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C817A4D0930058D304 /* CoreLocation.framework */; };
 		C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D117967D470086A7E2 /* Foundation.framework */; };
 		C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D317967D470086A7E2 /* CoreGraphics.framework */; };
 		C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
@@ -67,6 +69,8 @@
 		C37DD34C17A3AD6300EAC24A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C37DD35017A3BE0D00EAC24A /* DMAcknowledgementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMAcknowledgementsViewController.h; sourceTree = "<group>"; };
 		C37DD35117A3BE0D00EAC24A /* DMAcknowledgementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMAcknowledgementsViewController.m; sourceTree = "<group>"; };
+		C38285C617A4D0700058D304 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		C38285C817A4D0930058D304 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		C3DD53CE17967D470086A7E2 /* Growlers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Growlers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DD53D117967D470086A7E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3DD53D317967D470086A7E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -100,7 +104,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */,
 				C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */,
+				C38285C717A4D0700058D304 /* MessageUI.framework in Frameworks */,
 				C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */,
 				C33DACA617A2619700F208AB /* CoreText.framework in Frameworks */,
 				C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */,
@@ -195,6 +201,8 @@
 		C3DD53D017967D470086A7E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C38285C817A4D0930058D304 /* CoreLocation.framework */,
+				C38285C617A4D0700058D304 /* MessageUI.framework */,
 				C37DD34C17A3AD6300EAC24A /* MapKit.framework */,
 				C33DACA517A2619700F208AB /* CoreText.framework */,
 				C33DAC8D179C8FF200F208AB /* CoreData.framework */,
@@ -530,6 +538,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Growlers/Growlers-Prefix.pch";
 				INFOPLIST_FILE = "Growlers/Growlers-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -545,6 +554,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Growlers/Growlers-Prefix.pch";
 				INFOPLIST_FILE = "Growlers/Growlers-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
