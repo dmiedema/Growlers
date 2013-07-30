@@ -100,6 +100,7 @@ function getBeerCost(beer) {
 }
 
 var requestListener = function(req, res) {
+  // TODO: Handle POST
   res.writeHead(200, {
     "Content-Type": "application/json"
   });
