@@ -5,8 +5,6 @@ var html;
 
 var beerJSON = [];
 
-// getData();
-
 setTimeout(getData(), (1000*60)*10);
 
 function getData() {
@@ -16,8 +14,6 @@ function getData() {
       response = response.concat(chunk.toString());
     });
     res.on('end', function() {
-
-      // console.log('response : ' + response);
 
       html = response;
 
@@ -31,10 +27,7 @@ function getData() {
       list.shift();
       list.shift();
 
-      // console.log('list : ' + list);
       list.forEach(function(item) {
-
-        // console.log(item);
 
         listItems = item.split('<td');
         var beerInfo = listItems[2];
@@ -55,15 +48,6 @@ function getData() {
           "growlette" : costs.growlette
         });
       });
-
-       // console.log('\n\nbeerJSON : ' + beerJSON);
-       //  console.log('\n\nbeerJSON[1] ');
-       //  console.log('\nname: ' + beerJSON[1].name);
-       //  console.log('\nurl: ' + beerJSON[1].brew_url);
-       //  console.log('\nibu: ' + beerJSON[1].ibu);
-       //  console.log('\nabv: ' + beerJSON[1].abv);
-       //  console.log('\ngrowler: ' + beerJSON[1].growler);
-       //  console.log('\ngrowlette: ' + beerJSON[1].growlette);
     });
   });
 }
@@ -87,7 +71,6 @@ function getBeerURL(beer) {
 }
 
 function getOtherBeerInfo(beer) {
-  // console.log('Other Beer Info: ' + beer.split('<br')[1] +  '\n');
   return beer.split('<br')[1];
 }
 
