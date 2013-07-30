@@ -17,6 +17,7 @@
 		C33DACA4179FB1A500F208AB /* Beer+Beer_Create.m in Sources */ = {isa = PBXBuildFile; fileRef = C33DACA3179FB1A500F208AB /* Beer+Beer_Create.m */; };
 		C33DACA617A2619700F208AB /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DACA517A2619700F208AB /* CoreText.framework */; };
 		C3477C0E17A56E6F008900B5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3477C0D17A56E6F008900B5 /* Default-568h@2x.png */; };
+		C349589B17A7983400E45B3D /* Growlers-Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C349589A17A7983400E45B3D /* Growlers-Settings.bundle */; };
 		C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DD34C17A3AD6300EAC24A /* MapKit.framework */; };
 		C37DD35217A3BE0D00EAC24A /* DMAcknowledgementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C37DD35117A3BE0D00EAC24A /* DMAcknowledgementsViewController.m */; };
 		C38285C717A4D0700058D304 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C617A4D0700058D304 /* MessageUI.framework */; };
@@ -68,6 +69,8 @@
 		C33DACA3179FB1A500F208AB /* Beer+Beer_Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Beer+Beer_Create.m"; sourceTree = "<group>"; };
 		C33DACA517A2619700F208AB /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		C3477C0D17A56E6F008900B5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		C349589917A774F500E45B3D /* Growlers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Growlers.entitlements; sourceTree = "<group>"; };
+		C349589A17A7983400E45B3D /* Growlers-Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "Growlers-Settings.bundle"; sourceTree = "<group>"; };
 		C37DD34C17A3AD6300EAC24A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C37DD35017A3BE0D00EAC24A /* DMAcknowledgementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMAcknowledgementsViewController.h; sourceTree = "<group>"; };
 		C37DD35117A3BE0D00EAC24A /* DMAcknowledgementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMAcknowledgementsViewController.m; sourceTree = "<group>"; };
@@ -183,6 +186,7 @@
 		C3DD53C517967D470086A7E2 = {
 			isa = PBXGroup;
 			children = (
+				C349589A17A7983400E45B3D /* Growlers-Settings.bundle */,
 				C3477C0D17A56E6F008900B5 /* Default-568h@2x.png */,
 				C3DD53D717967D470086A7E2 /* Growlers */,
 				C3DD53F617967D470086A7E2 /* GrowlersTests */,
@@ -224,6 +228,7 @@
 		C3DD53D717967D470086A7E2 /* Growlers */ = {
 			isa = PBXGroup;
 			children = (
+				C349589917A774F500E45B3D /* Growlers.entitlements */,
 				C3DD53E017967D470086A7E2 /* DMAppDelegate.h */,
 				C3DD53E117967D470086A7E2 /* DMAppDelegate.m */,
 				C3DD53E317967D470086A7E2 /* Main.storyboard */,
@@ -318,6 +323,11 @@
 				TargetAttributes = {
 					C3DD53CD17967D470086A7E2 = {
 						DevelopmentTeam = 7AM27DZVQU;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					C3DD53EE17967D470086A7E2 = {
 						TestTargetID = C3DD53CD17967D470086A7E2;
@@ -353,6 +363,7 @@
 				C3DD53DC17967D470086A7E2 /* InfoPlist.strings in Resources */,
 				C3DD53E517967D470086A7E2 /* Main.storyboard in Resources */,
 				C3477C0E17A56E6F008900B5 /* Default-568h@2x.png in Resources */,
+				C349589B17A7983400E45B3D /* Growlers-Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,7 +491,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Daniel Miedema (PP5FQL9PFL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Daniel Miedema (PP5FQL9PFL)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -497,6 +509,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "4EF7D702-DC09-4E9E-842F-9AA1D96E920D";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -517,7 +530,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Daniel Miedema (PP5FQL9PFL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Daniel Miedema (PP5FQL9PFL)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -527,6 +541,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				PROVISIONING_PROFILE = "4EF7D702-DC09-4E9E-842F-9AA1D96E920D";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -538,13 +553,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Growlers/Growlers.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Growlers/Growlers-Prefix.pch";
 				INFOPLIST_FILE = "Growlers/Growlers-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4EF7D702-DC09-4E9E-842F-9AA1D96E920D";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -555,13 +573,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Growlers/Growlers.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Growlers/Growlers-Prefix.pch";
 				INFOPLIST_FILE = "Growlers/Growlers-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4EF7D702-DC09-4E9E-842F-9AA1D96E920D";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
