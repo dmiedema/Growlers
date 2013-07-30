@@ -28,6 +28,7 @@
         [defaults synchronize];
     }
     
+    /* Testing */
     #if TESTING
     // Testflight
     [TestFlight setDeviceIdentifier:_generatedUDID];
@@ -38,6 +39,9 @@
     [[BITHockeyManager sharedHockeyManager] startManager];
     
     #endif
+    
+    /* Push Notifications */
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
     
     return YES;
 }
