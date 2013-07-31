@@ -18,9 +18,9 @@
 @property (nonatomic, strong) NSMutableArray *favoriteBeers;
 @property (nonatomic, strong) NSString *udid;
 - (void)loadBeers;
-- (void)newBeerListing:(DMGrowlerTableViewCell *)cell;
 - (void)about:(id)sender;
 
+- (void)favoriteBeer:(NSDictionary *)newBeerToFavorite;
 - (BOOL)setNavigationBarTint;
 @end
 
@@ -73,7 +73,7 @@
     _highlightedBeers = [NSMutableArray new];
     
     // Get favorites, if there aren't any, I'll make it.
-    _favoriteBeers = [[NSUserDefaults standardUserDefaults] objectForKey:@"Growlers-Favorites"];
+    _favoriteBeers = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Favorites];
     if (!_favoriteBeers) { _favoriteBeers = [NSMutableArray new]; }
     
     // Load up the beers
@@ -94,8 +94,10 @@
         // Get tint based on if they're open.
         if ([self setNavigationBarTint]) {
             self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
+            self.refreshControl.tintColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
         } else {
             self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+            self.refreshControl.tintColor = [UIColor darkGrayColor];
         }
         
         // This helps subliment removing the back text from a pushed view controller.
@@ -122,10 +124,8 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)favoriteBeer:(NSDictionary *)newBeerToFavorite {
+    
 }
 
 - (void)loadBeers
@@ -193,74 +193,46 @@
         cell.backgroundColor = [UIColor whiteColor];
     }
     
+    if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
+        cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
+    } else {
+        cell.favoriteMarker = nil;
+    }
+    
     return cell;
-}
-
-- (void)newBeerListing:(DMGrowlerTableViewCell *)cell {
-    // Create my base yellow color
-    UIColor *yellowColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
-    // Setup a width to use throughout.
-//    float borderWidth = 1.0f;
-    
-    cell.backgroundColor = yellowColor;
-    
-    /*
-    // Set a border on the cell itself
-    cell.layer.borderColor = [yellowColor CGColor];
-    cell.layer.borderWidth = borderWidth;
-    
-    // Create another border, but inset from original
-    CALayer *blurLayer = [CALayer layer];
-    // maths. Set created border inside cells border
-    blurLayer.frame = CGRectMake(borderWidth, borderWidth, cell.layer.frame.size.width-(borderWidth*2), cell.layer.frame.size.height-(borderWidth*2));
-    blurLayer.opacity = .60f;
-    blurLayer.borderWidth = borderWidth;
-    blurLayer.borderColor = [yellowColor CGColor];
-    // Add this one in above the cells layer (just adding works too)
-    [cell.layer insertSublayer:blurLayer above:cell.layer];
-    
-    // Same thing, again. Make *another* border.
-    CALayer *clearLayer = [CALayer layer];
-    // set border inside, again.
-    clearLayer.frame = CGRectMake((borderWidth*2), (borderWidth*2), cell.layer.frame.size.width-(borderWidth*2)*2, cell.layer.frame.size.height-(borderWidth*2)*2);
-    clearLayer.opacity = .30f;
-    clearLayer.borderWidth = borderWidth;
-    clearLayer.borderColor = [yellowColor CGColor];
-    // add this one too.
-    [cell.layer insertSublayer:clearLayer above:cell.layer];
-    */
-    //// Text glow, if wanted.
-//    cell.beerName.layer.shadowColor = [yellowColor CGColor];
-//    cell.beerName.layer.shadowRadius = 6.0f;
-//    cell.beerName.layer.shadowOpacity = 1.0f;
-//    cell.beerName.layer.shadowOffset = CGSizeZero;
-//    cell.beerName.layer.masksToBounds = NO;
-//    
-//    cell.brewery.layer.shadowColor = [yellowColor CGColor];
-//    cell.brewery.layer.shadowRadius = 2.0f;
-//    cell.brewery.layer.shadowOpacity = 0.75f;
-//    cell.brewery.layer.shadowOffset = CGSizeZero;
-//    cell.brewery.layer.masksToBounds = NO;
-//    
-//    cell.beerInfo.layer.shadowColor = [yellowColor CGColor];
-//    cell.beerInfo.layer.shadowRadius = 2.0f;
-//    cell.beerInfo.layer.shadowOpacity = 0.75f;
-//    cell.beerInfo.layer.shadowOffset = CGSizeZero;
-//    cell.beerInfo.layer.masksToBounds = NO;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 64.0f;
 }
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *beer = _beers[indexPath.row];
+    if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @"false"} withAction:UNFAVORITE withSuccess:^(id JSON) {
+            [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
+            DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+            cell.favoriteMarker.backgroundColor = [UIColor whiteColor];
+        } andFailure:^(id JSON) {
+            // Handle failure
+        }];
+    } else {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @"true"} withAction:FAVORITE withSuccess:^(id JSON) {
+            [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
+            DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+            cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
+            NSLog(@"Cell : %@", cell);
+        } andFailure:^(id JSON) {
+            // Handle failure
+        }];
+    }
+    // Save to defaults.
+    [[NSUserDefaults standardUserDefaults] setObject:_favoriteBeers forKey:kGrowler_Favorites];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    // Deselect the row.
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-*/
 
 /*
 // Override to support editing the table view.
