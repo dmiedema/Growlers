@@ -31,6 +31,9 @@ module.exports = {
       Favorite.save(found);
     }
   }
+  unfavorite: function(beer) {
+    // TODO: find matching beer, remove UDID from favorites, save it.
+  }
 };
 
 

@@ -19,6 +19,8 @@
 - (void)loadBeers;
 - (void)newBeerListing:(DMGrowlerTableViewCell *)cell;
 - (void)about:(id)sender;
+
+- (BOOL)setNavigationBarTint;
 @end
 
 @implementation DMTableViewController
@@ -66,10 +68,15 @@
     // Load up my .xib 
     [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
 
+    // Setup highlighted beers
+    _highlightedBeers = [NSMutableArray new];
+    
+    
+    // Load up the beers
     [self loadBeers];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
-    _highlightedBeers = [NSMutableArray new];
+
     
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
     self.navigationItem.leftBarButtonItem = info;
@@ -78,11 +85,36 @@
     [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
     
     // This helps subliment removing the back text from a pushed view controller.
+    
     if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
         self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
     } else {
+        if ([self setNavigationBarTint]) {
+            self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
+        } else {
+            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+        }
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    }
+}
+
+- (BOOL)setNavigationBarTint {
+    NSDate *today = [NSDate date];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+
+    NSDateComponents *weekdayComponents = [calendar components:(NSWeekdayCalendarUnit | NSHourCalendarUnit) fromDate:today];
+    
+    NSInteger hour = [weekdayComponents hour];
+    NSInteger weekday = [weekdayComponents weekday];
+    
+    NSLog(@"Hour : %i", hour);
+    NSLog(@"Weekday : %i", weekday);
+    
+    if (weekday < 6) {
+        return hour > 11 && hour < 20;
+    } else {
+        return hour > 10 && hour < 23;
     }
 }
 
