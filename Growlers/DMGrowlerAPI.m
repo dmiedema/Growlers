@@ -46,4 +46,14 @@ static NSString *DMGrowlerAPIURLString  = @"http://192.168.1.107:8000";
     [operation start];
 }
 
+- (void)favoriteBeer:(NSDictionary *)beer withAction:(BEER_ACTION)action withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure {
+    if (action == FAVORITE) {
+        NSLog(@"Favorite Beer");
+        NSLog(@"%@", beer);
+    } else {
+        NSLog(@"Unfavorite Beer");
+        NSLog(@"%@", beer);
+    }
+}
+
 @end
