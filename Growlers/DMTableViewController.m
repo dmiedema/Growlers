@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSArray *beers;
 @property (nonatomic, strong) NSDate *lastUpdated;
 @property (nonatomic, strong) NSMutableArray *highlightedBeers;
+@property (nonatomic, strong) NSMutableArray *favoriteBeers;
 @property (nonatomic, strong) NSString *udid;
 - (void)loadBeers;
 - (void)newBeerListing:(DMGrowlerTableViewCell *)cell;
@@ -71,12 +72,14 @@
     // Setup highlighted beers
     _highlightedBeers = [NSMutableArray new];
     
+    // Get favorites, if there aren't any, I'll make it.
+    _favoriteBeers = [[NSUserDefaults standardUserDefaults] objectForKey:@"Growlers-Favorites"];
+    if (!_favoriteBeers) { _favoriteBeers = [NSMutableArray new]; }
     
     // Load up the beers
     [self loadBeers];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
-
     
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
     self.navigationItem.leftBarButtonItem = info;
@@ -84,36 +87,37 @@
     // TODO: add text of last updated time
     [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
     
-    // This helps subliment removing the back text from a pushed view controller.
-    
+
     if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
         self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
     } else {
+        // Get tint based on if they're open.
         if ([self setNavigationBarTint]) {
             self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
         } else {
             self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
         }
+        
+        // This helps subliment removing the back text from a pushed view controller.
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
 }
 
 - (BOOL)setNavigationBarTint {
+    // Get today
     NSDate *today = [NSDate date];
+    // Get users calendar
     NSCalendar *calendar = [NSCalendar currentCalendar];
-
+    // Get date compontents
     NSDateComponents *weekdayComponents = [calendar components:(NSWeekdayCalendarUnit | NSHourCalendarUnit) fromDate:today];
-    
+    // Get the values out.
     NSInteger hour = [weekdayComponents hour];
     NSInteger weekday = [weekdayComponents weekday];
-    
-    NSLog(@"Hour : %i", hour);
-    NSLog(@"Weekday : %i", weekday);
-    
-    if (weekday < 6) {
+
+    if (weekday < 5) { // If we're before Friday, noon - 8
         return hour > 11 && hour < 20;
-    } else {
+    } else { // Friday and Saturday, 11 to 11
         return hour > 10 && hour < 23;
     }
 }

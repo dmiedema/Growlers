@@ -12,4 +12,5 @@
 @property (nonatomic, strong) IBOutlet UILabel *beerName;
 @property (nonatomic, strong) IBOutlet UILabel *brewery;
 @property (nonatomic, strong) IBOutlet UILabel *beerInfo;
+@property (nonatomic, strong) IBOutlet UIView *favoriteMarker;
 @end
