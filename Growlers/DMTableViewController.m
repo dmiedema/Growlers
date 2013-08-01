@@ -76,6 +76,8 @@
     _favoriteBeers = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Favorites];
     if (!_favoriteBeers) { _favoriteBeers = [NSMutableArray new]; }
     
+    NSLog(@"Favorites: %@", _favoriteBeers);
+    
     // Load up the beers
     [self loadBeers];
     // Uncomment the following line to preserve selection between presentations.
@@ -240,6 +242,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     // Deselect the row.
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.tableView reloadData];
 }
 
 /*
