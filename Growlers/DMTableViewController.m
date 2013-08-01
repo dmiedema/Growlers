@@ -134,7 +134,9 @@
     // if we're spinnin' and refreshin'
     // ... stop it.
     if (self.refreshControl.refreshing) {
-        [_highlightedBeers removeAllObjects];
+        // dylan wanted this, then he didn't.
+        // how undecisive can you be
+//        [_highlightedBeers removeAllObjects];
         [self.refreshControl endRefreshing];
     }
     
@@ -197,8 +199,12 @@
     if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
         cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
     } else {
-        cell.favoriteMarker = nil;
+        cell.favoriteMarker.backgroundColor = [UIColor whiteColor];
     }
+    
+    cell.favoriteMarker.layer.masksToBounds = YES;
+    cell.favoriteMarker.layer.cornerRadius = cell.favoriteMarker.bounds.size.width / 2.0;
+
     
     return cell;
 }

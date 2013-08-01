@@ -26,9 +26,4 @@
     // Configure the view for the selected state
 }
 
-- (void)viewDidLayoutSubviews {
-    _favoriteMarker.layer.masksToBounds = YES;
-    _favoriteMarker.layer.cornerRadius = _favoriteMarker.bounds.size.width / 2.0;
-}
-
 @end
