@@ -106,7 +106,8 @@
     }
 }
 
-- (BOOL)setNavigationBarTint {
+- (BOOL)setNavigationBarTint
+{
     // Get today
     NSDate *today = [NSDate date];
     // Get users calendar
@@ -207,7 +208,8 @@
     return 64.0f;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     NSDictionary *beer = _beers[indexPath.row];
     if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @"false"} withAction:UNFAVORITE withSuccess:^(id JSON) {
