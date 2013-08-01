@@ -1,11 +1,12 @@
 var http = require('http');
+var db = require('./database');
 
 var response = '';
 var html;
 
 var beerJSON = [];
 
-setTimeout(getData(), (1000*60)*10);
+//setTimeout(getData(), (1000*60)*10);
 
 function getData() {
   console.log('' + timeStamp(new Date()) + 'Requesting Data from Growl Movement...');
@@ -52,6 +53,7 @@ function getData() {
   });
 }
 
+getData();
 function timeStamp(date) {
   return "" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " - " + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " -- ";
 }
@@ -109,11 +111,25 @@ var requestListener = function(req, res) {
     res.end();
   }
   else if (req.method == "POST") {
-    res.writeHead(200);
+    var request;
     req.on('data', function(chunk) {
       console.log(chunk.toString());
+      request = JSON.parse(chunk.toString());
+      //request.concat(chunk.toString());
     });
-    res.end(JSON.stringify({success: true}));
+    //request = JSON.parse(request);
+    req.on('end', function() {
+
+      if (request.fav == true) {
+        if (db.favorite(request)) res.writeHead(200);
+        else res.writeHead(500)
+      }
+      else {
+        if (db.unfavorite(request)) res.writeHead(200);
+        else res.writeHead(500);
+      }
+      res.end(JSON.stringify({complete: true}));
+    });
   }
   else {
     res.writeHead(500);

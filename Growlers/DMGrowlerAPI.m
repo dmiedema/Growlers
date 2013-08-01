@@ -10,6 +10,7 @@
 
 static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
 //static NSString *DMGrowlerAPIURLString  = @"http://192.168.1.107:8000";
+//static NSString *DMGrowlerAPIURLString = @"http://localhost:8000";
 @implementation DMGrowlerAPI
 
 + (DMGrowlerAPI *)sharedInstance {

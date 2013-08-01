@@ -201,7 +201,7 @@
     if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
         cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
     } else {
-        cell.favoriteMarker.backgroundColor = [UIColor whiteColor];
+        cell.favoriteMarker.backgroundColor = [UIColor clearColor];
     }
     
     cell.favoriteMarker.layer.masksToBounds = YES;
@@ -223,7 +223,7 @@
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @"false"} withAction:UNFAVORITE withSuccess:^(id JSON) {
             [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-            cell.favoriteMarker.backgroundColor = [UIColor whiteColor];
+            cell.favoriteMarker.backgroundColor = [UIColor clearColor];
         } andFailure:^(id JSON) {
             // Handle failure
         }];
