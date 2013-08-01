@@ -101,12 +101,25 @@ function getBeerCost(beer) {
 
 var requestListener = function(req, res) {
   // TODO: Handle POST
-  res.writeHead(200, {
-    "Content-Type": "application/json"
-  });
-  res.write(JSON.stringify(beerJSON));
-  res.end();
+  if (req.method == "GET") {
+    res.writeHead(200, {
+      "Content-Type": "application/json"
+    });
+    res.write(JSON.stringify(beerJSON));
+    res.end();
+  }
+  else if (req.method == "POST") {
+    res.writeHead(200);
+    req.on('data', function(chunk) {
+      console.log(chunk.toString());
+    });
+    res.end(JSON.stringify({success: true}));
+  }
+  else {
+    res.writeHead(500);
+    res.end("Error -- Invalid Method");
+  }
 }
 
 var server = http.createServer(requestListener);
-server.listen(8080);
+server.listen(8000);
