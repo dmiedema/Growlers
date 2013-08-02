@@ -49,8 +49,9 @@ function getData() {
           "growlette" : costs.growlette
         });
       });
-    });
-  });
+      notifyUsers(beerJSON);
+    }); // on res.end
+  }); // http.get
 }
 
 getData();
@@ -101,6 +102,30 @@ function getBeerCost(beer) {
   };
 }
 
+function notifyUsers(newList) {
+  db.checkForNewBeers(newList, function(oldBeers, newBeers) {
+    console.log('CHECK FOR NEW BEERS');
+    console.log(oldBeers);
+    console.log(newBeers);
+    for (var i = 0; i < newBeers.length; i++) {
+      var flag = false;
+      for (var j = 0; j < oldBeers.length; j++) {
+        flag = oldBeers[i].name == newBeers[j].name && oldBeers[i].brewer == newBeers[j].brewer;
+        if (flag == true) break;
+      }
+      console.log('flag - '  + flag);
+      if (!flag) {
+        //TODO: notify
+      }
+    } // end oldBeers forEach
+    db.setAvailableBeers(newList);
+  });
+
+  //db.setAvailableBeers(newList);
+}
+
+
+/* Request Listener */
 var requestListener = function(req, res) {
   // TODO: Handle POST
   if (req.method == "GET") {
@@ -111,24 +136,27 @@ var requestListener = function(req, res) {
     res.end();
   }
   else if (req.method == "POST") {
-    var request;
+    var request; // create var request so I can reference later.
     req.on('data', function(chunk) {
-      console.log(chunk.toString());
-      request = JSON.parse(chunk.toString());
-      //request.concat(chunk.toString());
+      // request gets the data as a string
+      request = chunk.toString();
     });
-    //request = JSON.parse(request);
     req.on('end', function() {
-
+      // JSON.parse resulting string
+      request = JSON.parse(request);
       if (request.fav == true) {
-        if (db.favorite(request)) res.writeHead(200);
-        else res.writeHead(500)
+        // if (db.favorite(request)) res.writeHead(200);
+        // else res.writeHead(500)
+        db.favorite(request);
+        res.writeHead(200);
       }
       else {
-        if (db.unfavorite(request)) res.writeHead(200);
-        else res.writeHead(500);
+        // if (db.unfavorite(request)) res.writeHead(200);
+        // else res.writeHead(500);
+        db.unfavorite(request);
+        res.writeHead(200);
       }
-      res.end(JSON.stringify({complete: true}));
+      res.end(JSON.stringify({complete: true})); //, action:(request.fav) ? "favorite" : "unfavorite"}));
     });
   }
   else {
