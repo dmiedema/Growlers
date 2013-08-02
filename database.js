@@ -101,9 +101,7 @@ function create(entry) {
 }
 
 function notifyUsersOfNewBeers(newList, callback) {
-  console.log('new list');
-  //console.log(newList);
-  console.log(typeof callback);
+  console.log('Notify Users of New Beers');
   if (typeof callback === 'function') {
     db.Beers.find(function(err, result) {
       if(err || !result) { console.log("error getting old beer list"); }
