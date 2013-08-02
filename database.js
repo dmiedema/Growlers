@@ -117,8 +117,6 @@ function notifyUsersOfNewBeers(newList, callback) {
         callback(result[0].beerList, newList);
       }
     });
-
-    console.log('callback fired');
   }
 }
 

@@ -34,11 +34,11 @@
 			<key>DefaultValue</key>
 			<string>Legal Stuff</string>
 			<key>Type</key>
-			<string>PSTitleValueSpecifier</string>
+			<string>PSChildPaneSpecifier</string>
 			<key>Title</key>
-			<string>Legal</string>
-			<key>Key</key>
-			<string>legal_preferences</string>
+			<string>Acknowledgements</string>
+			<key>File</key>
+			<string>Acknowledgements</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>
