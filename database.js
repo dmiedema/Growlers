@@ -1,120 +1,134 @@
-var db = require('mongojs').connect('localhost', ["Favorites"]);
+var db = require('mongojs').connect('localhost', ["Favorites", "Beers"]);
 
-/*
-var favoriteSchema = db.Schema({
-  beer: {name: String, brewery: String},
-  favorites: Array
-});
-
-var Favorite = db.model('Favorite', favoriteSchema);
-*/
-
-module.exports = {
-  find: function(beer) {
+exports.favorite = function(beer) {
     return findBeer(beer);
-  },
+  };
 
-  exists: function(beer) {
-    return beerExists(beer);
-  },
+exports.unfavorite = function(beer) {
+    return findBeer(beer);
+  };
 
-  favorite: function(beer) {
-    if (beerExists(beer)) {
-      return add(beer);
-    } else {
-      return create(beer);
-    }
-  },
-  /*
-  insert: function(fav, createEntry) {
-    var create;
-    if (typeof(createEntry) === 'undefined')
-      create = true;
-    else create = createEntry;
-
-    if(create) {
-      var beer = new Favorite({beer: {name: fav.beername, brewery: fav.brewery}, favorites: [fav.uniqueID]});
-      beer.save(function(error, favorite) {
-        if (error) {
-          // error, handle it.
-        }
-      });
-    } else {
-      var found = Favorite.findOne({'beer.name': fav.beername, 'beer.brewery': fav.brewery});
-      found.favorites.push(fav.uniqueID);
-      Favorite.save(found);
-    }
-  }
-  */
-  unfavorite: function(beer) {
-    // TODO: find matching beer, remove UDID from favorites, save it.
-    return deleteBeer(beer);
-  }
-};
-function beerExists(beer) {
-  return findBeer(beer) === null;
+exports.checkForNewBeers = function(newList, callback) {
+  notifyUsersOfNewBeers(newList, callback);
 }
 
+exports.setAvailableBeers = function(beerList) {
+  console.log('update avaiable beers');
+  console.log(beerList);
+    return setBeerList(beerList);
+  }
+
 function findBeer(beer) {
-  return db.Favorites.findOne({'beer.name': beer.beername, 'beer.brewery': beer.brewery});
+  db.Favorites.findOne({'beer.name': beer.name, 'beer.brewer': beer.brewer}, function(err, result) {
+    if (err) { return false; }
+    else {
+      console.log('findBeer result -');
+      console.log(result);
+      if (beer.fav == false && !result ) { return false; }
+      else if (!result) {
+        //create
+        create(beer);
+      } else if (beer.fav == false) {
+        // delete
+        deleteBeer(beer);
+      } else {
+        // add entr
+        add(beer);
+      }
+    }
+  });
 }
 
 function add(entry) {
-  var beer = findBeer(entry);
-  if ((typeof beer) == 'undefined') create(entry);
-  beer.favorites.push(entry.uniqueID);
+  console.log('add - entry - ' + entry);
+  //var beer = entry;
+  //if ((typeof beer) == 'undefined') create(entry);
+  //entry.favorites.push(entry.udid);
   db.Favorites.update(
-    {'beer.name': entry.beername, 'beer.brewery': entry.brewery},
-    { $push: {favorites: entry.uniqueID} },
+    {'beer.name': entry.name, 'beer.brewer': entry.brewer},
+    { $push: {favorites: entry.udid} },
     (function(err) {
       // update done
-      if(err) { return false; }
+      if(err) {
+        console.log('Error updating ' + entry);
+        console.log(err);
+        return false;
+      } else {
+        console.log(entry + ' updated successfully');
+      }
     })
   ); // end update
-  db.Favorites.save();
   return true;
 }
 
 function deleteBeer(entry) {
-  var beer = findBeer(entry);
-  if ((typeof beer) == 'undefined') return;
-  for(var i = 0; i < beer.favorites.length; i++) {
-    if (beer.favorites[i] == entry.uniqueID) {
-      beer.favorites.splice(i, 1); }
-    if (beer.favorites.length > 1) {
-      // delete entry
-      beer.save(function(err, favorite) {
-        if(err) { return false; }
-      });
-    } else {
-      beer.save(function(err, favorite) {
-        if(err) { return false; } // handle error
-      });
-    }
-  }
+  console.log('delete - entry - ' + entry);
+  // var beer = entry;
+  // if ((typeof beer) == 'undefined') return;
+  db.Favorites.update(
+    {'beer.name': entry.name, 'beer.brewer': entry.brewer},
+    {$pull: {favorites: entry.udid} },
+    (function (err) {
+      if(err) {
+        console.log('Error removing ' + entry);
+        console.log(err);
+        return false;
+      } else {
+        console.log( entry + ' removed successfully');
+      }
+    })
+  );
   return true;
 } // end delete
 
 function create(entry) {
+  console.log('create - entry - ' + entry);
   db.Favorites.save(
     {beer: {
-      name: entry.beername,
-      brewery: entry.brewery},
-    favorites: [entry.uniqueID]
+      name: entry.name,
+      brewer: entry.brewer},
+    favorites: [(entry.udid)]
   }, function(err, saved) {
     if (err || !saved) {
       console.log('error creating ' + entry);
+      console.log(err);
       return false;
+    } else {
+      console.log(entry + ' created');
     }
   });
-/*
-  db.Favorites.save();
-  var beer = new Favorite({beer: {name: entry.beername, brewery: entry.brewery}, favorites: [entry.uniqueID]});
-  beer.save(function(err, favorite) {
-    if(err) {
-      //handle error
-    }
-  });
-*/
   return true;
+}
+
+function notifyUsersOfNewBeers(newList, callback) {
+  console.log('new list');
+  //console.log(newList);
+  console.log(typeof callback);
+  if (typeof callback === 'function') {
+    db.Beers.find(function(err, result) {
+      if(err || !result) { console.log("error getting old beer list"); }
+      else {
+        console.log('Beers.find() result');
+        console.log(result[0].beerList);
+        callback(result[0].beerList, newList);
+      }
+    });
+
+    console.log('callback fired');
+  }
+}
+
+function setBeerList(newlist) {
+  console.log('Set Beer List');
+  console.log(newlist);
+  db.Beers.drop();
+  db.Beers.save( {
+    beerList: newlist
+  }, function(err, saved) {
+    if (err || !saved) {
+      console.log('error saving beer list');
+    } else {
+      console.log('beer list saved');
+    }
+  });
 }
