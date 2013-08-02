@@ -74,7 +74,8 @@
     
     // Get favorites, if there aren't any, I'll make it.
     _favoriteBeers = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Favorites];
-    if (!_favoriteBeers) { _favoriteBeers = [NSMutableArray new]; }
+    if (!_favoriteBeers) { _favoriteBeers = [NSMutableArray new]; }   
+    
     
     NSLog(@"Favorites: %@", _favoriteBeers);
     
@@ -95,8 +96,8 @@
     } else {
         // Get tint based on if they're open.
         if ([self setNavigationBarTint]) {
-            self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
-            self.refreshControl.tintColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
+            self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
+            self.refreshControl.tintColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
         } else {
             self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
             self.refreshControl.tintColor = [UIColor darkGrayColor];
@@ -197,7 +198,7 @@
     } else {
         cell.backgroundColor = [UIColor whiteColor];
     }
-    
+
     if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
         cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
     } else {
@@ -220,21 +221,23 @@
 {
     NSDictionary *beer = _beers[indexPath.row];
     if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @"false"} withAction:UNFAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
             [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor clearColor];
         } andFailure:^(id JSON) {
             // Handle failure
+            NSLog(@"unfavoriting failed: %@", JSON);
         }];
     } else {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @"true"} withAction:FAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
             [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
             NSLog(@"Cell : %@", cell);
         } andFailure:^(id JSON) {
             // Handle failure
+            NSLog(@"Favoriting failed: %@", JSON);
         }];
     }
     // Save to defaults.
@@ -242,6 +245,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     // Deselect the row.
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    // reload the data so the favorite marker stays.
     [self.tableView reloadData];
 }
 

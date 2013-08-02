@@ -151,41 +151,6 @@ Friday - Saturday: 11am to 11pm</string>
             </objects>
             <point key="canvasLocation" x="532" y="-156"/>
         </scene>
-        <!--Acknowledgements View Controller-->
-        <scene sceneID="VAX-ej-DEj">
-            <objects>
-                <viewController storyboardIdentifier="DMAcknowledgementsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3nG-iT-cRL" customClass="DMAcknowledgementsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="vt8-GV-TiJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="mo8-Dh-xBd"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="f21-0d-mzB">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ImQ-oB-96h">
-                                <rect key="frame" x="0.0" y="63" width="320" height="505"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </webView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="ImQ-oB-96h" firstAttribute="bottom" secondItem="f21-0d-mzB" secondAttribute="bottom" id="O5o-BI-VxL"/>
-                            <constraint firstItem="ImQ-oB-96h" firstAttribute="trailing" secondItem="f21-0d-mzB" secondAttribute="trailing" id="bfS-XC-gMW"/>
-                            <constraint firstItem="ImQ-oB-96h" firstAttribute="leading" secondItem="f21-0d-mzB" secondAttribute="leading" id="o2r-PM-HsP"/>
-                            <constraint firstItem="ImQ-oB-96h" firstAttribute="top" secondItem="f21-0d-mzB" secondAttribute="top" constant="63" id="x8k-rb-R0V"/>
-                        </constraints>
-                    </view>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <connections>
-                        <outlet property="webview" destination="ImQ-oB-96h" id="Gjr-5f-DHs"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Lsx-Eo-Y8w" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="961" y="-156"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="Y9A-jf-yrh">
             <objects>

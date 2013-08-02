@@ -7,7 +7,6 @@
 //
 
 #import "DMAboutViewController.h"
-#import "DMAcknowledgementsViewController.h"
 #import <MapKit/MapKit.h>
 #import <MessageUI/MessageUI.h>
 
@@ -35,7 +34,7 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"License" style:UIBarButtonItemStylePlain target:self action:@selector(acknowledgements:)];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"License" style:UIBarButtonItemStylePlain target:self action:@selector(acknowledgements:)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,10 +71,6 @@
     }
 }
 
-- (IBAction)acknowledgements:(UIButton *)sender {
-    DMAcknowledgementsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DMAcknowledgementsViewController"];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
 - (void)contactSupport:(UIButton *)sender {
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
