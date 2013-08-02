@@ -20,7 +20,7 @@ exports.setAvailableBeers = function(beerList) {
 
 function findBeer(beer) {
   db.Favorites.findOne({'beer.name': beer.name, 'beer.brewer': beer.brewer}, function(err, result) {
-    if (err) { return false; }
+    if (err) { console.log(err); return false; }
     else {
       console.log('findBeer result -');
       console.log(result);
@@ -78,6 +78,12 @@ function deleteBeer(entry) {
       }
     })
   );
+  db.Favorites.remove({favorites: []}, function(err, result) {
+    if (err) { console.log('Error removing entries with no favories'); }
+    else {
+      console.log('Entries with no favories cleaned out.');
+    }
+  });
   return true;
 } // end delete
 
