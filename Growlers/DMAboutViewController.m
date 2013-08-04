@@ -80,7 +80,7 @@
         [mailer setMailComposeDelegate:self];
         NSArray *recipients = [NSArray arrayWithObjects:@"growlersupport@danielmiedema.com", nil];
         [mailer setToRecipients:recipients];
-        [mailer setSubject:@"Growlers.app - Question/Bug Report/Feedback"];
+//        [mailer setSubject:@"Growlers.app - Question/Bug Report/Feedback"];
         [self presentViewController:mailer animated:YES completion:nil];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops" message:@"Looks like you can't send an email this way." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
