@@ -76,7 +76,6 @@
     _favoriteBeers = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Favorites];
     if (!_favoriteBeers) { _favoriteBeers = [NSMutableArray new]; }   
     
-    
     NSLog(@"Favorites: %@", _favoriteBeers);
     
     // Load up the beers
@@ -219,28 +218,41 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"Favorites - %@", _favoriteBeers);
+    
     NSDictionary *beer = _beers[indexPath.row];
+    
+    NSLog(@"Beer - %@", beer);
+    
+    NSLog(@"in there? %hhd", [_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]);
+    
     if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
+        [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
-            [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
+            
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor clearColor];
         } andFailure:^(id JSON) {
             // Handle failure
             NSLog(@"unfavoriting failed: %@", JSON);
+            // Currently it fails -- but it works
+//            [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
         }];
     } else {
+         [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
-            [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
+//            [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
             NSLog(@"Cell : %@", cell);
         } andFailure:^(id JSON) {
             // Handle failure
             NSLog(@"Favoriting failed: %@", JSON);
+            // Currently it fails -- but it works
         }];
     }
     // Save to defaults.
+    NSLog(@"Favorites afer run -  %@", _favoriteBeers);
     [[NSUserDefaults standardUserDefaults] setObject:_favoriteBeers forKey:kGrowler_Favorites];
     [[NSUserDefaults standardUserDefaults] synchronize];
     // Deselect the row.
