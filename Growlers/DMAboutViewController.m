@@ -42,6 +42,9 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)acknowledgements:(UIButton *)sender {
+    // noop right now
+}
 
 - (IBAction)checkUsOut:(UIButton *)sender {
     NSLog(@"Check us Out!");
