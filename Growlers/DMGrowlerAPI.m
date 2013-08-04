@@ -44,6 +44,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         failure(JSON);
     }];
+    [AFNetworkActivityIndicatorManager sharedManager];
     [operation start];
 }
 
@@ -59,6 +60,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         failure(JSON);
     }];
+    [AFNetworkActivityIndicatorManager sharedManager];
     [operation start];
     
     // What am i doing with this?
