@@ -78,7 +78,7 @@
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
         [mailer setMailComposeDelegate:self];
-        NSArray *recipients = [NSArray arrayWithObjects:@"daniel@danielmiedema.com", nil];
+        NSArray *recipients = [NSArray arrayWithObjects:@"growlersupport@danielmiedema.com", nil];
         [mailer setToRecipients:recipients];
         [mailer setSubject:@"Growlers.app - Question/Bug Report/Feedback"];
         [self presentViewController:mailer animated:YES completion:nil];
