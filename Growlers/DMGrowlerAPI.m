@@ -42,6 +42,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:[self GETRequestForAllBeers] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         success(JSON);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        NSLog(@"Error getting beers - %@", error);
         failure(JSON);
     }];
     [AFNetworkActivityIndicatorManager sharedManager];
@@ -58,6 +59,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         success(JSON);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        NSLog(@"Error favoriing - %@", error);
         failure(JSON);
     }];
     [AFNetworkActivityIndicatorManager sharedManager];

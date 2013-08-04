@@ -227,9 +227,10 @@
     NSLog(@"in there? %hhd", [_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]);
     
     if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
-        [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
+//        [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
-            
+            [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
+            NSLog(@"Beer unfavorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor clearColor];
         } andFailure:^(id JSON) {
@@ -239,9 +240,10 @@
 //            [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
         }];
     } else {
-         [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
+//         [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
-//            [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
+            [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
+            NSLog(@"Beer favorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
             NSLog(@"Cell : %@", cell);
