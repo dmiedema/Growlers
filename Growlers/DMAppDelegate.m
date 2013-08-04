@@ -7,7 +7,7 @@
 //
 
 #import "DMAppDelegate.h"
-#import <TestFlightSDK/TestFlight.h>
+//#import <TestFlightSDK/TestFlight.h>
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
@@ -31,8 +31,8 @@
     /* Testing */
     #if TESTING
     // Testflight
-    [TestFlight setDeviceIdentifier:_generatedUDID];
-    [TestFlight takeOff:@"c7dba094-f82f-48fc-ab26-525c33b91dae"];
+//    [TestFlight setDeviceIdentifier:_generatedUDID];
+//    [TestFlight takeOff:@"c7dba094-f82f-48fc-ab26-525c33b91dae"];
 
     // Hockeyapp
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"d48bfa2df88def26d6eb9cf3e0603d66" delegate:self];
