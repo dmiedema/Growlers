@@ -61,7 +61,6 @@
     DMTableViewController *controller = (DMTableViewController *)navigationController.topViewController;
     NSLog(@"Controller - %@", controller);
     controller.managedContext = self.managedObjectContext;
-//    controller.managedModel = self.managedObjectModel;
     
     return YES;
 }

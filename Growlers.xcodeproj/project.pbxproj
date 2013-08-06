@@ -23,7 +23,6 @@
 		C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C817A4D0930058D304 /* CoreLocation.framework */; };
 		C3CB59F117AF5DDE00CF33D8 /* Favorites.m in Sources */ = {isa = PBXBuildFile; fileRef = C3CB59F017AF5DDE00CF33D8 /* Favorites.m */; };
 		C3CB59F417AF5E0200CF33D8 /* Favorites+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = C3CB59F317AF5E0200CF33D8 /* Favorites+Create.m */; };
-		C3CB59F717AF5EF400CF33D8 /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3CB59F617AF5EF400CF33D8 /* CoreDataTableViewController.m */; };
 		C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D117967D470086A7E2 /* Foundation.framework */; };
 		C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D317967D470086A7E2 /* CoreGraphics.framework */; };
 		C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
@@ -80,8 +79,6 @@
 		C3CB59F017AF5DDE00CF33D8 /* Favorites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Favorites.m; sourceTree = "<group>"; };
 		C3CB59F217AF5E0200CF33D8 /* Favorites+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Favorites+Create.h"; sourceTree = "<group>"; };
 		C3CB59F317AF5E0200CF33D8 /* Favorites+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Favorites+Create.m"; sourceTree = "<group>"; };
-		C3CB59F517AF5EF400CF33D8 /* CoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTableViewController.h; sourceTree = "<group>"; };
-		C3CB59F617AF5EF400CF33D8 /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTableViewController.m; sourceTree = "<group>"; };
 		C3DD53CE17967D470086A7E2 /* Growlers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Growlers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DD53D117967D470086A7E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3DD53D317967D470086A7E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -183,8 +180,6 @@
 		C33DAC9B179F7D7000F208AB /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C3CB59F517AF5EF400CF33D8 /* CoreDataTableViewController.h */,
-				C3CB59F617AF5EF400CF33D8 /* CoreDataTableViewController.m */,
 				C3DD540617967DAC0086A7E2 /* DMTableViewController.h */,
 				C3DD540717967DAC0086A7E2 /* DMTableViewController.m */,
 				C3DD54131797B7EB0086A7E2 /* DMAboutViewController.h */,
@@ -433,7 +428,6 @@
 				C3CB59F117AF5DDE00CF33D8 /* Favorites.m in Sources */,
 				C3DD540817967DAC0086A7E2 /* DMTableViewController.m in Sources */,
 				C33DACA4179FB1A500F208AB /* Beer+Beer_Create.m in Sources */,
-				C3CB59F717AF5EF400CF33D8 /* CoreDataTableViewController.m in Sources */,
 				C3DD53E217967D470086A7E2 /* DMAppDelegate.m in Sources */,
 				C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */,
 				C3DD54151797B7EB0086A7E2 /* DMAboutViewController.m in Sources */,
