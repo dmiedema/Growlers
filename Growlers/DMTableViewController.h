@@ -10,13 +10,13 @@
 #import "DMGrowlerAPI.h"
 #import "CoreDataTableViewController.h"
 
-@interface DMTableViewController : UITableViewController // <NSFetchedResultsControllerDelegate>
+@interface DMTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 @property (nonatomic, strong) UIManagedDocument *favoritesDatabase;
 @property (nonatomic, strong) UIManagedDocument *beerDatabase;
 
-//@property (nonatomic, strong) NSFetchedResultsController *favoritesFetchedResultsController;
-//@property (nonatomic, strong) NSFetchedResultsController *beerFetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController *favoritesFetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController *beerFetchedResultsController;
 
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
-@property (nonatomic, strong) NSManagedObjectModel *managedModel;
+//@property (nonatomic, strong) NSManagedObjectModel *managedModel;
 @end

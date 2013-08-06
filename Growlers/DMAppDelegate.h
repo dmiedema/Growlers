@@ -11,11 +11,12 @@
 @interface DMAppDelegate : UIResponder <UIApplicationDelegate, BITHockeyManagerDelegate, BITUpdateManagerDelegate, BITCrashManagerDelegate, BITFeedbackComposeViewControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (readonly, nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@property (readonly, nonatomic, strong) NSManagedObjectModel *managedObjectModel;
-@property (readonly, nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-- (NSURL *)applicationDocumentsDirectory;
+@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
 - (void)saveContext;
+- (NSURL *)applicationDocumentsDirectory;
 
 @end
