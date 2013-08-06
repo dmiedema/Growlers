@@ -174,13 +174,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Favorites - %@", _favoriteBeers);
     
     NSDictionary *beer = _beers[indexPath.row];
     
     NSLog(@"Beer - %@", beer);
-    
-    NSLog(@"in there? %hhd", [_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]);
     
     if ([self isBeerFavorited:beer]) {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
