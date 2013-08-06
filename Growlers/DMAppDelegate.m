@@ -7,6 +7,7 @@
 //
 
 #import "DMAppDelegate.h"
+#import "DMTableViewController.h"
 //#import <TestFlightSDK/TestFlight.h>
 
 @interface DMAppDelegate ()
@@ -14,6 +15,10 @@
 @end
 
 @implementation DMAppDelegate
+
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize managedObjectContext = _managedObjectContext;
+@synthesize managedObjectModel = _managedObjectModel;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -30,10 +35,7 @@
     
     /* Testing */
     #if TESTING
-    // Testflight
-//    [TestFlight setDeviceIdentifier:_generatedUDID];
-//    [TestFlight takeOff:@"c7dba094-f82f-48fc-ab26-525c33b91dae"];
-
+    
     // Hockeyapp
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"d48bfa2df88def26d6eb9cf3e0603d66" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
@@ -53,6 +55,13 @@
     /* AFNetworking indicator */
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
+    
+    /* Launch */
+//    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+//    DMTableViewController *controller = (DMTableViewController *)navigationController.topViewController;
+//    controller.managedContext = self.managedObjectContext;
+//    controller.managedModel = self.managedObjectModel;
+    
     return YES;
 }
 
@@ -67,16 +76,6 @@
 #endif
     return nil;
 }
-
-
-/*
-- (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
-#ifndef CONFIGURATION_AppStore
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(uniqueIdentifier)])
-        return [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)];
-#endif
-    return nil;
-}*/
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -103,6 +102,62 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [self saveContext];
 }
+
+#pragma mark CoreData Methods
+//- (NSURL *)applicationDocumentsDirectory {
+//    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+//}
+//
+//- (NSManagedObjectContext *)managedObjectContext {
+//    if (_managedObjectContext) {
+//        return _managedObjectContext;
+//    }
+//    
+//    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+//    if (coordinator) {
+//        _managedObjectContext = [[NSManagedObjectContext alloc] init];
+//        [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+//    }
+//    
+//    return _managedObjectContext;
+//}
+//
+//- (NSManagedObjectModel *)managedObjectModel {
+//    if (_managedObjectModel) {
+//        return _managedObjectModel;
+//    }
+//    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"FavoritesData" withExtension:@"momd"];
+//    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+//    return  _managedObjectModel;
+//}
+//
+//- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+//    if (_persistentStoreCoordinator) {
+//        return _persistentStoreCoordinator;
+//    }
+//    
+//    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"FavoritesData.sqlite"];
+//    NSError *error = nil;
+//    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
+//    
+//    if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+//        NSLog(@"Unresolved Error %@ %@", error, [error userInfo]);
+//    }
+//    
+//    return _persistentStoreCoordinator;
+//}
+//
+//-  (void)saveContext {
+//    NSError *error = nil;
+//    NSManagedObjectContext *context = self.managedObjectContext;
+//    
+//    if (context) {
+//        if (context.hasChanges && ![context save:&error]) {
+//            NSLog(@"Unresolved Error %@ %@", error, [error userInfo]);
+//        }
+//    }
+//}
 
 @end
