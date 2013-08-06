@@ -21,7 +21,6 @@
 - (void)loadBeers;
 - (void)about:(id)sender;
 
-- (void)favoriteBeer:(NSDictionary *)newBeerToFavorite;
 - (BOOL)setNavigationBarTint;
 @end
 
@@ -170,7 +169,15 @@ typedef enum {
 }
 
 - (void)favoriteBeer:(NSDictionary *)newBeerToFavorite {
-    [Favorites favoriteWithInfo:newBeerToFavorite inManagedObjectContext:_managedContext];
+    Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
+    favorite.name   = newBeerToFavorite[@"name"];
+    favorite.brewer = newBeerToFavorite[@"brewer"];
+    
+    NSError *coreDataErr = nil;
+    if (![self.managedContext save:&coreDataErr]) {
+        // handle error
+    }
+    NSLog(@"Beer Saved");
 }
 
 - (void)loadBeers
@@ -269,7 +276,6 @@ typedef enum {
     NSLog(@"in there? %hhd", [_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]);
     
     if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
-//        [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
             [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
             NSLog(@"Beer unfavorited successfully");
@@ -278,12 +284,15 @@ typedef enum {
         } andFailure:^(id JSON) {
             // Handle failure
             NSLog(@"unfavoriting failed: %@", JSON);
-            // Currently it fails -- but it works
-//            [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
         }];
-    } else {
-//         [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
+    }
+    else {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
+            // CoreData save
+//            [Favorites favoriteWithInfo:beer inManagedObjectContext:self.managedContext];
+            
+            [self favoriteBeer:beer];
+            
             [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
             NSLog(@"Beer favorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
@@ -292,7 +301,6 @@ typedef enum {
         } andFailure:^(id JSON) {
             // Handle failure
             NSLog(@"Favoriting failed: %@", JSON);
-            // Currently it fails -- but it works
         }];
     }
     // Save to defaults.
@@ -304,36 +312,6 @@ typedef enum {
     // reload the data so the favorite marker stays.
     [self.tableView reloadData];
 }
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 
 #pragma mark - Navigation

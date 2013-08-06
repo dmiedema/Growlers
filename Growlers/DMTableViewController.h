@@ -19,4 +19,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
 //@property (nonatomic, strong) NSManagedObjectModel *managedModel;
+
+- (void)favoriteBeer:(NSDictionary *)newBeerToFavorite;
+- (void)unFavoriteBeer:(NSDictionary *)beerToUnfavorite;
 @end
