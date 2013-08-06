@@ -10,6 +10,7 @@
 #import "DMGrowlerTableViewCell.h"
 #import "DMAboutViewController.h"
 #import "Beer+Beer_Create.h"
+#import "Favorites+Create.h"
 
 @interface DMTableViewController ()
 @property (nonatomic, strong) NSArray *beers;
@@ -26,38 +27,79 @@
 
 @implementation DMTableViewController
 
-//- (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:animated];
-//    
-//    if (!_beerDatabase) {
-//        NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-//        documentsURL = [documentsURL URLByAppendingPathComponent:@"Default Beers Database"];
-//        _beerDatabase = [[UIManagedDocument alloc] initWithFileURL:documentsURL];
-//        
-//    }
-//}
-//
-//- (void)useDocument {
-//    if (![[NSFileManager defaultManager] fileExistsAtPath:_beerDatabase.fileURL.path]) {
-//        [_beerDatabase saveToURL:_beerDatabase.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
-//            [self loadBeersIntoDatabase:_beerDatabase];
-//        }];
-//    } else if (_beerDatabase.documentState == UIDocumentStateClosed) {
-//        [_beerDatabase openWithCompletionHandler:^(BOOL success) {
-//            [self loadBeersIntoDatabase:_beerDatabase];
-//        }];
-//    } else if (_beerDatabase.documentState == UIDocumentStateNormal) {
-//        [self loadBeersIntoDatabase:_beerDatabase];
-//    }
-//}
-//
-//- (void)loadBeersIntoDatabase:(UIManagedDocument *)document {
-//    [document.managedObjectContext performBlock:^{
-//        for (NSDictionary *beer in _beers) {
-//            [Beer beerWithInfo:beer inManagedObjectContext:document.managedObjectContext];
-//        }
-//    }];
-//}
+typedef enum {
+    BEER_LIST_DATABASE,
+    FAVORTIES_DATABASE
+} DATABASE_NAME;
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (!self.beerDatabase) {
+        NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+        documentsURL = [documentsURL URLByAppendingPathComponent:@"Viewed Beers Database"];
+        self.beerDatabase = [[UIManagedDocument alloc] initWithFileURL:documentsURL];
+    }
+    if (!self.favoritesDatabase) {
+        NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+        documentsURL = [documentsURL URLByAppendingPathComponent:@"Favorite Beer Database"];
+        self.favoritesDatabase = [[UIManagedDocument alloc] initWithFileURL:documentsURL];
+    }
+}
+
+- (void)setupFetchedResultsController:(DATABASE_NAME)databaseName {
+    
+}
+
+- (void)useDocument {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:self.beerDatabase.fileURL.path]) {
+        [self.beerDatabase saveToURL:self.beerDatabase.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
+//            [self loadBeersIntoDatabase:self.beerDatabase];
+            [self setupFetchedResultsController:BEER_LIST_DATABASE];
+        }];
+    } else if (self.beerDatabase.documentState == UIDocumentStateClosed) {
+        [self.beerDatabase openWithCompletionHandler:^(BOOL success) {
+//            [self loadBeersIntoDatabase:self.beerDatabase];
+            [self setupFetchedResultsController:BEER_LIST_DATABASE];
+        }];
+    } else if (self.beerDatabase.documentState == UIDocumentStateNormal) {
+//        [self loadBeersIntoDatabase:self.beerDatabase];
+        [self setupFetchedResultsController:BEER_LIST_DATABASE];
+    }
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:self.favoritesDatabase.fileURL.path]) {
+        [self.favoritesDatabase saveToURL:self.favoritesDatabase.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
+//            [self loadFavoritesIntoDatabase:self.favoritesDatabase];
+            [self setupFetchedResultsController:FAVORTIES_DATABASE];
+        }];
+    } else if (self.favoritesDatabase.documentState == UIDocumentStateClosed) {
+        [self.favoritesDatabase openWithCompletionHandler:^(BOOL success) {
+//            [self loadFavoritesIntoDatabase:self.favoritesDatabase];
+            [self setupFetchedResultsController:FAVORTIES_DATABASE];
+        }];
+    } else if (self.favoritesDatabase.documentState == UIDocumentStateNormal) {
+//        [self loadFavoritesIntoDatabase:self.favoritesDatabase];
+        [self setupFetchedResultsController:FAVORTIES_DATABASE];
+    }
+    
+}
+
+- (void)loadBeersIntoDatabase:(UIManagedDocument *)document {
+    [document.managedObjectContext performBlock:^{
+        for (NSDictionary *beer in _beers) {
+            [Beer beerWithInfo:beer inManagedObjectContext:document.managedObjectContext];
+        }
+    }];
+}
+
+- (void)loadFavoritesIntoDatabase:(UIManagedDocument *)document {
+    [document.managedObjectContext performBlock:^{
+        for (NSDictionary *fav in _favoriteBeers) {
+//            Favorites *favorite = [
+            [Favorites favoriteWithInfo:fav inManagedObjectContext:document.managedObjectContext];
+        }
+    }];
+}
 
 - (void)viewDidLoad
 {
@@ -128,7 +170,7 @@
 }
 
 - (void)favoriteBeer:(NSDictionary *)newBeerToFavorite {
-    
+    [Favorites favoriteWithInfo:newBeerToFavorite inManagedObjectContext:_managedContext];
 }
 
 - (void)loadBeers
