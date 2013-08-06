@@ -26,79 +26,79 @@
 
 @implementation DMTableViewController
 
-typedef enum {
-    BEER_LIST_DATABASE,
-    FAVORTIES_DATABASE
-} DATABASE_NAME;
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    if (!self.beerDatabase) {
-        NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-        documentsURL = [documentsURL URLByAppendingPathComponent:@"Viewed Beers Database"];
-        self.beerDatabase = [[UIManagedDocument alloc] initWithFileURL:documentsURL];
-    }
-    if (!self.favoritesDatabase) {
-        NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-        documentsURL = [documentsURL URLByAppendingPathComponent:@"Favorite Beer Database"];
-        self.favoritesDatabase = [[UIManagedDocument alloc] initWithFileURL:documentsURL];
-    }
-}
-
-- (void)setupFetchedResultsController:(DATABASE_NAME)databaseName {
-    
-}
-
-- (void)useDocument {
-    if (![[NSFileManager defaultManager] fileExistsAtPath:self.beerDatabase.fileURL.path]) {
-        [self.beerDatabase saveToURL:self.beerDatabase.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
-//            [self loadBeersIntoDatabase:self.beerDatabase];
-            [self setupFetchedResultsController:BEER_LIST_DATABASE];
-        }];
-    } else if (self.beerDatabase.documentState == UIDocumentStateClosed) {
-        [self.beerDatabase openWithCompletionHandler:^(BOOL success) {
-//            [self loadBeersIntoDatabase:self.beerDatabase];
-            [self setupFetchedResultsController:BEER_LIST_DATABASE];
-        }];
-    } else if (self.beerDatabase.documentState == UIDocumentStateNormal) {
-//        [self loadBeersIntoDatabase:self.beerDatabase];
-        [self setupFetchedResultsController:BEER_LIST_DATABASE];
-    }
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:self.favoritesDatabase.fileURL.path]) {
-        [self.favoritesDatabase saveToURL:self.favoritesDatabase.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
-//            [self loadFavoritesIntoDatabase:self.favoritesDatabase];
-            [self setupFetchedResultsController:FAVORTIES_DATABASE];
-        }];
-    } else if (self.favoritesDatabase.documentState == UIDocumentStateClosed) {
-        [self.favoritesDatabase openWithCompletionHandler:^(BOOL success) {
-//            [self loadFavoritesIntoDatabase:self.favoritesDatabase];
-            [self setupFetchedResultsController:FAVORTIES_DATABASE];
-        }];
-    } else if (self.favoritesDatabase.documentState == UIDocumentStateNormal) {
-//        [self loadFavoritesIntoDatabase:self.favoritesDatabase];
-        [self setupFetchedResultsController:FAVORTIES_DATABASE];
-    }
-    
-}
-
-- (void)loadBeersIntoDatabase:(UIManagedDocument *)document {
-    [document.managedObjectContext performBlock:^{
-        for (NSDictionary *beer in _beers) {
-            [Beer beerWithInfo:beer inManagedObjectContext:document.managedObjectContext];
-        }
-    }];
-}
-
-- (void)loadFavoritesIntoDatabase:(UIManagedDocument *)document {
-    [document.managedObjectContext performBlock:^{
-        for (NSDictionary *fav in _favoriteBeers) {
-//            Favorites *favorite = [
-            [Favorites favoriteWithInfo:fav inManagedObjectContext:document.managedObjectContext];
-        }
-    }];
-}
+//typedef enum {
+//    BEER_LIST_DATABASE,
+//    FAVORTIES_DATABASE
+//} DATABASE_NAME;
+//
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    
+//    if (!self.beerDatabase) {
+//        NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+//        documentsURL = [documentsURL URLByAppendingPathComponent:@"Viewed Beers Database"];
+//        self.beerDatabase = [[UIManagedDocument alloc] initWithFileURL:documentsURL];
+//    }
+//    if (!self.favoritesDatabase) {
+//        NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+//        documentsURL = [documentsURL URLByAppendingPathComponent:@"Favorite Beer Database"];
+//        self.favoritesDatabase = [[UIManagedDocument alloc] initWithFileURL:documentsURL];
+//    }
+//}
+//
+//- (void)setupFetchedResultsController:(DATABASE_NAME)databaseName {
+//    
+//}
+//
+//- (void)useDocument {
+//    if (![[NSFileManager defaultManager] fileExistsAtPath:self.beerDatabase.fileURL.path]) {
+//        [self.beerDatabase saveToURL:self.beerDatabase.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
+////            [self loadBeersIntoDatabase:self.beerDatabase];
+//            [self setupFetchedResultsController:BEER_LIST_DATABASE];
+//        }];
+//    } else if (self.beerDatabase.documentState == UIDocumentStateClosed) {
+//        [self.beerDatabase openWithCompletionHandler:^(BOOL success) {
+////            [self loadBeersIntoDatabase:self.beerDatabase];
+//            [self setupFetchedResultsController:BEER_LIST_DATABASE];
+//        }];
+//    } else if (self.beerDatabase.documentState == UIDocumentStateNormal) {
+////        [self loadBeersIntoDatabase:self.beerDatabase];
+//        [self setupFetchedResultsController:BEER_LIST_DATABASE];
+//    }
+//    
+//    if (![[NSFileManager defaultManager] fileExistsAtPath:self.favoritesDatabase.fileURL.path]) {
+//        [self.favoritesDatabase saveToURL:self.favoritesDatabase.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
+////            [self loadFavoritesIntoDatabase:self.favoritesDatabase];
+//            [self setupFetchedResultsController:FAVORTIES_DATABASE];
+//        }];
+//    } else if (self.favoritesDatabase.documentState == UIDocumentStateClosed) {
+//        [self.favoritesDatabase openWithCompletionHandler:^(BOOL success) {
+////            [self loadFavoritesIntoDatabase:self.favoritesDatabase];
+//            [self setupFetchedResultsController:FAVORTIES_DATABASE];
+//        }];
+//    } else if (self.favoritesDatabase.documentState == UIDocumentStateNormal) {
+////        [self loadFavoritesIntoDatabase:self.favoritesDatabase];
+//        [self setupFetchedResultsController:FAVORTIES_DATABASE];
+//    }
+//    
+//}
+//
+//- (void)loadBeersIntoDatabase:(UIManagedDocument *)document {
+//    [document.managedObjectContext performBlock:^{
+//        for (NSDictionary *beer in _beers) {
+//            [Beer beerWithInfo:beer inManagedObjectContext:document.managedObjectContext];
+//        }
+//    }];
+//}
+//
+//- (void)loadFavoritesIntoDatabase:(UIManagedDocument *)document {
+//    [document.managedObjectContext performBlock:^{
+//        for (NSDictionary *fav in _favoriteBeers) {
+////            Favorites *favorite = [
+//            [Favorites favoriteWithInfo:fav inManagedObjectContext:document.managedObjectContext];
+//        }
+//    }];
+//}
 
 - (void)viewDidLoad
 {
@@ -114,8 +114,12 @@ typedef enum {
     _highlightedBeers = [NSMutableArray new];
     
     // Get favorites, if there aren't any, I'll make it.
-    _favoriteBeers = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Favorites];
-    if (!_favoriteBeers) { _favoriteBeers = [NSMutableArray new]; }   
+    NSError *err;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
+    _favoriteBeers = [self.managedContext executeFetchRequest:request error:&err].mutableCopy;
+    
+//    _favoriteBeers = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Favorites];
+//    if (!_favoriteBeers) { _favoriteBeers = [NSMutableArray new]; }   
     
     NSLog(@"Favorites: %@", _favoriteBeers);
     
@@ -166,18 +170,6 @@ typedef enum {
     } else { // Friday and Saturday, 11 to 11
         return hour > 10 && hour < 23;
     }
-}
-
-- (void)favoriteBeer:(NSDictionary *)newBeerToFavorite {
-    Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
-    favorite.name   = newBeerToFavorite[@"name"];
-    favorite.brewer = newBeerToFavorite[@"brewer"];
-    
-    NSError *coreDataErr = nil;
-    if (![self.managedContext save:&coreDataErr]) {
-        // handle error
-    }
-    NSLog(@"Beer Saved");
 }
 
 - (void)loadBeers
@@ -246,8 +238,12 @@ typedef enum {
     } else {
         cell.backgroundColor = [UIColor whiteColor];
     }
-
-    if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
+    
+    
+        
+    
+    if ([self isBeerFavorited:beer]) {
+//    if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
         cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
     } else {
         cell.favoriteMarker.backgroundColor = [UIColor clearColor];
@@ -277,6 +273,9 @@ typedef enum {
     
     if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
+            
+            [self unFavoriteBeer:beer];
+            
             [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
             NSLog(@"Beer unfavorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
@@ -304,9 +303,9 @@ typedef enum {
         }];
     }
     // Save to defaults.
-    NSLog(@"Favorites afer run -  %@", _favoriteBeers);
-    [[NSUserDefaults standardUserDefaults] setObject:_favoriteBeers forKey:kGrowler_Favorites];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+//    NSLog(@"Favorites afer run -  %@", _favoriteBeers);
+//    [[NSUserDefaults standardUserDefaults] setObject:_favoriteBeers forKey:kGrowler_Favorites];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
     // Deselect the row.
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     // reload the data so the favorite marker stays.
@@ -320,6 +319,53 @@ typedef enum {
 {
     DMAboutViewController *aboutView = [self.storyboard instantiateViewControllerWithIdentifier:@"DMAboutViewController"];
     [self.navigationController pushViewController:aboutView animated:YES];
+}
+
+
+#pragma mark - CoreData Methods
+- (void)favoriteBeer:(NSDictionary *)newBeerToFavorite {
+    Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
+    favorite.name   = newBeerToFavorite[@"name"];
+    favorite.brewer = newBeerToFavorite[@"brewer"];
+    
+    NSError *coreDataErr = nil;
+    if (![self.managedContext save:&coreDataErr]) {
+        // handle error
+    }
+    NSLog(@"Beer Saved");
+}
+
+- (void)unFavoriteBeer:(NSDictionary *)beerToUnfavorite {
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beerToUnfavorite[@"name"], beerToUnfavorite[@"brewer"]];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    
+    NSError *error = nil;
+    NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
+    
+    NSLog(@"Matches - %@", matches);
+    NSLog(@"Matches Lastobject - %@", matches.lastObject);
+    
+    [self.managedContext deleteObject:matches.lastObject];
+    if (![self.managedContext save:&error]){
+        // handle error
+    }
+    NSLog(@"Beer Unfavorited");
+}
+
+- (BOOL)isBeerFavorited:(NSDictionary *)beer {
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beer[@"name"], beer[@"brewer"]];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    
+    NSError *error = nil;
+    NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
+    
+    return matches.count == 1;
 }
 
 @end
