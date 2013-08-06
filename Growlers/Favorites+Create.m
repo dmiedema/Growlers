@@ -32,6 +32,7 @@
         // error
     } else if (matches.count == 0) {
         NSLog(@"Creating Entry...");
+        NSLog(@"Entity - %@", info);
         favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:context];
         favorite.name = info[@"name"];
         favorite.brewer = info[@"brewer"];
@@ -40,8 +41,24 @@
     }
     
     NSLog(@"Entry Created! - %@", favorite);
-    
+//    [context assignObject:favorite toPersistentStore:[context persistentStoreCoordinator]];
     return favorite;
+}
+
+
++ (void)removeFavorite:(NSDictionary *)info inManagedObjectContext:(NSManagedObjectContext *)context {
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", info[@"name"], info[@"brewer"]];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    
+    NSError *error = nil;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    
+    NSLog(@"Matches: %@", matches);
+    
+    [context deleteObject:matches.lastObject];
 }
 
 @end

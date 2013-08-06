@@ -10,4 +10,5 @@
 
 @interface Favorites (Create)
 + (Favorites *)favoriteWithInfo:(NSDictionary *)info inManagedObjectContext:(NSManagedObjectContext *)context;
++ (void)removeFavorite:(NSDictionary *)info inManagedObjectContext:(NSManagedObjectContext *)context;
 @end
