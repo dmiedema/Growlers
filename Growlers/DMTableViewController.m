@@ -16,7 +16,6 @@
 @property (nonatomic, strong) NSArray *beers;
 @property (nonatomic, strong) NSDate *lastUpdated;
 @property (nonatomic, strong) NSMutableArray *highlightedBeers;
-@property (nonatomic, strong) NSMutableArray *favoriteBeers;
 @property (nonatomic, strong) NSString *udid;
 - (void)loadBeers;
 - (void)about:(id)sender;
@@ -26,79 +25,6 @@
 
 @implementation DMTableViewController
 
-//typedef enum {
-//    BEER_LIST_DATABASE,
-//    FAVORTIES_DATABASE
-//} DATABASE_NAME;
-//
-//- (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:animated];
-//    
-//    if (!self.beerDatabase) {
-//        NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-//        documentsURL = [documentsURL URLByAppendingPathComponent:@"Viewed Beers Database"];
-//        self.beerDatabase = [[UIManagedDocument alloc] initWithFileURL:documentsURL];
-//    }
-//    if (!self.favoritesDatabase) {
-//        NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-//        documentsURL = [documentsURL URLByAppendingPathComponent:@"Favorite Beer Database"];
-//        self.favoritesDatabase = [[UIManagedDocument alloc] initWithFileURL:documentsURL];
-//    }
-//}
-//
-//- (void)setupFetchedResultsController:(DATABASE_NAME)databaseName {
-//    
-//}
-//
-//- (void)useDocument {
-//    if (![[NSFileManager defaultManager] fileExistsAtPath:self.beerDatabase.fileURL.path]) {
-//        [self.beerDatabase saveToURL:self.beerDatabase.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
-////            [self loadBeersIntoDatabase:self.beerDatabase];
-//            [self setupFetchedResultsController:BEER_LIST_DATABASE];
-//        }];
-//    } else if (self.beerDatabase.documentState == UIDocumentStateClosed) {
-//        [self.beerDatabase openWithCompletionHandler:^(BOOL success) {
-////            [self loadBeersIntoDatabase:self.beerDatabase];
-//            [self setupFetchedResultsController:BEER_LIST_DATABASE];
-//        }];
-//    } else if (self.beerDatabase.documentState == UIDocumentStateNormal) {
-////        [self loadBeersIntoDatabase:self.beerDatabase];
-//        [self setupFetchedResultsController:BEER_LIST_DATABASE];
-//    }
-//    
-//    if (![[NSFileManager defaultManager] fileExistsAtPath:self.favoritesDatabase.fileURL.path]) {
-//        [self.favoritesDatabase saveToURL:self.favoritesDatabase.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
-////            [self loadFavoritesIntoDatabase:self.favoritesDatabase];
-//            [self setupFetchedResultsController:FAVORTIES_DATABASE];
-//        }];
-//    } else if (self.favoritesDatabase.documentState == UIDocumentStateClosed) {
-//        [self.favoritesDatabase openWithCompletionHandler:^(BOOL success) {
-////            [self loadFavoritesIntoDatabase:self.favoritesDatabase];
-//            [self setupFetchedResultsController:FAVORTIES_DATABASE];
-//        }];
-//    } else if (self.favoritesDatabase.documentState == UIDocumentStateNormal) {
-////        [self loadFavoritesIntoDatabase:self.favoritesDatabase];
-//        [self setupFetchedResultsController:FAVORTIES_DATABASE];
-//    }
-//    
-//}
-//
-//- (void)loadBeersIntoDatabase:(UIManagedDocument *)document {
-//    [document.managedObjectContext performBlock:^{
-//        for (NSDictionary *beer in _beers) {
-//            [Beer beerWithInfo:beer inManagedObjectContext:document.managedObjectContext];
-//        }
-//    }];
-//}
-//
-//- (void)loadFavoritesIntoDatabase:(UIManagedDocument *)document {
-//    [document.managedObjectContext performBlock:^{
-//        for (NSDictionary *fav in _favoriteBeers) {
-////            Favorites *favorite = [
-//            [Favorites favoriteWithInfo:fav inManagedObjectContext:document.managedObjectContext];
-//        }
-//    }];
-//}
 
 - (void)viewDidLoad
 {
@@ -112,16 +38,6 @@
 
     // Setup highlighted beers
     _highlightedBeers = [NSMutableArray new];
-    
-    // Get favorites, if there aren't any, I'll make it.
-    NSError *err;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
-    _favoriteBeers = [self.managedContext executeFetchRequest:request error:&err].mutableCopy;
-    
-//    _favoriteBeers = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Favorites];
-//    if (!_favoriteBeers) { _favoriteBeers = [NSMutableArray new]; }   
-    
-    NSLog(@"Favorites: %@", _favoriteBeers);
     
     // Load up the beers
     [self loadBeers];
@@ -239,11 +155,7 @@
         cell.backgroundColor = [UIColor whiteColor];
     }
     
-    
-        
-    
     if ([self isBeerFavorited:beer]) {
-//    if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
         cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
     } else {
         cell.favoriteMarker.backgroundColor = [UIColor clearColor];
@@ -251,7 +163,6 @@
     
     cell.favoriteMarker.layer.masksToBounds = YES;
     cell.favoriteMarker.layer.cornerRadius = cell.favoriteMarker.bounds.size.width / 2.0;
-
     
     return cell;
 }
@@ -271,12 +182,10 @@
     
     NSLog(@"in there? %hhd", [_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]);
     
-    if ([_favoriteBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
+    if ([self isBeerFavorited:beer]) {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
-            
+            // CoreData Save
             [self unFavoriteBeer:beer];
-            
-            [_favoriteBeers removeObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
             NSLog(@"Beer unfavorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor clearColor];
@@ -288,11 +197,7 @@
     else {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
             // CoreData save
-//            [Favorites favoriteWithInfo:beer inManagedObjectContext:self.managedContext];
-            
             [self favoriteBeer:beer];
-            
-            [_favoriteBeers addObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}];
             NSLog(@"Beer favorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
@@ -302,10 +207,6 @@
             NSLog(@"Favoriting failed: %@", JSON);
         }];
     }
-    // Save to defaults.
-//    NSLog(@"Favorites afer run -  %@", _favoriteBeers);
-//    [[NSUserDefaults standardUserDefaults] setObject:_favoriteBeers forKey:kGrowler_Favorites];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
     // Deselect the row.
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     // reload the data so the favorite marker stays.

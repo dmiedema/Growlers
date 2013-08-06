@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "DMGrowlerAPI.h"
-#import "CoreDataTableViewController.h"
 
 @interface DMTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 //@property (nonatomic, strong) UIManagedDocument *favoritesDatabase;
