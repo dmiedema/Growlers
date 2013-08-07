@@ -46,6 +46,8 @@
     
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
     self.navigationItem.leftBarButtonItem = info;
+    UIBarButtonItem *clearNew = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector(resetHighlightedBeers)];
+    self.navigationItem.rightBarButtonItem = clearNew;
     
     // TODO: add text of last updated time
     [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
@@ -174,7 +176,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     NSDictionary *beer = _beers[indexPath.row];
     
     NSLog(@"Beer - %@", beer);
@@ -211,7 +212,7 @@
 }
 
 
-#pragma mark - Navigation
+#pragma mark - Navigation/BarButtonItems
 
 - (void)about:(id)sender
 {
@@ -219,9 +220,72 @@
     [self.navigationController pushViewController:aboutView animated:YES];
 }
 
+- (void)resetHighlightedBeers
+{
+    [_highlightedBeers removeAllObjects];
+    [self resetBeerDatabase:_beers];
+}
+
 
 #pragma mark - CoreData Methods
+/* Checking for New Beers to Highlight */
+- (BOOL)checkForBeerInDatabase:(NSDictionary *)beer {
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beer[@"name"], beer[@"brewer"]];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    
+    NSError *error = nil;
+    NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
+    
+    return matches.count == 1;
+}
+
+- (void)resetBeerDatabase:(NSArray *)newDatabaseContents {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Beer"];
+    request.includesPropertyValues = NO;
+    
+    NSError *error = nil;
+    NSArray *allCurrentBeers = [self.managedContext executeFetchRequest:request error:&error];
+
+    NSLog(@"Removing Beer Database...");
+    NSLog(@"AllBeers - %@", allCurrentBeers);
+    if (allCurrentBeers.count > 0) {
+        for (NSManagedObject *beer in allCurrentBeers) {
+            [self.managedContext deleteObject:beer];
+        }
+        if(![self.managedContext save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+    }
+    
+    NSLog(@"All Current Beers removed");
+    
+    for (NSDictionary *beer in newDatabaseContents) {
+        NSLog(@"Creating new entry - %@", beer);
+        Beer *newBeer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:self.managedContext];
+        newBeer.abv = beer[@"abv"];
+        newBeer.brewer = beer[@"brewer"];
+        newBeer.brewerURL = beer[@"brew_url"];
+        newBeer.growlerPrice = beer[@"growler"];
+        newBeer.growlettePrice = beer[@"growlette"];
+        newBeer.ibu = beer[@"ibu"];
+        newBeer.name = beer[@"name"];
+    }
+    
+    NSLog(@"Saving New Database...");
+    if (![self.managedContext save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    NSLog(@"New Database saved.");
+}
+
+
+
+/* Favoriting */
 - (void)favoriteBeer:(NSDictionary *)newBeerToFavorite {
+    
     Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
     favorite.name   = newBeerToFavorite[@"name"];
     favorite.brewer = newBeerToFavorite[@"brewer"];
@@ -234,7 +298,7 @@
 }
 
 - (void)unFavoriteBeer:(NSDictionary *)beerToUnfavorite {
-    
+
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beerToUnfavorite[@"name"], beerToUnfavorite[@"brewer"]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
@@ -251,6 +315,7 @@
         // handle error
     }
     NSLog(@"Beer Unfavorited");
+
 }
 
 - (BOOL)isBeerFavorited:(NSDictionary *)beer {
@@ -264,6 +329,7 @@
     NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
     
     return matches.count == 1;
+     
 }
 
 @end
