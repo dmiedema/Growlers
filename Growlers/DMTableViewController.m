@@ -9,8 +9,8 @@
 #import "DMTableViewController.h"
 #import "DMGrowlerTableViewCell.h"
 #import "DMAboutViewController.h"
-#import "Beer+Beer_Create.h"
-#import "Favorites+Create.h"
+#import "Beer.h"
+#import "Favorites.h"
 
 @interface DMTableViewController ()
 @property (nonatomic, strong) NSArray *beers;

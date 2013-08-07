@@ -2,7 +2,7 @@
 //  Beer.h
 //  Growlers
 //
-//  Created by Daniel Miedema on 7/23/13.
+//  Created by Daniel Miedema on 8/6/13.
 //  Copyright (c) 2013 Daniel Miedema. All rights reserved.
 //
 
@@ -12,13 +12,12 @@
 
 @interface Beer : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * abv;
-@property (nonatomic, retain) NSDate * added;
+@property (nonatomic, retain) NSString * abv;
 @property (nonatomic, retain) NSString * brewer;
 @property (nonatomic, retain) NSString * brewerURL;
-@property (nonatomic, retain) NSNumber * growlerPrice;
-@property (nonatomic, retain) NSNumber * growlettePrice;
-@property (nonatomic, retain) NSNumber * ibu;
+@property (nonatomic, retain) NSString * growlerPrice;
+@property (nonatomic, retain) NSString * growlettePrice;
+@property (nonatomic, retain) NSString * ibu;
 @property (nonatomic, retain) NSString * name;
 
 @end
