@@ -1,4 +1,4 @@
-var db = require('mongojs').connect('localhost', ["Favorites", "Beers"]);
+var db = require('mongojs').connect('GrowlMovement', ["Favorites", "Beers"]);
 
 exports.favorite = function(beer) {
     return findBeer(beer);
@@ -113,8 +113,11 @@ function notifyUsersOfNewBeers(newList, callback) {
       if(err || !result) { console.log("error getting old beer list"); }
       else {
         console.log('Beers.find() result');
-        console.log(result[0].beerList);
-        callback(result[0].beerList, newList);
+        if (typeof result[0] === 'undefined') callback(newList, newList);
+				else {
+					console.log(result[0].beerList);
+          callback(result[0].beerList, newList);
+        }
       }
     });
   }
