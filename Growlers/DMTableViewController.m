@@ -25,6 +25,11 @@
 
 @implementation DMTableViewController
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self resetBeerDatabase:_beers];
+}
 
 - (void)viewDidLoad
 {
@@ -49,7 +54,6 @@
     UIBarButtonItem *clearNew = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector(resetHighlightedBeers)];
     self.navigationItem.rightBarButtonItem = clearNew;
     
-    // TODO: add text of last updated time
     [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
     
 
@@ -245,6 +249,7 @@
     return matches.count == 1;
 }
 
+//TODO: Do this when app closes also.
 - (void)resetBeerDatabase:(NSArray *)newDatabaseContents {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Beer"];
     request.includesPropertyValues = NO;
