@@ -59,7 +59,6 @@
     /* Launch */
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     DMTableViewController *controller = (DMTableViewController *)navigationController.topViewController;
-    NSLog(@"Controller - %@", controller);
     controller.managedContext = self.managedObjectContext;
     
     return YES;
@@ -76,7 +75,22 @@
 #endif
     return nil;
 }
-							
+
+#pragma mark - Push Notifications
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSString *token = [deviceToken.description stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    [[NSUserDefaults standardUserDefaults] setObject:token forKey:kGrowler_Push_ID];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+	NSLog(@"My token is: %@", token);
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"Failed to get token, error: %@", error);
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

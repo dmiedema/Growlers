@@ -17,6 +17,7 @@
 //@property (nonatomic, strong) NSFetchedResultsController *beerFetchedResultsController;
 
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
+@property (nonatomic, strong) NSString *deviceToken;
 //@property (nonatomic, strong) NSManagedObjectModel *managedModel;
 
 - (void)favoriteBeer:(NSDictionary *)newBeerToFavorite;

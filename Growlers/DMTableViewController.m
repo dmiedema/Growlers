@@ -178,10 +178,13 @@
 {
     NSDictionary *beer = _beers[indexPath.row];
     
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Push_ID];
+    NSLog(@"token %@", token);
+    
     NSLog(@"Beer - %@", beer);
     
     if ([self isBeerFavorited:beer]) {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
             // CoreData Save
             [self unFavoriteBeer:beer];
             NSLog(@"Beer unfavorited successfully");
@@ -193,7 +196,7 @@
         }];
     }
     else {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": _udid, @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
             // CoreData save
             [self favoriteBeer:beer];
             NSLog(@"Beer favorited successfully");
