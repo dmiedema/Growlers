@@ -9,8 +9,19 @@ require('strong-agent').profile(
 
 var http = require('http');
 var db   = require('./database');
-/* Push Stuff */
-var pushstuff = require('./push-notifications');
+
+/* Push Notification Configuration */
+var apn = require('apn');
+var options = {
+  'gateway': 'gateway.sandbox.push.apple.com',
+  'passphrase': '1PoopyPassword',
+  'cert': 'GrowlersPushCert.pem',
+  'key': 'GrowlersPushKey.pem'
+}
+var apnConnection = apn.Connetion(options);
+var pushNote = new apn.Notification();
+pushNote.badge = 1;
+pushNote.expiry = Math.floor(Date.now() / 1000 + (3600 * 4)); // expire in 4 hours
 
 var response = '';
 var html;
@@ -79,8 +90,8 @@ function getBrewer(beer) {
 	var brewer = beer.split('<a')[1];
 	console.log(brewer)
 	console.log(brewer);
-	if(brewer) { 
-	  return beer.split('<a')[1].split('</a')[0].split('>')[1]; 
+	if(brewer) {
+	  return beer.split('<a')[1].split('</a')[0].split('>')[1];
 	}
 	else {
 		return beer.split(' - ')[1].split('<')[0];
@@ -95,7 +106,7 @@ function getBeerURL(beer) {
 	}
 	else {
 		return '';
-	}  
+	}
 }
 
 function getOtherBeerInfo(beer) {
@@ -136,13 +147,14 @@ function notifyUsers(newList) {
 				flag = oldBeers[j].name == newBeers[i].name && oldBeers[j].brewer == newBeers[i].brewer;
 				if (flag == true) break;
       }
-      if (!flag) { 
-				//TODO: Push notification firing will go here
+      if (!flag) {
 				var favs = newBeers[i].favorites;
-				for(var c = 0; c < favorites.length; c++) {
-					pushstuff.sendPushNotification(favorites[c]);
+				for(var c = 0; c < favs.length; c++) {
+					pushNote.alert = 'Your favorite ' + newBeers[i].name + ' is back in!';
+          var device = new apn.Devive(fav[c]);
+          apnConnection.pushNotification(pushNote, device);
 				}
-      } 
+      }
     } // end outer for
     db.setAvailableBeers(newList);
   });

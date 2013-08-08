@@ -35,6 +35,11 @@
 {
     [super viewDidLoad];
     
+    NSArray *stuffs = [self getAllBeersInDatabase];
+    for (Beer *beer in stuffs) {
+        NSLog(@"Beer - %@", @{@"name": beer.name, @"brewer": beer.brewer});
+    }
+    
     // get my udid for favoriting
     _udid = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_UUID];
     
@@ -108,6 +113,7 @@
     [[DMGrowlerAPI sharedInstance] getBeersWithSuccess:^(id JSON) {
         _beers = JSON;
         [self checkForNewBeers];
+        [self resetBeerDatabase:_beers];
         [self.tableView reloadData];
     } andFailure:^(id JSON) {
         // Error
@@ -117,15 +123,26 @@
 
 - (void)checkForNewBeers
 {
-    NSArray *existingBeers = [[NSUserDefaults standardUserDefaults] objectForKey:@"beers"];
-    for (NSDictionary *beer in _beers) {
-        if (![existingBeers containsObject:beer]) {
-            [_highlightedBeers addObject:beer[@"name"]];
+    NSArray *existingBeers = [self getAllBeersInDatabase];
+    for (Beer *beer in existingBeers) {
+        // Create full entry from Database
+        NSDictionary *tempBeerFull =
+            @{@"name": beer.name,
+              @"brewer": beer.brewer,
+              @"brew_url": beer.brewerURL,
+              @"growler": beer.growlerPrice,
+              @"growlette": beer.growlettePrice,
+              @"ibu": beer.ibu,
+              @"abv": beer.abv
+            };
+        // extract properties I care about to store for highlighting
+        NSDictionary *tempBeer = @{@"name": beer.name, @"brewer": beer.brewer};
+        // If my full beer entry is NOT in the beers I got from the server, its new.
+        if (![_beers containsObject:tempBeerFull]) {
+            [_highlightedBeers addObject:tempBeer];
         }
     }
-    // ugly hack, should be using CoreData.
-    [[NSUserDefaults standardUserDefaults] setObject:_beers forKey:@"beers"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self resetBeerDatabase:_beers];
 }
 
 #pragma mark - Table view data source
@@ -155,7 +172,7 @@
     cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growlette: $%@  Growler: $%@",
                                  beer[@"ibu"], beer[@"abv"], beer[@"growlette"], beer[@"growler"]];
     
-    if ([_highlightedBeers containsObject:beer[@"name"]]) {
+    if ([_highlightedBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
         cell.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
     } else {
         cell.backgroundColor = [UIColor whiteColor];
@@ -238,7 +255,7 @@
 /* Checking for New Beers to Highlight */
 - (BOOL)checkForBeerInDatabase:(NSDictionary *)beer {
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Beer"];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beer[@"name"], beer[@"brewer"]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
     request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
@@ -247,6 +264,21 @@
     NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
     
     return matches.count == 1;
+}
+
+- (NSArray *)getAllBeersInDatabase {
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Beer"];
+    request.includesPropertyValues = YES;
+    
+    NSError *error = nil;
+    NSArray *results = [self.managedContext executeFetchRequest:request error:&error];
+    
+    if (error) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        return nil;
+    }
+    return results;
 }
 
 //TODO: Do this when app closes also.
