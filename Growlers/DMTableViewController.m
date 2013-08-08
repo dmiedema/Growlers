@@ -123,23 +123,9 @@
 
 - (void)checkForNewBeers
 {
-    NSArray *existingBeers = [self getAllBeersInDatabase];
-    for (Beer *beer in existingBeers) {
-        // Create full entry from Database
-        NSDictionary *tempBeerFull =
-            @{@"name": beer.name,
-              @"brewer": beer.brewer,
-              @"brew_url": beer.brewerURL,
-              @"growler": beer.growlerPrice,
-              @"growlette": beer.growlettePrice,
-              @"ibu": beer.ibu,
-              @"abv": beer.abv
-            };
-        // extract properties I care about to store for highlighting
-        NSDictionary *tempBeer = @{@"name": beer.name, @"brewer": beer.brewer};
-        // If my full beer entry is NOT in the beers I got from the server, its new.
-        if (![_beers containsObject:tempBeerFull]) {
-            [_highlightedBeers addObject:tempBeer];
+    for (NSDictionary *beer in _beers) {
+        if(![self checkForBeerInDatabase:beer]) {
+            [_highlightedBeers addObject:beer];
         }
     }
     [self resetBeerDatabase:_beers];
