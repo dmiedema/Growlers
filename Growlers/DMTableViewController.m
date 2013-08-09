@@ -158,7 +158,7 @@
     cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growlette: $%@  Growler: $%@",
                                  beer[@"ibu"], beer[@"abv"], beer[@"growlette"], beer[@"growler"]];
     
-    if ([_highlightedBeers containsObject:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"]}]) {
+    if ([_highlightedBeers containsObject:beer]) {
         cell.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
     } else {
         cell.backgroundColor = [UIColor whiteColor];
