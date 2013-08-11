@@ -47,7 +47,7 @@ typedef enum {
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [_coreData resetBeerDatabase:_beers];
+//    [_coreData resetBeerDatabase:_beers];
 }
 
 - (void)viewDidLoad
