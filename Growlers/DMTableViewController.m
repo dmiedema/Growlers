@@ -6,6 +6,10 @@
 //  Copyright (c) 2013 Daniel Miedema. All rights reserved.
 //
 
+//TODO: Abstract out CoreData methods
+//TODO: Modify Schema to store more information -- Keep ABV, IBU
+//TODO: MOdify Server to store all beers, setup segment control to switch between.
+
 #import "DMTableViewController.h"
 #import "DMGrowlerTableViewCell.h"
 #import "DMAboutViewController.h"
@@ -17,10 +21,17 @@
 @property (nonatomic, strong) NSDate *lastUpdated;
 @property (nonatomic, strong) NSMutableArray *highlightedBeers;
 @property (nonatomic, strong) NSString *udid;
+
+@property (nonatomic, strong) UISegmentedControl *headerSegmentControl;
+
 - (void)loadBeers;
+- (void)loadFavorites;
 - (void)about:(id)sender;
 
 - (BOOL)setNavigationBarTint;
+
+- (int)getToday;
+- (BOOL)checkToday:(id)tapID;
 @end
 
 @implementation DMTableViewController
@@ -34,11 +45,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    NSArray *stuffs = [self getAllBeersInDatabase];
-    for (Beer *beer in stuffs) {
-        NSLog(@"Beer - %@", @{@"name": beer.name, @"brewer": beer.brewer});
-    }
     
     // get my udid for favoriting
     _udid = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_UUID];
@@ -58,8 +64,13 @@
     self.navigationItem.leftBarButtonItem = info;
     UIBarButtonItem *clearNew = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector(resetHighlightedBeers)];
     self.navigationItem.rightBarButtonItem = clearNew;
-    
+
     [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
+
+    // Setup Segment control
+    _headerSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"On Tap", @"Favorites", @"All"]];
+    [_headerSegmentControl addTarget:self action:@selector(segmentedControlChanged:) forControlEvents:UIControlEventValueChanged];
+    _headerSegmentControl.selectedSegmentIndex = 0;
     
 
     if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
@@ -67,11 +78,14 @@
     } else {
         // Get tint based on if they're open.
         if ([self setNavigationBarTint]) {
-            self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
-            self.refreshControl.tintColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
+            UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
+            self.navigationController.navigationBar.tintColor = growlYellow;
+            self.refreshControl.tintColor = growlYellow;
+            _headerSegmentControl.tintColor = growlYellow;
         } else {
             self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
             self.refreshControl.tintColor = [UIColor darkGrayColor];
+            _headerSegmentControl.tintColor = [UIColor darkGrayColor];
         }
         
         // This helps subliment removing the back text from a pushed view controller.
@@ -99,26 +113,47 @@
     }
 }
 
+- (int)getToday
+{
+    NSDate *today = [NSDate date];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    NSDateComponents *todaysDate = [calendar components:(NSDayCalendarUnit) fromDate:today];
+    
+    return [todaysDate day];
+}
+
+- (BOOL)checkToday:(id)tapID {
+    return [tapID isEqualToNumber:[NSNumber numberWithInt:[self getToday]]];
+}
+
 - (void)loadBeers
 {
     // if we're spinnin' and refreshin'
     // ... stop it.
     if (self.refreshControl.refreshing) {
-        // dylan wanted this, then he didn't.
-        // how undecisive can you be
-//        [_highlightedBeers removeAllObjects];
         [self.refreshControl endRefreshing];
     }
     
-    [[DMGrowlerAPI sharedInstance] getBeersWithSuccess:^(id JSON) {
+    // check segment control to see what action i should perform
+    SERVER_FLAG action = (_headerSegmentControl.selectedSegmentIndex == 0) ? ON_TAP : ALL;
+    
+    [[DMGrowlerAPI sharedInstance] getBeersWithFlag:action andSuccess:^(id JSON) {
         _beers = JSON;
-        [self checkForNewBeers];
-        [self resetBeerDatabase:_beers];
+        if (action == ON_TAP) {
+            [self checkForNewBeers];
+            [self resetBeerDatabase:JSON];
+        }
         [self.tableView reloadData];
     } andFailure:^(id JSON) {
-        // Error
         NSLog(@"Error - %@", JSON);
     }];
+}
+
+- (void)loadFavorites
+{
+    _beers = [self getAllFavorites];
+    [self.tableView reloadData];
 }
 
 - (void)checkForNewBeers
@@ -145,6 +180,12 @@
     return _beers.count;
 }
 
+typedef enum {
+    SHOW_ON_TAP = 0,
+    SHOW_FAVORITES = 1,
+    SHOW_FULL_HISTORY = 2
+} SEGMNET_CONTROL_INDEX;
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"growlerCell";
@@ -155,13 +196,37 @@
     
     cell.beerName.text = beer[@"name"];
     cell.brewery.text  = beer[@"brewer"];
-    cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growlette: $%@  Growler: $%@",
-                                 beer[@"ibu"], beer[@"abv"], beer[@"growlette"], beer[@"growler"]];
     
+    switch (_headerSegmentControl.selectedSegmentIndex) {
+        case SHOW_ON_TAP:
+            cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growlette: $%@  Growler: $%@",
+                                  beer[@"ibu"], beer[@"abv"], beer[@"growlette"], beer[@"growler"]];
+            break;
+        case SHOW_FAVORITES:
+            cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
+            break;
+        case SHOW_FULL_HISTORY:
+            cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
+            break;
+        default:
+            break;
+    }
+    
+//    cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growlette: $%@  Growler: $%@",
+//                                 beer[@"ibu"], beer[@"abv"], beer[@"growlette"], beer[@"growler"]];
+//    
     if ([_highlightedBeers containsObject:beer]) {
         cell.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
     } else {
         cell.backgroundColor = [UIColor whiteColor];
+    }
+    
+    // Get ID and check for today == tap.id and highlight
+    // last day of month, ending ones go on sale
+    NSLog(@"today check? %hhd", [beer[@"tap_id"] isEqualToNumber:[NSNumber numberWithInt:[self getToday]]]);
+
+    if ( [self checkToday:beer[@"tap_id"]] ) {
+        cell.backgroundColor = [UIColor colorWithRed:43.0/255.0 green:196.0/255.0 blue:245.0/255.0 alpha:0.25];
     }
     
     if ([self isBeerFavorited:beer]) {
@@ -174,6 +239,9 @@
     cell.favoriteMarker.layer.cornerRadius = cell.favoriteMarker.bounds.size.width / 2.0;
     
     return cell;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    return _headerSegmentControl;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -222,6 +290,8 @@
 }
 
 
+
+
 #pragma mark - Navigation/BarButtonItems
 
 - (void)about:(id)sender
@@ -234,6 +304,24 @@
 {
     [_highlightedBeers removeAllObjects];
     [self resetBeerDatabase:_beers];
+}
+
+- (void)segmentedControlChanged:(UISegmentedControl *)sender
+{
+    NSLog(@"selected index %i", sender.selectedSegmentIndex);
+    switch (sender.selectedSegmentIndex) {
+        case 0: // on tap
+            [self loadBeers];
+            break;
+        case 1: // favorites
+            [self loadFavorites];
+            break;
+        case 2: // All
+            [self loadBeers];
+            break;
+        default: // Whoops
+            break;
+    }
 }
 
 
@@ -291,6 +379,7 @@
     for (NSDictionary *beer in newDatabaseContents) {
         NSLog(@"Creating new entry - %@", beer);
         Beer *newBeer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:self.managedContext];
+        newBeer.tap_id = beer[@"tap_id"];
         newBeer.abv = beer[@"abv"];
         newBeer.brewer = beer[@"brewer"];
         newBeer.brewerURL = beer[@"brew_url"];
@@ -313,8 +402,12 @@
 - (void)favoriteBeer:(NSDictionary *)newBeerToFavorite {
     
     Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
-    favorite.name   = newBeerToFavorite[@"name"];
-    favorite.brewer = newBeerToFavorite[@"brewer"];
+    favorite.tap_id     = newBeerToFavorite[@"tap_id"];
+    favorite.name       = newBeerToFavorite[@"name"];
+    favorite.brewer     = newBeerToFavorite[@"brewer"];
+    favorite.abv        = newBeerToFavorite[@"abv"];
+    favorite.ibu        = newBeerToFavorite[@"ibu"];
+    favorite.brewerURL  = newBeerToFavorite[@"brew_url"];
     
     NSError *coreDataErr = nil;
     if (![self.managedContext save:&coreDataErr]) {
@@ -356,6 +449,30 @@
     
     return matches.count == 1;
      
+}
+
+- (NSArray *)getAllFavorites
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
+    request.includesPropertyValues = YES;
+    
+    NSError *error = nil;
+    NSArray *allFavorites = [self.managedContext executeFetchRequest:request error:&error];
+    
+    NSMutableArray *favoritesAsDictionarys = [NSMutableArray new];
+    
+    for (Favorites *favorite in allFavorites) {
+        [favoritesAsDictionarys addObject:
+            @{@"tap_id": favorite.tap_id,
+              @"name": favorite.name,
+              @"brewer": favorite.brewer,
+              @"brew_url": favorite.brewerURL,
+              @"abv": favorite.abv,
+              @"ibu": favorite.ibu
+              }];
+    }
+    
+    return favoritesAsDictionarys;
 }
 
 @end
