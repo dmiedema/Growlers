@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Daniel Miedema. All rights reserved.
 //
 
-//TODO: Abstract out CoreData methods
 //TODO: Modify Server to store all beers
 
 #import "DMTableViewController.h"
