@@ -38,6 +38,12 @@
 
 @implementation DMTableViewController
 
+typedef enum {
+    SHOW_ON_TAP = 0,
+    SHOW_FAVORITES = 1,
+    SHOW_FULL_HISTORY = 2
+} SEGMNET_CONTROL_INDEX;
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -59,8 +65,6 @@
     
     // Load up the beers
     [self loadBeers];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
     
     // Setup Navigation Bar button Items
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
@@ -154,15 +158,17 @@
         } else {
             attrStr = [[NSAttributedString alloc] initWithString:str];
         }
-       
+        // Set the title with last updated text because its nice to have
         self.refreshControl.attributedTitle = attrStr;
         // Stop refreshing
         [self.refreshControl endRefreshing];
     }
+    
+    // if we're on favorites, bail.
     if (_headerSegmentControl.selectedSegmentIndex == SHOW_FAVORITES) { return; }
     
     // check segment control to see what action I should perform
-    SERVER_FLAG action = (_headerSegmentControl.selectedSegmentIndex == 0) ? ON_TAP : ALL;
+    SERVER_FLAG action = (_headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) ? ON_TAP : ALL;
     
     [[DMGrowlerAPI sharedInstance] getBeersWithFlag:action andSuccess:^(id JSON) {
         _beers = JSON;
@@ -200,12 +206,6 @@
     return _beers.count;
 }
 
-typedef enum {
-    SHOW_ON_TAP = 0,
-    SHOW_FAVORITES = 1,
-    SHOW_FULL_HISTORY = 2
-} SEGMNET_CONTROL_INDEX;
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"growlerCell";
@@ -222,13 +222,8 @@ typedef enum {
             cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growlette: $%@  Growler: $%@",
                                   beer[@"ibu"], beer[@"abv"], beer[@"growlette"], beer[@"growler"]];
             break;
-        case SHOW_FAVORITES:
-            cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
-            break;
-        case SHOW_FULL_HISTORY:
-            cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
-            break;
         default:
+            cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
             break;
     }
     
@@ -302,9 +297,6 @@ typedef enum {
     // reload the data so the favorite marker stays.
     [self.tableView reloadData];
 }
-
-
-
 
 #pragma mark - Navigation/BarButtonItems
 
