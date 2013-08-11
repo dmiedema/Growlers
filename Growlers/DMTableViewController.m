@@ -22,6 +22,8 @@
 @property (nonatomic, strong) NSString *udid;
 @property (nonatomic, strong) DMCoreDataMethods *coreData;
 
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+
 @property (nonatomic, strong) UISegmentedControl *headerSegmentControl;
 
 
@@ -62,11 +64,13 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
+    // Setup Navigation Bar button Items
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
-    self.navigationItem.leftBarButtonItem = info;
     UIBarButtonItem *clearNew = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector(resetHighlightedBeers)];
+    self.navigationItem.leftBarButtonItem = info;
     self.navigationItem.rightBarButtonItem = clearNew;
 
+    // Setup Refresh control
     [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
 
     // Setup Segment control
@@ -97,6 +101,11 @@
     
     // Setup CoreData stuff
     _coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
+
+    // Setup DateFormatter
+    _dateFormatter = [[NSDateFormatter alloc] init];
+    _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"j:m" options:0 locale:[NSLocale currentLocale]];
+    _dateFormatter.defaultDate = [NSDate date];
 }
 
 - (BOOL)setNavigationBarTint
@@ -128,7 +137,8 @@
     return [todaysDate day];
 }
 
-- (BOOL)checkToday:(id)tapID {
+- (BOOL)checkToday:(id)tapID
+{
     return [tapID isEqualToNumber:[NSNumber numberWithInt:[self getToday]]];
 }
 
@@ -137,6 +147,10 @@
     // if we're spinnin' and refreshin'
     // ... stop it.
     if (self.refreshControl.refreshing) {
+        NSString *str = [NSString stringWithFormat:@"Last Updated %@", [_dateFormatter stringFromDate:[NSDate date]]];
+        NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:str];
+        self.refreshControl.attributedTitle = attrStr;
+        
         [self.refreshControl endRefreshing];
     }
     
@@ -172,12 +186,6 @@
 }
 
 #pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -217,9 +225,6 @@ typedef enum {
             break;
     }
     
-//    cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growlette: $%@  Growler: $%@",
-//                                 beer[@"ibu"], beer[@"abv"], beer[@"growlette"], beer[@"growler"]];
-//    
     if ([_highlightedBeers containsObject:beer]) {
         cell.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
     } else {
@@ -245,7 +250,9 @@ typedef enum {
     
     return cell;
 }
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     return _headerSegmentControl;
 }
 
@@ -311,6 +318,7 @@ typedef enum {
     [_coreData resetBeerDatabase:_beers];
 }
 
+/* Handle Segmented Control change */
 - (void)segmentedControlChanged:(UISegmentedControl *)sender
 {
     NSLog(@"selected index %i", sender.selectedSegmentIndex);
