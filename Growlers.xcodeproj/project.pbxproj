@@ -39,6 +39,7 @@
 		C3DD54191797BA620086A7E2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD54181797BA620086A7E2 /* SystemConfiguration.framework */; };
 		C3E5DE0517B750ED006DE900 /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E5DE0417B750ED006DE900 /* Beer.m */; };
 		C3E5DE0817B750EE006DE900 /* Favorites.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E5DE0717B750EE006DE900 /* Favorites.m */; };
+		C3E5DE0B17B75CB4006DE900 /* DMCoreDataMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E5DE0A17B75CB4006DE900 /* DMCoreDataMethods.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,8 @@
 		C3E5DE0417B750ED006DE900 /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
 		C3E5DE0617B750EE006DE900 /* Favorites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Favorites.h; sourceTree = "<group>"; };
 		C3E5DE0717B750EE006DE900 /* Favorites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Favorites.m; sourceTree = "<group>"; };
+		C3E5DE0917B75CB4006DE900 /* DMCoreDataMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMCoreDataMethods.h; sourceTree = "<group>"; };
+		C3E5DE0A17B75CB4006DE900 /* DMCoreDataMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMCoreDataMethods.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +142,8 @@
 				C3E5DE0617B750EE006DE900 /* Favorites.h */,
 				C3E5DE0717B750EE006DE900 /* Favorites.m */,
 				C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */,
+				C3E5DE0917B75CB4006DE900 /* DMCoreDataMethods.h */,
+				C3E5DE0A17B75CB4006DE900 /* DMCoreDataMethods.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -409,6 +414,7 @@
 				C3DD53DE17967D470086A7E2 /* main.m in Sources */,
 				C3E5DE0517B750ED006DE900 /* Beer.m in Sources */,
 				C3DD540817967DAC0086A7E2 /* DMTableViewController.m in Sources */,
+				C3E5DE0B17B75CB4006DE900 /* DMCoreDataMethods.m in Sources */,
 				C3E5DE0817B750EE006DE900 /* Favorites.m in Sources */,
 				C3DD53E217967D470086A7E2 /* DMAppDelegate.m in Sources */,
 				C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */,

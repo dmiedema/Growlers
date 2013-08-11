@@ -7,22 +7,25 @@
 //
 
 //TODO: Abstract out CoreData methods
-//TODO: Modify Schema to store more information -- Keep ABV, IBU
-//TODO: MOdify Server to store all beers, setup segment control to switch between.
+//TODO: Modify Server to store all beers
 
 #import "DMTableViewController.h"
 #import "DMGrowlerTableViewCell.h"
 #import "DMAboutViewController.h"
 #import "Beer.h"
 #import "Favorites.h"
+#import "DMCoreDataMethods.h"
 
 @interface DMTableViewController ()
 @property (nonatomic, strong) NSArray *beers;
 @property (nonatomic, strong) NSDate *lastUpdated;
 @property (nonatomic, strong) NSMutableArray *highlightedBeers;
 @property (nonatomic, strong) NSString *udid;
+@property (nonatomic, strong) DMCoreDataMethods *coreData;
 
 @property (nonatomic, strong) UISegmentedControl *headerSegmentControl;
+
+
 
 - (void)loadBeers;
 - (void)loadFavorites;
@@ -39,7 +42,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self resetBeerDatabase:_beers];
+    [_coreData resetBeerDatabase:_beers];
 }
 
 - (void)viewDidLoad
@@ -92,6 +95,9 @@
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
+    
+    // Setup CoreData stuff
+    _coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
 }
 
 - (BOOL)setNavigationBarTint
@@ -142,7 +148,7 @@
         _beers = JSON;
         if (action == ON_TAP) {
             [self checkForNewBeers];
-            [self resetBeerDatabase:JSON];
+            [_coreData resetBeerDatabase:JSON];
         }
         [self.tableView reloadData];
     } andFailure:^(id JSON) {
@@ -152,18 +158,18 @@
 
 - (void)loadFavorites
 {
-    _beers = [self getAllFavorites];
+    _beers = [_coreData getAllFavorites];
     [self.tableView reloadData];
 }
 
 - (void)checkForNewBeers
 {
     for (NSDictionary *beer in _beers) {
-        if(![self checkForBeerInDatabase:beer]) {
+        if(![_coreData checkForBeerInDatabase:beer]) {
             [_highlightedBeers addObject:beer];
         }
     }
-    [self resetBeerDatabase:_beers];
+    [_coreData resetBeerDatabase:_beers];
 }
 
 #pragma mark - Table view data source
@@ -229,7 +235,7 @@ typedef enum {
         cell.backgroundColor = [UIColor colorWithRed:43.0/255.0 green:196.0/255.0 blue:245.0/255.0 alpha:0.25];
     }
     
-    if ([self isBeerFavorited:beer]) {
+    if ([_coreData isBeerFavorited:beer]) {
         cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
     } else {
         cell.favoriteMarker.backgroundColor = [UIColor clearColor];
@@ -258,10 +264,10 @@ typedef enum {
     
     NSLog(@"Beer - %@", beer);
     
-    if ([self isBeerFavorited:beer]) {
+    if ([_coreData isBeerFavorited:beer]) {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
             // CoreData Save
-            [self unFavoriteBeer:beer];
+            [_coreData unFavoriteBeer:beer];
             NSLog(@"Beer unfavorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor clearColor];
@@ -273,7 +279,7 @@ typedef enum {
     else {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
             // CoreData save
-            [self favoriteBeer:beer];
+            [_coreData favoriteBeer:beer];
             NSLog(@"Beer favorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
@@ -303,7 +309,7 @@ typedef enum {
 - (void)resetHighlightedBeers
 {
     [_highlightedBeers removeAllObjects];
-    [self resetBeerDatabase:_beers];
+    [_coreData resetBeerDatabase:_beers];
 }
 
 - (void)segmentedControlChanged:(UISegmentedControl *)sender
@@ -322,157 +328,6 @@ typedef enum {
         default: // Whoops
             break;
     }
-}
-
-
-#pragma mark - CoreData Methods
-/* Checking for New Beers to Highlight */
-- (BOOL)checkForBeerInDatabase:(NSDictionary *)beer {
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Beer"];
-    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beer[@"name"], beer[@"brewer"]];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    
-    NSError *error = nil;
-    NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
-    
-    return matches.count == 1;
-}
-
-- (NSArray *)getAllBeersInDatabase {
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Beer"];
-    request.includesPropertyValues = YES;
-    
-    NSError *error = nil;
-    NSArray *results = [self.managedContext executeFetchRequest:request error:&error];
-    
-    if (error) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        return nil;
-    }
-    return results;
-}
-
-//TODO: Do this when app closes also.
-- (void)resetBeerDatabase:(NSArray *)newDatabaseContents {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Beer"];
-    request.includesPropertyValues = NO;
-    
-    NSError *error = nil;
-    NSArray *allCurrentBeers = [self.managedContext executeFetchRequest:request error:&error];
-
-    NSLog(@"Removing Beer Database...");
-    NSLog(@"AllBeers - %@", allCurrentBeers);
-    if (allCurrentBeers.count > 0) {
-        for (NSManagedObject *beer in allCurrentBeers) {
-            [self.managedContext deleteObject:beer];
-        }
-        if(![self.managedContext save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-    }
-    
-    NSLog(@"All Current Beers removed");
-    
-    for (NSDictionary *beer in newDatabaseContents) {
-        NSLog(@"Creating new entry - %@", beer);
-        Beer *newBeer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:self.managedContext];
-        newBeer.tap_id = beer[@"tap_id"];
-        newBeer.abv = beer[@"abv"];
-        newBeer.brewer = beer[@"brewer"];
-        newBeer.brewerURL = beer[@"brew_url"];
-        newBeer.growlerPrice = beer[@"growler"];
-        newBeer.growlettePrice = beer[@"growlette"];
-        newBeer.ibu = beer[@"ibu"];
-        newBeer.name = beer[@"name"];
-    }
-    
-    NSLog(@"Saving New Database...");
-    if (![self.managedContext save:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-    NSLog(@"New Database saved.");
-}
-
-
-
-/* Favoriting */
-- (void)favoriteBeer:(NSDictionary *)newBeerToFavorite {
-    
-    Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
-    favorite.tap_id     = newBeerToFavorite[@"tap_id"];
-    favorite.name       = newBeerToFavorite[@"name"];
-    favorite.brewer     = newBeerToFavorite[@"brewer"];
-    favorite.abv        = newBeerToFavorite[@"abv"];
-    favorite.ibu        = newBeerToFavorite[@"ibu"];
-    favorite.brewerURL  = newBeerToFavorite[@"brew_url"];
-    
-    NSError *coreDataErr = nil;
-    if (![self.managedContext save:&coreDataErr]) {
-        // handle error
-    }
-    NSLog(@"Beer Saved");
-}
-
-- (void)unFavoriteBeer:(NSDictionary *)beerToUnfavorite {
-
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
-    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beerToUnfavorite[@"name"], beerToUnfavorite[@"brewer"]];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    
-    NSError *error = nil;
-    NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
-    
-    NSLog(@"Matches - %@", matches);
-    NSLog(@"Matches Lastobject - %@", matches.lastObject);
-    
-    [self.managedContext deleteObject:matches.lastObject];
-    if (![self.managedContext save:&error]){
-        // handle error
-    }
-    NSLog(@"Beer Unfavorited");
-
-}
-
-- (BOOL)isBeerFavorited:(NSDictionary *)beer {
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
-    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beer[@"name"], beer[@"brewer"]];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    
-    NSError *error = nil;
-    NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
-    
-    return matches.count == 1;
-     
-}
-
-- (NSArray *)getAllFavorites
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
-    request.includesPropertyValues = YES;
-    
-    NSError *error = nil;
-    NSArray *allFavorites = [self.managedContext executeFetchRequest:request error:&error];
-    
-    NSMutableArray *favoritesAsDictionarys = [NSMutableArray new];
-    
-    for (Favorites *favorite in allFavorites) {
-        [favoritesAsDictionarys addObject:
-            @{@"tap_id": favorite.tap_id,
-              @"name": favorite.name,
-              @"brewer": favorite.brewer,
-              @"brew_url": favorite.brewerURL,
-              @"abv": favorite.abv,
-              @"ibu": favorite.ibu
-              }];
-    }
-    
-    return favoritesAsDictionarys;
 }
 
 @end
