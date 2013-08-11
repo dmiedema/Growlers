@@ -230,7 +230,7 @@ typedef enum {
     // last day of month, ending ones go on sale
     NSLog(@"today check? %hhd", [beer[@"tap_id"] isEqualToNumber:[NSNumber numberWithInt:[self getToday]]]);
 
-    if ( [self checkToday:beer[@"tap_id"]] ) {
+    if ( [self checkToday:beer[@"tap_id"]] && _headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY) {
         cell.backgroundColor = [UIColor colorWithRed:43.0/255.0 green:196.0/255.0 blue:245.0/255.0 alpha:0.25];
     }
     
