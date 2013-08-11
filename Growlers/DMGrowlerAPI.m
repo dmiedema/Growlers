@@ -32,24 +32,31 @@ static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
     return self;
 }
 
-- (NSMutableURLRequest *)GETRequestForAllBeers {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
-    return request;
-}
-
-- (void)getBeersWithSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure {
+- (void)getBeersWithFlag:(SERVER_FLAG)serverAction andSuccess :(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
+{
     // [NSURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]]
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:[self GETRequestForAllBeers] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+    NSString *requestUrlString = nil;
+    if (serverAction == ALL) {
+        requestUrlString = [NSString stringWithFormat:@"%@/all", DMGrowlerAPIURLString];
+    }
+    else {
+        requestUrlString = DMGrowlerAPIURLString;
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestUrlString]];
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         success(JSON);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         NSLog(@"Error getting beers - %@", error);
         failure(JSON);
     }];
+    
     [AFNetworkActivityIndicatorManager sharedManager];
     [operation start];
 }
 
-- (void)favoriteBeer:(NSDictionary *)beer withAction:(BEER_ACTION)action withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure {
+- (void)favoriteBeer:(NSDictionary *)beer withAction:(BEER_ACTION)action withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
+{
     NSError *error = nil;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
     request.HTTPMethod = @"POST";
