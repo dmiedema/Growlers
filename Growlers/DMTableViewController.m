@@ -147,10 +147,18 @@
     // if we're spinnin' and refreshin'
     // ... stop it.
     if (self.refreshControl.refreshing) {
-        NSString *str = [NSString stringWithFormat:@"Last Updated %@", [_dateFormatter stringFromDate:[NSDate date]]];
-        NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:str];
+        // Setup Title
+        NSString *str = [NSString stringWithFormat:@"Last Updated at %@", [_dateFormatter stringFromDate:[NSDate date]]];
+        NSAttributedString *attrStr;
+        // if iOS7, font color matches tint color.
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+             attrStr = [[NSAttributedString alloc] initWithString:str attributes:@{NSForegroundColorAttributeName: self.navigationController.navigationBar.tintColor}];
+        } else {
+            attrStr = [[NSAttributedString alloc] initWithString:str];
+        }
+       
         self.refreshControl.attributedTitle = attrStr;
-        
+        // Stop refreshing
         [self.refreshControl endRefreshing];
     }
     
