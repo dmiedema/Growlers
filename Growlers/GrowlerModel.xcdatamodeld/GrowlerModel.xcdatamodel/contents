@@ -8,13 +8,18 @@
         <attribute name="growlettePrice" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ibu" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tap_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="Favorites" representedClassName="Favorites" syncable="YES">
+        <attribute name="abv" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="brewer" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="brewerURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ibu" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tap_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Beer" positionX="0" positionY="18" width="128" height="148"/>
-        <element name="Favorites" positionX="-173" positionY="15" width="128" height="75"/>
+        <element name="Beer" positionX="0" positionY="18" width="128" height="163"/>
+        <element name="Favorites" positionX="-173" positionY="15" width="128" height="133"/>
     </elements>
 </model>

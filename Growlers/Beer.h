@@ -2,7 +2,7 @@
 //  Beer.h
 //  Growlers
 //
-//  Created by Daniel Miedema on 8/6/13.
+//  Created by Daniel Miedema on 8/10/13.
 //  Copyright (c) 2013 Daniel Miedema. All rights reserved.
 //
 
@@ -19,5 +19,6 @@
 @property (nonatomic, retain) NSString * growlettePrice;
 @property (nonatomic, retain) NSString * ibu;
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSNumber * tap_id;
 
 @end

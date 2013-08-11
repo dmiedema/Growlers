@@ -2,7 +2,7 @@
 //  Favorites.m
 //  Growlers
 //
-//  Created by Daniel Miedema on 8/4/13.
+//  Created by Daniel Miedema on 8/10/13.
 //  Copyright (c) 2013 Daniel Miedema. All rights reserved.
 //
 
@@ -11,7 +11,11 @@
 
 @implementation Favorites
 
-@dynamic name;
 @dynamic brewer;
+@dynamic name;
+@dynamic tap_id;
+@dynamic abv;
+@dynamic ibu;
+@dynamic brewerURL;
 
 @end
