@@ -26,8 +26,6 @@
 
 @property (nonatomic, strong) UISegmentedControl *headerSegmentControl;
 
-
-
 - (void)loadBeers;
 - (void)loadFavorites;
 - (void)about:(id)sender;
@@ -161,8 +159,9 @@
         // Stop refreshing
         [self.refreshControl endRefreshing];
     }
+    if (_headerSegmentControl.selectedSegmentIndex == SHOW_FAVORITES) { return; }
     
-    // check segment control to see what action i should perform
+    // check segment control to see what action I should perform
     SERVER_FLAG action = (_headerSegmentControl.selectedSegmentIndex == 0) ? ON_TAP : ALL;
     
     [[DMGrowlerAPI sharedInstance] getBeersWithFlag:action andSuccess:^(id JSON) {
@@ -241,8 +240,6 @@ typedef enum {
     
     // Get ID and check for today == tap.id and highlight
     // last day of month, ending ones go on sale
-    NSLog(@"today check? %hhd", [beer[@"tap_id"] isEqualToNumber:[NSNumber numberWithInt:[self getToday]]]);
-
     if ( [self checkToday:beer[@"tap_id"]] && _headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY) {
         cell.backgroundColor = [UIColor colorWithRed:43.0/255.0 green:196.0/255.0 blue:245.0/255.0 alpha:0.25];
     }
@@ -274,9 +271,6 @@ typedef enum {
     NSDictionary *beer = _beers[indexPath.row];
     
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Push_ID];
-    NSLog(@"token %@", token);
-    
-    NSLog(@"Beer - %@", beer);
     
     if ([_coreData isBeerFavorited:beer]) {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
@@ -331,13 +325,13 @@ typedef enum {
 {
     NSLog(@"selected index %i", sender.selectedSegmentIndex);
     switch (sender.selectedSegmentIndex) {
-        case 0: // on tap
+        case SHOW_ON_TAP: // on tap
             [self loadBeers];
             break;
-        case 1: // favorites
+        case SHOW_FAVORITES: // favorites
             [self loadFavorites];
             break;
-        case 2: // All
+        case SHOW_FULL_HISTORY: // All
             [self loadBeers];
             break;
         default: // Whoops
