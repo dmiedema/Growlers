@@ -50,6 +50,32 @@ typedef enum {
 //    [_coreData resetBeerDatabase:_beers];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+    } else {
+        // Get tint based on if they're open.
+        if ([self setNavigationBarTint]) {
+            UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
+            self.navigationController.navigationBar.tintColor = growlYellow;
+            self.refreshControl.tintColor = growlYellow;
+            _headerSegmentControl.tintColor = growlYellow;
+        } else {
+            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+            self.refreshControl.tintColor = [UIColor darkGrayColor];
+            _headerSegmentControl.tintColor = [UIColor darkGrayColor];
+        }
+        
+        // This helps subliment removing the back text from a pushed view controller.
+        self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    }
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -79,27 +105,6 @@ typedef enum {
     _headerSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"On Tap", @"Favorites", @"All"]];
     [_headerSegmentControl addTarget:self action:@selector(segmentedControlChanged:) forControlEvents:UIControlEventValueChanged];
     _headerSegmentControl.selectedSegmentIndex = 0;
-    
-
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-    } else {
-        // Get tint based on if they're open.
-        if ([self setNavigationBarTint]) {
-            UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
-            self.navigationController.navigationBar.tintColor = growlYellow;
-            self.refreshControl.tintColor = growlYellow;
-            _headerSegmentControl.tintColor = growlYellow;
-        } else {
-            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-            self.refreshControl.tintColor = [UIColor darkGrayColor];
-            _headerSegmentControl.tintColor = [UIColor darkGrayColor];
-        }
-        
-        // This helps subliment removing the back text from a pushed view controller.
-        self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    }
     
     // Setup CoreData stuff
     _coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
