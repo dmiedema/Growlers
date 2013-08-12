@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Daniel Miedema. All rights reserved.
 //
 
-//TODO: Modify Server to store all beers
-
 #import "DMTableViewController.h"
 #import "DMGrowlerTableViewCell.h"
 #import "DMAboutViewController.h"
@@ -43,6 +41,8 @@ typedef enum {
     SHOW_FAVORITES = 1,
     SHOW_FULL_HISTORY = 2
 } SEGMNET_CONTROL_INDEX;
+
+#pragma mark View Life Cycle
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -114,6 +114,8 @@ typedef enum {
     _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"j:m" options:0 locale:[NSLocale currentLocale]];
     _dateFormatter.defaultDate = [NSDate date];
 }
+
+#pragma mark - Implementation
 
 - (BOOL)setNavigationBarTint
 {
@@ -203,7 +205,7 @@ typedef enum {
     [_coreData resetBeerDatabase:_beers];
 }
 
-#pragma mark - Table view data source
+#pragma mark Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -259,6 +261,8 @@ typedef enum {
     return cell;
 }
 
+#pragma mark Table view Other
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     return _headerSegmentControl;
@@ -306,7 +310,7 @@ typedef enum {
     [self.tableView reloadData];
 }
 
-#pragma mark - Navigation/BarButtonItems
+#pragma mark Navigation/BarButtonItems
 
 - (void)about:(id)sender
 {
