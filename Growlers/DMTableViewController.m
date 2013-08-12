@@ -249,6 +249,7 @@ typedef enum {
         cell.beerInfo.textColor = [UIColor lightTextColor];
     }
     
+    // check if beer is favorite
     if ([_coreData isBeerFavorited:beer]) {
         cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
     } else {
