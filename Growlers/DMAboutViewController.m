@@ -9,6 +9,7 @@
 #import "DMAboutViewController.h"
 #import <MapKit/MapKit.h>
 #import <MessageUI/MessageUI.h>
+#import "MYIntroductionView.h"
 
 @interface DMAboutViewController () <MFMailComposeViewControllerDelegate>
 
@@ -34,7 +35,7 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"License" style:UIBarButtonItemStylePlain target:self action:@selector(acknowledgements:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Support" style:UIBarButtonItemStylePlain target:self action:@selector(contactSupport:)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -80,12 +81,26 @@
         [mailer setMailComposeDelegate:self];
         NSArray *recipients = [NSArray arrayWithObjects:@"growlersupport@danielmiedema.com", nil];
         [mailer setToRecipients:recipients];
-//        [mailer setSubject:@"Growlers.app - Question/Bug Report/Feedback"];
         [self presentViewController:mailer animated:YES completion:nil];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops" message:@"Looks like you can't send an email this way." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
     }
+}
+
+- (IBAction)showTutorial:(UIButton *)sender {
+    UIViewController *viewController = [[UIViewController alloc] init];
+    
+    UIImageView *tutorialImage;
+    
+    if (IS_IPHONE_5) {
+        tutorialImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TutorialScreen.png"]];
+    } else {
+        tutorialImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TutorialScreen-3_5.png"]];
+    }
+
+    viewController.view = tutorialImage;
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
