@@ -28,6 +28,8 @@
 - (void)loadFavorites;
 - (void)about:(id)sender;
 
+- (void)resetHighlightedBeers;
+
 - (BOOL)setNavigationBarTint;
 
 - (int)getToday;
@@ -94,9 +96,9 @@ typedef enum {
     
     // Setup Navigation Bar button Items
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
-    UIBarButtonItem *clearNew = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector(resetHighlightedBeers)];
+//    UIBarButtonItem *clearNew = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector(resetHighlightedBeers)];
     self.navigationItem.leftBarButtonItem = info;
-    self.navigationItem.rightBarButtonItem = clearNew;
+//    self.navigationItem.rightBarButtonItem = clearNew;
 
     // Setup Refresh control
     [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
@@ -153,6 +155,7 @@ typedef enum {
 
 - (void)loadBeers
 {
+    NSLog(@"Refresh control bounds - %f", self.refreshControl.bounds.size.height);
     // if we're spinnin' and refreshin'
     // ... stop it.
     if (self.refreshControl.refreshing) {
@@ -173,6 +176,10 @@ typedef enum {
     
     // if we're on favorites, bail.
     if (_headerSegmentControl.selectedSegmentIndex == SHOW_FAVORITES) { return; }
+    
+    if (self.refreshControl.bounds.size.height >= 65) {
+        [self resetHighlightedBeers];
+    }
     
     // check segment control to see what action I should perform
     SERVER_FLAG action = (_headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) ? ON_TAP : ALL;
@@ -258,6 +265,8 @@ typedef enum {
     
     cell.favoriteMarker.layer.masksToBounds = YES;
     cell.favoriteMarker.layer.cornerRadius = cell.favoriteMarker.bounds.size.width / 2.0;
+    
+
     
     return cell;
 }
