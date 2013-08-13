@@ -94,9 +94,9 @@
     UIImageView *tutorialImage;
     
     if (IS_IPHONE_5) {
-        tutorialImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TutorialScreen.png"]];
+        tutorialImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Tutorial-4.png"]];
     } else {
-        tutorialImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TutorialScreen-3_5.png"]];
+        tutorialImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Tutorial-3_5.png"]];
     }
 
     viewController.view = tutorialImage;

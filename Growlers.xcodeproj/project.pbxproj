@@ -42,6 +42,8 @@
 		C3E5DE0B17B75CB4006DE900 /* DMCoreDataMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E5DE0A17B75CB4006DE900 /* DMCoreDataMethods.m */; };
 		C3E5DE0D17B8AF65006DE900 /* TutorialScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E5DE0C17B8AF65006DE900 /* TutorialScreen.png */; };
 		C3E5DE0F17B8B0CD006DE900 /* TutorialScreen-3_5.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E5DE0E17B8B0CD006DE900 /* TutorialScreen-3_5.png */; };
+		C3E5DE1217BA0915006DE900 /* Tutorial-3_5.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E5DE1017BA0915006DE900 /* Tutorial-3_5.png */; };
+		C3E5DE1317BA0915006DE900 /* Tutorial-4.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E5DE1117BA0915006DE900 /* Tutorial-4.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +105,8 @@
 		C3E5DE0A17B75CB4006DE900 /* DMCoreDataMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMCoreDataMethods.m; sourceTree = "<group>"; };
 		C3E5DE0C17B8AF65006DE900 /* TutorialScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TutorialScreen.png; sourceTree = "<group>"; };
 		C3E5DE0E17B8B0CD006DE900 /* TutorialScreen-3_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TutorialScreen-3_5.png"; sourceTree = "<group>"; };
+		C3E5DE1017BA0915006DE900 /* Tutorial-3_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial-3_5.png"; sourceTree = "<group>"; };
+		C3E5DE1117BA0915006DE900 /* Tutorial-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial-4.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,6 +238,8 @@
 				C33DAC9B179F7D7000F208AB /* View Controllers */,
 				C33DAC92179C91AD00F208AB /* CoreData */,
 				C3DD53E917967D470086A7E2 /* Images.xcassets */,
+				C3E5DE1017BA0915006DE900 /* Tutorial-3_5.png */,
+				C3E5DE1117BA0915006DE900 /* Tutorial-4.png */,
 				C3E5DE0C17B8AF65006DE900 /* TutorialScreen.png */,
 				C3E5DE0E17B8B0CD006DE900 /* TutorialScreen-3_5.png */,
 				C3DD53D817967D470086A7E2 /* Supporting Files */,
@@ -359,9 +365,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3E5DE1217BA0915006DE900 /* Tutorial-3_5.png in Resources */,
 				C3DD53EA17967D470086A7E2 /* Images.xcassets in Resources */,
 				C3E5DE0F17B8B0CD006DE900 /* TutorialScreen-3_5.png in Resources */,
 				C3DD540D1797AE220086A7E2 /* DMGrowlerTableViewCell.xib in Resources */,
+				C3E5DE1317BA0915006DE900 /* Tutorial-4.png in Resources */,
 				C3DD53DC17967D470086A7E2 /* InfoPlist.strings in Resources */,
 				C3DD53E517967D470086A7E2 /* Main.storyboard in Resources */,
 				C349589D17A79FEA00E45B3D /* Settings.bundle in Resources */,
