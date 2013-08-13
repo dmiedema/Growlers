@@ -295,6 +295,10 @@ BOOL _performSegmentChange;
     return _headerSegmentControl;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 26.0f;
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 64.0f;
@@ -377,11 +381,7 @@ BOOL _performSegmentChange;
     NSLog(@"Swipe Found");
     NSLog(@"%u",recognizer.direction);
     
-//    if (recognizer.state == UIGestureRecognizerStateBegan) {
-//        _gestureBeginLocation = self.tableView.center;
-//    }
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
-//        CGPoint translation = [recognizer translationInView:self.tableView];
         NSLog(@"Right Swipe");
         self.headerSegmentControl.selectedSegmentIndex = abs(self.headerSegmentControl.selectedSegmentIndex + 1) % self.headerSegmentControl.numberOfSegments;
 
@@ -393,9 +393,6 @@ BOOL _performSegmentChange;
             self.headerSegmentControl.selectedSegmentIndex - 1 :
             self.headerSegmentControl.numberOfSegments - 1;
     }
-//    if (recognizer.state == UIGestureRecognizerStateEnded ) {
-//        
-//    }
 }
 
 @end
