@@ -21,6 +21,7 @@
 @property (nonatomic, strong) DMCoreDataMethods *coreData;
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 
 @property (nonatomic, strong) UISegmentedControl *headerSegmentControl;
 
@@ -115,6 +116,10 @@ typedef enum {
     _dateFormatter = [[NSDateFormatter alloc] init];
     _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"j:m" options:0 locale:[NSLocale currentLocale]];
     _dateFormatter.defaultDate = [NSDate date];
+    
+    // Setup NumberFormatter
+    _numberFormatter = [NSNumberFormatter new];
+
 }
 
 #pragma mark - Implementation
@@ -148,9 +153,9 @@ typedef enum {
     return [todaysDate day];
 }
 
-- (BOOL)checkToday:(id)tapID
+- (BOOL)checkToday:(id)tap_id
 {
-    return [tapID isEqualToNumber:[NSNumber numberWithInt:[self getToday]]];
+    return [tap_id integerValue] == [self getToday];
 }
 
 - (void)loadBeers
@@ -241,19 +246,20 @@ typedef enum {
             break;
     }
     
-    if ([_highlightedBeers containsObject:beer]) {
-        cell.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
-    } else {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-    
     // Get ID and check for today == tap.id and highlight
     // last day of month, ending ones go on sale
-    if ( [self checkToday:beer[@"tap_id"]] && _headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY) {
+    if ([self checkToday:beer[@"tap_id"]] && _headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY) {
         cell.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:0.35];
         cell.beerName.textColor = [UIColor whiteColor];
         cell.brewery.textColor = [UIColor whiteColor];
         cell.beerInfo.textColor = [UIColor lightTextColor];
+    } else if ([_highlightedBeers containsObject:beer]) {
+        cell.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
+    } else {
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.beerName.textColor = [UIColor blackColor];
+        cell.brewery.textColor = [UIColor blackColor];
+        cell.beerInfo.textColor = [UIColor darkGrayColor];
     }
     
     // check if beer is favorite
