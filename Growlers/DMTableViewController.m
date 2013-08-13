@@ -160,7 +160,6 @@ typedef enum {
 
 - (void)loadBeers
 {
-    NSLog(@"Refresh control bounds - %f", self.refreshControl.bounds.size.height);
     // if we're spinnin' and refreshin'
     // ... stop it.
     if (self.refreshControl.refreshing) {
@@ -245,7 +244,7 @@ typedef enum {
             cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
             break;
     }
-    
+
     // Get ID and check for today == tap.id and highlight
     // last day of month, ending ones go on sale
     if ([self checkToday:beer[@"tap_id"]] && _headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY) {
