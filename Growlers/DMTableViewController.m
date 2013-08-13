@@ -13,7 +13,7 @@
 #import "Favorites.h"
 #import "DMCoreDataMethods.h"
 
-@interface DMTableViewController ()
+@interface DMTableViewController () <UIGestureRecognizerDelegate>
 @property (nonatomic, strong) NSArray *beers;
 @property (nonatomic, strong) NSDate *lastUpdated;
 @property (nonatomic, strong) NSMutableArray *highlightedBeers;
@@ -35,6 +35,9 @@
 
 - (int)getToday;
 - (BOOL)checkToday:(id)tapID;
+
+@property (nonatomic, strong) UIGestureRecognizer *swipeGesture;
+
 @end
 
 @implementation DMTableViewController
@@ -44,6 +47,9 @@ typedef enum {
     SHOW_FAVORITES = 1,
     SHOW_FULL_HISTORY = 2
 } SEGMNET_CONTROL_INDEX;
+
+CGPoint _gestureBeginLocation;
+BOOL _performSegmentChange;
 
 #pragma mark View Life Cycle
 
@@ -117,8 +123,14 @@ typedef enum {
     _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"j:m" options:0 locale:[NSLocale currentLocale]];
     _dateFormatter.defaultDate = [NSDate date];
     
-    // Setup NumberFormatter
-    _numberFormatter = [NSNumberFormatter new];
+    UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+    UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+    leftSwipeGesture.direction = (UISwipeGestureRecognizerDirectionLeft);
+    rightSwipeGesture.direction = (UISwipeGestureRecognizerDirectionRight);
+    leftSwipeGesture.numberOfTouchesRequired = 1;
+    rightSwipeGesture.numberOfTouchesRequired = 1;
+    [self.tableView addGestureRecognizer:leftSwipeGesture];
+    [self.tableView addGestureRecognizer:rightSwipeGesture];
 
 }
 
@@ -356,6 +368,34 @@ typedef enum {
         default: // Whoops
             break;
     }
+}
+
+#pragma mark Gestures
+
+- (void)handleSwipe:(UISwipeGestureRecognizer *)recognizer
+{
+    NSLog(@"Swipe Found");
+    NSLog(@"%u",recognizer.direction);
+    
+//    if (recognizer.state == UIGestureRecognizerStateBegan) {
+//        _gestureBeginLocation = self.tableView.center;
+//    }
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
+//        CGPoint translation = [recognizer translationInView:self.tableView];
+        NSLog(@"Right Swipe");
+        self.headerSegmentControl.selectedSegmentIndex = abs(self.headerSegmentControl.selectedSegmentIndex + 1) % self.headerSegmentControl.numberOfSegments;
+
+    }
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
+        NSLog(@"Left Swipe");
+        self.headerSegmentControl.selectedSegmentIndex =
+            self.headerSegmentControl.selectedSegmentIndex - 1 >= 0 ?
+            self.headerSegmentControl.selectedSegmentIndex - 1 :
+            self.headerSegmentControl.numberOfSegments - 1;
+    }
+//    if (recognizer.state == UIGestureRecognizerStateEnded ) {
+//        
+//    }
 }
 
 @end
