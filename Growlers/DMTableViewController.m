@@ -330,7 +330,6 @@ BOOL _performSegmentChange;
             NSLog(@"Beer favorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
-            NSLog(@"Cell : %@", cell);
         } andFailure:^(id JSON) {
             // Handle failure
             NSLog(@"Favoriting failed: %@", JSON);
@@ -359,7 +358,6 @@ BOOL _performSegmentChange;
 /* Handle Segmented Control change */
 - (void)segmentedControlChanged:(UISegmentedControl *)sender
 {
-    NSLog(@"selected index %i", sender.selectedSegmentIndex);
     switch (sender.selectedSegmentIndex) {
         case SHOW_ON_TAP: // on tap
             [self loadBeers];
@@ -380,12 +378,10 @@ BOOL _performSegmentChange;
 - (void)handleSwipe:(UISwipeGestureRecognizer *)recognizer
 {
     if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
-        NSLog(@"Right Swipe");
         self.headerSegmentControl.selectedSegmentIndex = abs(self.headerSegmentControl.selectedSegmentIndex + 1) % self.headerSegmentControl.numberOfSegments;
         [self segmentedControlChanged:_headerSegmentControl];
     }
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
-        NSLog(@"Left Swipe");
         self.headerSegmentControl.selectedSegmentIndex =
             self.headerSegmentControl.selectedSegmentIndex - 1 >= 0 ?
             self.headerSegmentControl.selectedSegmentIndex - 1 :
