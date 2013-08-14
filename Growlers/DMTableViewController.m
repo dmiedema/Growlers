@@ -191,7 +191,9 @@ BOOL _performSegmentChange;
     }
     
     // if we're on favorites, bail.
-    if (_headerSegmentControl.selectedSegmentIndex == SHOW_FAVORITES) { return; }
+    if (_headerSegmentControl.selectedSegmentIndex == SHOW_FAVORITES) {
+        return;
+    }
     
     if (self.refreshControl.bounds.size.height >= 65) {
         [self resetHighlightedBeers];
@@ -204,7 +206,6 @@ BOOL _performSegmentChange;
         _beers = JSON;
         if (action == ON_TAP) {
             [self checkForNewBeers];
-            [_coreData resetBeerDatabase:JSON];
         }
         [self.tableView reloadData];
     } andFailure:^(id JSON) {
@@ -378,20 +379,18 @@ BOOL _performSegmentChange;
 
 - (void)handleSwipe:(UISwipeGestureRecognizer *)recognizer
 {
-    NSLog(@"Swipe Found");
-    NSLog(@"%u",recognizer.direction);
-    
-    if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
         NSLog(@"Right Swipe");
         self.headerSegmentControl.selectedSegmentIndex = abs(self.headerSegmentControl.selectedSegmentIndex + 1) % self.headerSegmentControl.numberOfSegments;
-
+        [self segmentedControlChanged:_headerSegmentControl];
     }
-    if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
         NSLog(@"Left Swipe");
         self.headerSegmentControl.selectedSegmentIndex =
             self.headerSegmentControl.selectedSegmentIndex - 1 >= 0 ?
             self.headerSegmentControl.selectedSegmentIndex - 1 :
             self.headerSegmentControl.numberOfSegments - 1;
+        [self segmentedControlChanged:_headerSegmentControl];
     }
 }
 
