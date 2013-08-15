@@ -42,6 +42,9 @@
 		C3E5DE0B17B75CB4006DE900 /* DMCoreDataMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E5DE0A17B75CB4006DE900 /* DMCoreDataMethods.m */; };
 		C3E5DE1617BA19B1006DE900 /* Tutorial-3_5.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E5DE1417BA19B0006DE900 /* Tutorial-3_5.png */; };
 		C3E5DE1717BA19B1006DE900 /* Tutorial-4.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E5DE1517BA19B1006DE900 /* Tutorial-4.png */; };
+		C3E5DE1917BC6A03006DE900 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3E5DE1817BC6A03006DE900 /* CoreImage.framework */; };
+		C3E5DE1D17BC713A006DE900 /* DRNRealTimeBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E5DE1C17BC713A006DE900 /* DRNRealTimeBlurView.m */; };
+		C3E5DE2017BC7209006DE900 /* UIImage+BoxBlur.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E5DE1F17BC7209006DE900 /* UIImage+BoxBlur.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +106,11 @@
 		C3E5DE0A17B75CB4006DE900 /* DMCoreDataMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMCoreDataMethods.m; sourceTree = "<group>"; };
 		C3E5DE1417BA19B0006DE900 /* Tutorial-3_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial-3_5.png"; sourceTree = "<group>"; };
 		C3E5DE1517BA19B1006DE900 /* Tutorial-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial-4.png"; sourceTree = "<group>"; };
+		C3E5DE1817BC6A03006DE900 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		C3E5DE1B17BC713A006DE900 /* DRNRealTimeBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRNRealTimeBlurView.h; sourceTree = "<group>"; };
+		C3E5DE1C17BC713A006DE900 /* DRNRealTimeBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRNRealTimeBlurView.m; sourceTree = "<group>"; };
+		C3E5DE1E17BC7209006DE900 /* UIImage+BoxBlur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BoxBlur.h"; sourceTree = "<group>"; };
+		C3E5DE1F17BC7209006DE900 /* UIImage+BoxBlur.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BoxBlur.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3E5DE1917BC6A03006DE900 /* CoreImage.framework in Frameworks */,
 				C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */,
 				C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */,
 				C38285C717A4D0700058D304 /* MessageUI.framework in Frameworks */,
@@ -207,6 +216,7 @@
 		C3DD53D017967D470086A7E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C3E5DE1817BC6A03006DE900 /* CoreImage.framework */,
 				C38285C817A4D0930058D304 /* CoreLocation.framework */,
 				C38285C617A4D0700058D304 /* MessageUI.framework */,
 				C37DD34C17A3AD6300EAC24A /* MapKit.framework */,
@@ -227,6 +237,7 @@
 		C3DD53D717967D470086A7E2 /* Growlers */ = {
 			isa = PBXGroup;
 			children = (
+				C3E5DE1A17BC712D006DE900 /* DRNRealTimeBlur */,
 				C349589917A774F500E45B3D /* Growlers.entitlements */,
 				C3DD53E017967D470086A7E2 /* DMAppDelegate.h */,
 				C3DD53E117967D470086A7E2 /* DMAppDelegate.m */,
@@ -270,6 +281,17 @@
 				C3DD53F917967D470086A7E2 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C3E5DE1A17BC712D006DE900 /* DRNRealTimeBlur */ = {
+			isa = PBXGroup;
+			children = (
+				C3E5DE1B17BC713A006DE900 /* DRNRealTimeBlurView.h */,
+				C3E5DE1C17BC713A006DE900 /* DRNRealTimeBlurView.m */,
+				C3E5DE1E17BC7209006DE900 /* UIImage+BoxBlur.h */,
+				C3E5DE1F17BC7209006DE900 /* UIImage+BoxBlur.m */,
+			);
+			name = DRNRealTimeBlur;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -422,7 +444,9 @@
 				C3DD53DE17967D470086A7E2 /* main.m in Sources */,
 				C3E5DE0517B750ED006DE900 /* Beer.m in Sources */,
 				C3DD540817967DAC0086A7E2 /* DMTableViewController.m in Sources */,
+				C3E5DE1D17BC713A006DE900 /* DRNRealTimeBlurView.m in Sources */,
 				C3E5DE0B17B75CB4006DE900 /* DMCoreDataMethods.m in Sources */,
+				C3E5DE2017BC7209006DE900 /* UIImage+BoxBlur.m in Sources */,
 				C3E5DE0817B750EE006DE900 /* Favorites.m in Sources */,
 				C3DD53E217967D470086A7E2 /* DMAppDelegate.m in Sources */,
 				C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */,

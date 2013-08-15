@@ -16,6 +16,8 @@
     #import <SystemConfiguration/SystemConfiguration.h>
     #import <MobileCoreServices/MobileCoreServices.h>
     #import <CoreData/CoreData.h>
+    #import <CoreImage/CoreImage.h>
+    #import <CoreGraphics/CoreGraphics.h>
 
     #import <AFNetworking/AFNetworking.h>
     #import <HockeySDK/HockeySDK.h>
