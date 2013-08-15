@@ -12,6 +12,8 @@
 #import "Beer.h"
 #import "Favorites.h"
 #import "DMCoreDataMethods.h"
+#import "DRNRealTimeBlurView.h"
+
 
 @interface DMTableViewController () <UIGestureRecognizerDelegate>
 @property (nonatomic, strong) NSArray *beers;
@@ -293,7 +295,10 @@ BOOL _performSegmentChange;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return _headerSegmentControl;
+    DRNRealTimeBlurView *blurView = [[DRNRealTimeBlurView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 26)];
+    _headerSegmentControl.frame = blurView.frame;
+    [blurView addSubview:_headerSegmentControl];
+    return blurView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
