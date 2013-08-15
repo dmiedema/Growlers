@@ -71,6 +71,7 @@ BOOL _performSegmentChange;
         // Get tint based on if they're open.
         if ([self setNavigationBarTint]) {
             UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
+//            UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
             self.navigationController.navigationBar.tintColor = growlYellow;
             self.refreshControl.tintColor = growlYellow;
             _headerSegmentControl.tintColor = growlYellow;
@@ -79,7 +80,7 @@ BOOL _performSegmentChange;
             self.refreshControl.tintColor = [UIColor darkGrayColor];
             _headerSegmentControl.tintColor = [UIColor darkGrayColor];
         }
-        
+    
         // This helps subliment removing the back text from a pushed view controller.
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -133,6 +134,9 @@ BOOL _performSegmentChange;
     rightSwipeGesture.numberOfTouchesRequired = 1;
     [self.tableView addGestureRecognizer:leftSwipeGesture];
     [self.tableView addGestureRecognizer:rightSwipeGesture];
+    
+    // Search contorller
+
 
 }
 
@@ -298,6 +302,7 @@ BOOL _performSegmentChange;
     DRNRealTimeBlurView *blurView = [[DRNRealTimeBlurView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 26)];
     _headerSegmentControl.frame = blurView.frame;
     [blurView addSubview:_headerSegmentControl];
+    _headerSegmentControl.backgroundColor = [UIColor colorWithRed:255 green:255 blue:255 alpha:0.75];
     return blurView;
 }
 

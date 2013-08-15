@@ -72,8 +72,8 @@
         
         //default tint
         //TODO: Use tintColor on iOS 7
-        self.tintColor = [UIColor whiteColor];
-//        self.tint = [UIColor clearColor];
+//        self.tintColor = [UIColor clearColor];
+        self.tint = [UIColor clearColor];
         
         [self.layer addSublayer:self.tintLayer];
         
