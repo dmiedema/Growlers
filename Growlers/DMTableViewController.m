@@ -69,17 +69,17 @@ BOOL _performSegmentChange;
         self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
     } else {
         // Get tint based on if they're open.
-        if ([self setNavigationBarTint]) {
-            UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
-//            UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
-            self.navigationController.navigationBar.tintColor = growlYellow;
-            self.refreshControl.tintColor = growlYellow;
-            _headerSegmentControl.tintColor = growlYellow;
-        } else {
+//        if ([self setNavigationBarTint]) {
+//            UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
+////            UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
+//            self.navigationController.navigationBar.tintColor = growlYellow;
+//            self.refreshControl.tintColor = growlYellow;
+//            _headerSegmentControl.tintColor = growlYellow;
+//        } else {
             self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
             self.refreshControl.tintColor = [UIColor darkGrayColor];
             _headerSegmentControl.tintColor = [UIColor darkGrayColor];
-        }
+//        }
     
         // This helps subliment removing the back text from a pushed view controller.
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
@@ -299,11 +299,12 @@ BOOL _performSegmentChange;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    DRNRealTimeBlurView *blurView = [[DRNRealTimeBlurView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 26)];
-    _headerSegmentControl.frame = blurView.frame;
-    [blurView addSubview:_headerSegmentControl];
-    _headerSegmentControl.backgroundColor = [UIColor colorWithRed:255 green:255 blue:255 alpha:0.75];
-    return blurView;
+//    DRNRealTimeBlurView *blurView = [[DRNRealTimeBlurView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 26)];
+//    _headerSegmentControl.frame = blurView.frame;
+//    [blurView addSubview:_headerSegmentControl];
+//    _headerSegmentControl.backgroundColor = [UIColor colorWithRed:255 green:255 blue:255 alpha:0.75];
+//    return blurView;
+    return _headerSegmentControl;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
