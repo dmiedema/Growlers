@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DMGrowlerAPI.h"
 
-@interface DMTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface DMTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
 @property (nonatomic, strong) NSString *deviceToken;
