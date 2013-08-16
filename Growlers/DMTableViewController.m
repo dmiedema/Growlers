@@ -17,6 +17,7 @@
 
 @interface DMTableViewController () <UIGestureRecognizerDelegate>
 @property (nonatomic, strong) NSArray *beers;
+@property (nonatomic, strong) NSMutableArray *filteredBeers;
 @property (nonatomic, strong) NSDate *lastUpdated;
 @property (nonatomic, strong) NSMutableArray *highlightedBeers;
 @property (nonatomic, strong) NSString *udid;
@@ -97,9 +98,13 @@ BOOL _performSegmentChange;
     
     // Load up my .xib 
     [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
-
+    // Load up .xib for search results table view
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
+    
     // Setup highlighted beers
     _highlightedBeers = [NSMutableArray new];
+    // Setup filtered beers
+    _filteredBeers = [NSMutableArray arrayWithCapacity:32]; // max number of beers on tap at any given time
     
     // Load up the beers
     [self loadBeers];
@@ -136,8 +141,6 @@ BOOL _performSegmentChange;
     [self.tableView addGestureRecognizer:rightSwipeGesture];
     
     // Search contorller
-
-
 }
 
 #pragma mark - Implementation
@@ -240,7 +243,12 @@ BOOL _performSegmentChange;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return _beers.count;
+    // Based on which I'm showing, filtered results or full list
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return _filteredBeers.count;
+    } else {
+        return _beers.count;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -248,7 +256,12 @@ BOOL _performSegmentChange;
     static NSString *CellIdentifier = @"growlerCell";
     DMGrowlerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
-    NSDictionary *beer = _beers[indexPath.row];
+    NSDictionary *beer;
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        beer = _filteredBeers[indexPath.row];
+    } else {
+        beer = _beers[indexPath.row];
+    }
     // Configure the cell...
     
     cell.beerName.text = beer[@"name"];
@@ -289,9 +302,7 @@ BOOL _performSegmentChange;
     
     cell.favoriteMarker.layer.masksToBounds = YES;
     cell.favoriteMarker.layer.cornerRadius = cell.favoriteMarker.bounds.size.width / 2.0;
-    
 
-    
     return cell;
 }
 
@@ -299,6 +310,7 @@ BOOL _performSegmentChange;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    NSLog(@"Tableview %@", tableView);
 //    DRNRealTimeBlurView *blurView = [[DRNRealTimeBlurView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 26)];
 //    _headerSegmentControl.frame = blurView.frame;
 //    [blurView addSubview:_headerSegmentControl];
@@ -352,6 +364,33 @@ BOOL _performSegmentChange;
     [self.tableView reloadData];
 }
 
+#pragma mark UISearchController
+
+- (void)updateFilteredContentForSearchString:(NSString *)searchString
+{
+    // Make a mutable copy
+    _filteredBeers = [_beers mutableCopy];
+    
+    // Trim off whitespace
+    NSString *strippedSearch = [searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    // Append a wild card
+//    strippedSearch = [strippedSearch stringByAppendingString:@"*"];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K contains[cd] %@ OR %K contains[cd] %@", @"name", strippedSearch, @"brewer", strippedSearch];
+    
+    _filteredBeers = [[_filteredBeers filteredArrayUsingPredicate:predicate] mutableCopy];
+    NSLog(@"Filtered after search %@", _filteredBeers);
+}
+
+#pragma mark UISearchDisplayDelegate
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self updateFilteredContentForSearchString:searchString];
+    return YES;
+}
+
 #pragma mark Navigation/BarButtonItems
 
 - (void)about:(id)sender
@@ -369,6 +408,7 @@ BOOL _performSegmentChange;
 /* Handle Segmented Control change */
 - (void)segmentedControlChanged:(UISegmentedControl *)sender
 {
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     switch (sender.selectedSegmentIndex) {
         case SHOW_ON_TAP: // on tap
             [self loadBeers];
