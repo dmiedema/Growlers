@@ -79,7 +79,7 @@
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
         [mailer setMailComposeDelegate:self];
-        NSArray *recipients = [NSArray arrayWithObjects:@"growlersupport@danielmiedema.com", nil];
+        NSArray *recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
         [mailer setToRecipients:recipients];
         [self presentViewController:mailer animated:YES completion:nil];
     } else {
