@@ -21,12 +21,14 @@
 @property (nonatomic, strong) NSDate *lastUpdated;
 @property (nonatomic, strong) NSMutableArray *highlightedBeers;
 @property (nonatomic, strong) NSString *udid;
+@property (nonatomic, strong) NSString *selectedStore;
 @property (nonatomic, strong) DMCoreDataMethods *coreData;
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 
 @property (nonatomic, strong) UISegmentedControl *headerSegmentControl;
+@property (nonatomic, strong) UIActionSheet *actionSheet;
 
 - (void)loadBeers;
 - (void)loadFavorites;
@@ -140,7 +142,7 @@ BOOL _performSegmentChange;
     [self.tableView addGestureRecognizer:leftSwipeGesture];
     [self.tableView addGestureRecognizer:rightSwipeGesture];
     
-    // Search contorller
+    _selectedStore = @"Keizer";
 }
 
 #pragma mark - Implementation
@@ -211,7 +213,7 @@ BOOL _performSegmentChange;
     // check segment control to see what action I should perform
     SERVER_FLAG action = (_headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) ? ON_TAP : ALL;
     
-    [[DMGrowlerAPI sharedInstance] getBeersWithFlag:action andSuccess:^(id JSON) {
+    [[DMGrowlerAPI sharedInstance] getBeersWithFlag:action forStore:_selectedStore andSuccess:^(id JSON) {
         _beers = JSON;
         if (action == ON_TAP) {
             [self checkForNewBeers];
@@ -269,8 +271,8 @@ BOOL _performSegmentChange;
     
     switch (_headerSegmentControl.selectedSegmentIndex) {
         case SHOW_ON_TAP:
-            cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growlette: $%@  Growler: $%@",
-                                  beer[@"ibu"], beer[@"abv"], beer[@"growlette"], beer[@"growler"]];
+            cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
+                                  beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
             break;
         default:
             cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
@@ -310,7 +312,6 @@ BOOL _performSegmentChange;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSLog(@"Tableview %@", tableView);
 //    DRNRealTimeBlurView *blurView = [[DRNRealTimeBlurView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 26)];
 //    _headerSegmentControl.frame = blurView.frame;
 //    [blurView addSubview:_headerSegmentControl];
@@ -335,7 +336,7 @@ BOOL _performSegmentChange;
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Push_ID];
     
     if ([_coreData isBeerFavorited:beer]) {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": _selectedStore, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
             // CoreData Save
             [_coreData unFavoriteBeer:beer];
             NSLog(@"Beer unfavorited successfully");
@@ -347,7 +348,7 @@ BOOL _performSegmentChange;
         }];
     }
     else {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": _selectedStore, @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
             // CoreData save
             [_coreData favoriteBeer:beer];
             NSLog(@"Beer favorited successfully");
@@ -391,6 +392,13 @@ BOOL _performSegmentChange;
     return YES;
 }
 
+#pragma mark UIActionSheet
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+}
+
 #pragma mark Navigation/BarButtonItems
 
 - (void)about:(id)sender
@@ -429,15 +437,14 @@ BOOL _performSegmentChange;
 - (void)handleSwipe:(UISwipeGestureRecognizer *)recognizer
 {
     if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
-        self.headerSegmentControl.selectedSegmentIndex = abs(self.headerSegmentControl.selectedSegmentIndex + 1) % self.headerSegmentControl.numberOfSegments;
-        [self segmentedControlChanged:_headerSegmentControl];
+        if (self.headerSegmentControl.selectedSegmentIndex < self.headerSegmentControl.numberOfSegments - 1) {
+            self.headerSegmentControl.selectedSegmentIndex++;
+        } else return;
     }
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
-        self.headerSegmentControl.selectedSegmentIndex =
-            self.headerSegmentControl.selectedSegmentIndex - 1 >= 0 ?
-            self.headerSegmentControl.selectedSegmentIndex - 1 :
-            self.headerSegmentControl.numberOfSegments - 1;
-        [self segmentedControlChanged:_headerSegmentControl];
+        if (self.headerSegmentControl.selectedSegmentIndex > 0) {
+            self.headerSegmentControl.selectedSegmentIndex--;
+        } else return;
     }
 }
 
