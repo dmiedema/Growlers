@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DMAppDelegate : UIResponder <UIApplicationDelegate, BITHockeyManagerDelegate, BITUpdateManagerDelegate, BITCrashManagerDelegate, BITFeedbackComposeViewControllerDelegate>
+//@interface DMAppDelegate : UIResponder <UIApplicationDelegate, BITHockeyManagerDelegate, BITUpdateManagerDelegate, BITCrashManagerDelegate, BITFeedbackComposeViewControllerDelegate>
+@interface DMAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
