@@ -22,6 +22,6 @@ typedef enum {
 
 @interface DMGrowlerAPI : AFHTTPClient
 + (DMGrowlerAPI *)sharedInstance;
-- (void)getBeersWithFlag:(SERVER_FLAG)flag andSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
+- (void)getBeersWithFlag:(SERVER_FLAG)flag forStore:(NSString *)store andSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
 - (void)favoriteBeer:(NSDictionary *)beer withAction:(BEER_ACTION)action withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
 @end

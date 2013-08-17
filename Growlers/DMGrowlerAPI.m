@@ -32,7 +32,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
     return self;
 }
 
-- (void)getBeersWithFlag:(SERVER_FLAG)serverAction andSuccess :(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
+- (void)getBeersWithFlag:(SERVER_FLAG)serverAction forStore:(NSString *)store andSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
 {
     // [NSURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]]
     NSString *requestUrlString = nil;
@@ -40,11 +40,14 @@ static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
         requestUrlString = [NSString stringWithFormat:@"%@/all", DMGrowlerAPIURLString];
     }
     else {
-        requestUrlString = DMGrowlerAPIURLString;
+        requestUrlString = [NSString stringWithFormat:@"%@/%@", DMGrowlerAPIURLString, [store lowercaseString]];
     }
+    
+    NSLog(@"Sending request with URL %@", requestUrlString);
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestUrlString]];
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        NSLog(@"Success API Call - %@", JSON);
         success(JSON);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         NSLog(@"Error getting beers - %@", error);
