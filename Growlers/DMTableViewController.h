@@ -9,11 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "DMGrowlerAPI.h"
 
-@interface DMTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
+@interface DMTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
 @property (nonatomic, strong) NSString *deviceToken;
 
-//- (void)favoriteBeer:(NSDictionary *)newBeerToFavorite;
-//- (void)unFavoriteBeer:(NSDictionary *)beerToUnfavorite;
 @end
