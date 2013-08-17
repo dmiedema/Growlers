@@ -2,7 +2,7 @@
 //  Beer.m
 //  Growlers
 //
-//  Created by Daniel Miedema on 8/10/13.
+//  Created by Daniel Miedema on 8/16/13.
 //  Copyright (c) 2013 Daniel Miedema. All rights reserved.
 //
 
@@ -19,5 +19,7 @@
 @dynamic ibu;
 @dynamic name;
 @dynamic tap_id;
+@dynamic style;
+@dynamic store;
 
 @end

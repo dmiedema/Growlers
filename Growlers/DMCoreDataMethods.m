@@ -58,7 +58,7 @@
     NSArray *allCurrentBeers = [self.managedContext executeFetchRequest:request error:&error];
     
     NSLog(@"Removing Beer Database...");
-//    NSLog(@"AllBeers - %@", allCurrentBeers);
+    NSLog(@"AllBeers - %@", allCurrentBeers);
     if (allCurrentBeers.count > 0) {
         for (NSManagedObject *beer in allCurrentBeers) {
             [self.managedContext deleteObject:beer];
@@ -71,16 +71,32 @@
     NSLog(@"All Current Beers removed");
     
     for (NSDictionary *beer in newDatabaseContents) {
-//        NSLog(@"Creating new entry - %@", beer);
+        NSLog(@"Creating new entry - %@", beer);
         Beer *newBeer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:self.managedContext];
-        newBeer.tap_id = beer[@"tap_id"];
-        newBeer.abv = beer[@"abv"];
-        newBeer.brewer = beer[@"brewer"];
-        newBeer.brewerURL = beer[@"brew_url"];
-        newBeer.growlerPrice = beer[@"growler"];
-        newBeer.growlettePrice = beer[@"growlette"];
-        newBeer.ibu = beer[@"ibu"];
-        newBeer.name = beer[@"name"];
+        
+//        NSLog(@"%@", [beer[@"tap_id"] class]);
+//        NSLog(@"%@", [beer[@"abv"] class]);
+//        NSLog(@"%@", [beer[@"brewer"] class]);
+//        NSLog(@"%@", [beer[@"brew_url"] class]);
+//        NSLog(@"%@", [beer[@"growler"] class]);
+//        NSLog(@"%@", [beer[@"growlette"] class]);
+//        NSLog(@"%@", beer[@"ibu"]);
+//        NSLog(@"%@", beer[@"name"]);
+//        NSLog(@"%@", beer[@"style"]);
+//        NSLog(@"%@", beer[@"store"]);
+        
+        newBeer.tap_id          = beer[@"tap_id"];
+        newBeer.abv             = beer[@"abv"];
+        newBeer.brewer          = beer[@"brewer"];
+        newBeer.brewerURL       = beer[@"brew_url"];
+        newBeer.growlerPrice    = beer[@"growler"];
+        newBeer.growlettePrice  = beer[@"growlette"];
+        newBeer.ibu             = beer[@"ibu"];
+        newBeer.name            = beer[@"name"];
+        newBeer.style           = beer[@"style"];
+        newBeer.store           = beer[@"store"];
+        
+        NSLog(@"New Beer - %@", newBeer);
     }
     
     NSLog(@"Saving New Database...");
@@ -101,6 +117,7 @@
     favorite.abv        = newBeerToFavorite[@"abv"];
     favorite.ibu        = newBeerToFavorite[@"ibu"];
     favorite.brewerURL  = newBeerToFavorite[@"brew_url"];
+    favorite.store      = newBeerToFavorite[@"store"];
     
     NSError *coreDataErr = nil;
     if (![self.managedContext save:&coreDataErr]) {
@@ -112,7 +129,7 @@
 - (void)unFavoriteBeer:(NSDictionary *)beerToUnfavorite
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
-    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beerToUnfavorite[@"name"], beerToUnfavorite[@"brewer"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@ and store = %@", beerToUnfavorite[@"name"], beerToUnfavorite[@"brewer"], beerToUnfavorite[@"store"]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
     request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     
@@ -133,7 +150,7 @@
 {
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
-    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beer[@"name"], beer[@"brewer"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@ and store = %@", beer[@"name"], beer[@"brewer"], beer[@"store"]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
     request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     
@@ -159,9 +176,11 @@
            @"brewer": favorite.brewer,
            @"brew_url": favorite.brewerURL,
            @"abv": favorite.abv,
-           @"ibu": favorite.ibu
+           @"ibu": favorite.ibu,
+           @"store": favorite.store
            }];
     }
+    NSLog(@"Favorites as dictionaries %@", favoritesAsDictionarys);
     
     return favoritesAsDictionarys;
 }
