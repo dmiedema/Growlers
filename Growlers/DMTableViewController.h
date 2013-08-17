@@ -13,5 +13,6 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
 @property (nonatomic, strong) NSString *deviceToken;
+@property (nonatomic, strong) NSArray *growlMovementStores;
 
 @end

@@ -28,11 +28,11 @@
 @property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 
 @property (nonatomic, strong) UISegmentedControl *headerSegmentControl;
-@property (nonatomic, strong) UIActionSheet *actionSheet;
 
 - (void)loadBeers;
 - (void)loadFavorites;
 - (void)about:(id)sender;
+- (void)showActionSheet:(id)sender;
 
 - (void)resetHighlightedBeers;
 
@@ -61,7 +61,7 @@ BOOL _performSegmentChange;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-//    [_coreData resetBeerDatabase:_beers];
+//    [_coreData resetBeerDatabase:self.beers];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -77,11 +77,11 @@ BOOL _performSegmentChange;
 ////            UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
 //            self.navigationController.navigationBar.tintColor = growlYellow;
 //            self.refreshControl.tintColor = growlYellow;
-//            _headerSegmentControl.tintColor = growlYellow;
+//            self.headerSegmentControl.tintColor = growlYellow;
 //        } else {
             self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
             self.refreshControl.tintColor = [UIColor darkGrayColor];
-            _headerSegmentControl.tintColor = [UIColor darkGrayColor];
+            self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
 //        }
     
         // This helps subliment removing the back text from a pushed view controller.
@@ -98,6 +98,13 @@ BOOL _performSegmentChange;
     // get my udid for favoriting
     _udid = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_UUID];
     
+    // ActionSheet and Selected Store
+    _growlMovementStores = kGrowler_Stores;
+    NSLog(@"stores - %@", _growlMovementStores);
+    NSString *lastSelectedStore = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Last_Selected_Store];
+    self.selectedStore = lastSelectedStore ? lastSelectedStore : _growlMovementStores[0];
+    NSLog(@"selected - %@", self.selectedStore);
+    
     // Load up my .xib 
     [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
     // Load up .xib for search results table view
@@ -106,24 +113,24 @@ BOOL _performSegmentChange;
     // Setup highlighted beers
     _highlightedBeers = [NSMutableArray new];
     // Setup filtered beers
-    _filteredBeers = [NSMutableArray arrayWithCapacity:32]; // max number of beers on tap at any given time
+    self.filteredBeers = [NSMutableArray arrayWithCapacity:32]; // max number of beers on tap at any given time
     
     // Load up the beers
     [self loadBeers];
     
     // Setup Navigation Bar button Items
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
-//    UIBarButtonItem *clearNew = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector(resetHighlightedBeers)];
+    UIBarButtonItem *storeButton = [[UIBarButtonItem alloc] initWithTitle:@"Store" style:UIBarButtonItemStyleBordered target:self action:@selector(showActionSheet:)];
     self.navigationItem.leftBarButtonItem = info;
-//    self.navigationItem.rightBarButtonItem = clearNew;
+    self.navigationItem.rightBarButtonItem = storeButton;
 
     // Setup Refresh control
     [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
 
     // Setup Segment control
-    _headerSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"On Tap", @"Favorites", @"All"]];
-    [_headerSegmentControl addTarget:self action:@selector(segmentedControlChanged:) forControlEvents:UIControlEventValueChanged];
-    _headerSegmentControl.selectedSegmentIndex = 0;
+    self.headerSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"On Tap", @"Favorites", @"All"]];
+    [self.headerSegmentControl addTarget:self action:@selector(segmentedControlChanged:) forControlEvents:UIControlEventValueChanged];
+    self.headerSegmentControl.selectedSegmentIndex = 0;
     
     // Setup CoreData stuff
     _coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
@@ -142,7 +149,6 @@ BOOL _performSegmentChange;
     [self.tableView addGestureRecognizer:leftSwipeGesture];
     [self.tableView addGestureRecognizer:rightSwipeGesture];
     
-    _selectedStore = @"Keizer";
 }
 
 #pragma mark - Implementation
@@ -183,6 +189,7 @@ BOOL _performSegmentChange;
 
 - (void)loadBeers
 {
+    NSLog(@"Load beers called");
     // if we're spinnin' and refreshin'
     // ... stop it.
     if (self.refreshControl.refreshing) {
@@ -201,8 +208,8 @@ BOOL _performSegmentChange;
         [self.refreshControl endRefreshing];
     }
     
-    // if we're on favorites, bail.
-    if (_headerSegmentControl.selectedSegmentIndex == SHOW_FAVORITES) {
+    // if we're on favorites, we shouldn't be here. Bail.
+    if (self.headerSegmentControl.selectedSegmentIndex == SHOW_FAVORITES) {
         return;
     }
     
@@ -211,10 +218,13 @@ BOOL _performSegmentChange;
     }
     
     // check segment control to see what action I should perform
-    SERVER_FLAG action = (_headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) ? ON_TAP : ALL;
+    SERVER_FLAG action = (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) ? ON_TAP : ALL;
     
-    [[DMGrowlerAPI sharedInstance] getBeersWithFlag:action forStore:_selectedStore andSuccess:^(id JSON) {
-        _beers = JSON;
+    NSLog(@"Selected Store %@", self.selectedStore);
+    
+    [[DMGrowlerAPI sharedInstance] getBeersWithFlag:action forStore:self.selectedStore andSuccess:^(id JSON) {
+        NSLog(@"Network Call succeeded");
+        self.beers = JSON;
         if (action == ON_TAP) {
             [self checkForNewBeers];
         }
@@ -226,18 +236,25 @@ BOOL _performSegmentChange;
 
 - (void)loadFavorites
 {
-    _beers = [_coreData getAllFavorites];
+//    NSArray *favorites = [_coreData getAllFavorites];
+//    if (favorites.count > 0) {
+//        self.beers = favorites;
+//    } else {
+//        self.beers = @[@{@"name": @"", @"brewer": @""}];
+//    }
+    self.beers = [_coreData getAllFavorites];
+    NSLog(@"%@",self.selectedStore);
     [self.tableView reloadData];
 }
 
 - (void)checkForNewBeers
 {
-    for (NSDictionary *beer in _beers) {
+    for (NSDictionary *beer in self.beers) {
         if(![_coreData checkForBeerInDatabase:beer]) {
             [_highlightedBeers addObject:beer];
         }
     }
-    [_coreData resetBeerDatabase:_beers];
+    [_coreData resetBeerDatabase:self.beers];
 }
 
 #pragma mark Table view data source
@@ -247,9 +264,9 @@ BOOL _performSegmentChange;
     // Return the number of rows in the section.
     // Based on which I'm showing, filtered results or full list
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return _filteredBeers.count;
+        return self.filteredBeers.count;
     } else {
-        return _beers.count;
+        return self.beers.count;
     }
 }
 
@@ -260,16 +277,16 @@ BOOL _performSegmentChange;
 
     NSDictionary *beer;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        beer = _filteredBeers[indexPath.row];
+        beer = self.filteredBeers[indexPath.row];
     } else {
-        beer = _beers[indexPath.row];
+        beer = self.beers[indexPath.row];
     }
     // Configure the cell...
     
     cell.beerName.text = beer[@"name"];
     cell.brewery.text  = beer[@"brewer"];
     
-    switch (_headerSegmentControl.selectedSegmentIndex) {
+    switch (self.headerSegmentControl.selectedSegmentIndex) {
         case SHOW_ON_TAP:
             cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
                                   beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
@@ -281,7 +298,7 @@ BOOL _performSegmentChange;
 
     // Get ID and check for today == tap.id and highlight
     // last day of month, ending ones go on sale
-    if ([self checkToday:beer[@"tap_id"]] && _headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY) {
+    if ([self checkToday:beer[@"tap_id"]] && self.headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY) {
         cell.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:0.35];
         cell.beerName.textColor = [UIColor whiteColor];
         cell.brewery.textColor = [UIColor whiteColor];
@@ -313,11 +330,11 @@ BOOL _performSegmentChange;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
 //    DRNRealTimeBlurView *blurView = [[DRNRealTimeBlurView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 26)];
-//    _headerSegmentControl.frame = blurView.frame;
-//    [blurView addSubview:_headerSegmentControl];
-//    _headerSegmentControl.backgroundColor = [UIColor colorWithRed:255 green:255 blue:255 alpha:0.75];
+//    self.headerSegmentControl.frame = blurView.frame;
+//    [blurView addSubview:self.headerSegmentControl];
+//    self.headerSegmentControl.backgroundColor = [UIColor colorWithRed:255 green:255 blue:255 alpha:0.75];
 //    return blurView;
-    return _headerSegmentControl;
+    return self.headerSegmentControl;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -331,12 +348,12 @@ BOOL _performSegmentChange;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *beer = _beers[indexPath.row];
+    NSDictionary *beer = self.beers[indexPath.row];
     
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Push_ID];
     
     if ([_coreData isBeerFavorited:beer]) {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": _selectedStore, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [self.selectedStore lowercaseString], @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
             // CoreData Save
             [_coreData unFavoriteBeer:beer];
             NSLog(@"Beer unfavorited successfully");
@@ -348,7 +365,7 @@ BOOL _performSegmentChange;
         }];
     }
     else {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": _selectedStore, @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [self.selectedStore lowercaseString], @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
             // CoreData save
             [_coreData favoriteBeer:beer];
             NSLog(@"Beer favorited successfully");
@@ -370,7 +387,7 @@ BOOL _performSegmentChange;
 - (void)updateFilteredContentForSearchString:(NSString *)searchString
 {
     // Make a mutable copy
-    _filteredBeers = [_beers mutableCopy];
+    self.filteredBeers = [self.beers mutableCopy];
     
     // Trim off whitespace
     NSString *strippedSearch = [searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -380,8 +397,8 @@ BOOL _performSegmentChange;
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K contains[cd] %@ OR %K contains[cd] %@", @"name", strippedSearch, @"brewer", strippedSearch];
     
-    _filteredBeers = [[_filteredBeers filteredArrayUsingPredicate:predicate] mutableCopy];
-    NSLog(@"Filtered after search %@", _filteredBeers);
+    self.filteredBeers = [[self.filteredBeers filteredArrayUsingPredicate:predicate] mutableCopy];
+    NSLog(@"Filtered after search %@", self.filteredBeers);
 }
 
 #pragma mark UISearchDisplayDelegate
@@ -396,7 +413,12 @@ BOOL _performSegmentChange;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    
+    NSLog(@"%@", self.selectedStore);
+    if (actionSheet.cancelButtonIndex != buttonIndex) {
+        self.selectedStore = [actionSheet buttonTitleAtIndex:buttonIndex];
+        [[NSUserDefaults standardUserDefaults] setObject:self.selectedStore forKey:kGrowler_Last_Selected_Store];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 #pragma mark Navigation/BarButtonItems
@@ -407,15 +429,24 @@ BOOL _performSegmentChange;
     [self.navigationController pushViewController:aboutView animated:YES];
 }
 
+- (void)showActionSheet:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:Nil otherButtonTitles:@"Keizer", nil];
+    [actionSheet showFromBarButtonItem:sender animated:YES];
+}
+
 - (void)resetHighlightedBeers
 {
     [_highlightedBeers removeAllObjects];
-    [_coreData resetBeerDatabase:_beers];
+    [_coreData resetBeerDatabase:self.beers];
 }
 
 /* Handle Segmented Control change */
 - (void)segmentedControlChanged:(UISegmentedControl *)sender
 {
+    NSLog(@"SegmentControlChanged");
+//    NSLog(@"self.beers %@", self.beers);
+//    NSLog(@"self.beers exists %@", (self.beers) ? self.beers : @"lulnope");
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     switch (sender.selectedSegmentIndex) {
         case SHOW_ON_TAP: // on tap
@@ -439,11 +470,13 @@ BOOL _performSegmentChange;
     if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
         if (self.headerSegmentControl.selectedSegmentIndex < self.headerSegmentControl.numberOfSegments - 1) {
             self.headerSegmentControl.selectedSegmentIndex++;
+            [self segmentedControlChanged:self.headerSegmentControl];
         } else return;
     }
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
         if (self.headerSegmentControl.selectedSegmentIndex > 0) {
             self.headerSegmentControl.selectedSegmentIndex--;
+            [self segmentedControlChanged:self.headerSegmentControl];
         } else return;
     }
 }
