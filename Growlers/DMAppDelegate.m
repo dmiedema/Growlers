@@ -8,7 +8,6 @@
 
 #import "DMAppDelegate.h"
 #import "DMTableViewController.h"
-//#import <TestFlightSDK/TestFlight.h>
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
@@ -35,10 +34,13 @@
     
     /* Testing */
     #if TESTING
+    // Testflight
+    [TestFlight setDeviceIdentifier:_generatedUDID];
+    [TestFlight takeOff:@"9f1e06af-a61a-4524-a740-e81570c54a4c"];
     
     // Hockeyapp
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"d48bfa2df88def26d6eb9cf3e0603d66" delegate:self];
-    [[BITHockeyManager sharedHockeyManager] startManager];
+//    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"d48bfa2df88def26d6eb9cf3e0603d66" delegate:self];
+//    [[BITHockeyManager sharedHockeyManager] startManager];
     
     #endif
     
@@ -58,7 +60,6 @@
     /* AFNetworking indicator */
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
-    
     /* Launch */
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     DMTableViewController *controller = (DMTableViewController *)navigationController.topViewController;
@@ -67,17 +68,17 @@
     return YES;
 }
 
-- (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
-#ifndef CONFIGURATION_AppStore
-    NSLog(@"CONFIGURATION_AppStore");
-    return _generatedUDID;
-//    if ([[UIDevice currentDevice] respondsToSelector:@selector(uniqueIdentifier)]) {
-//        NSLog(@"%@", [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)]);
-//        return [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)];
-//    }
-#endif
-    return nil;
-}
+//- (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
+//#ifndef CONFIGURATION_AppStore
+//    NSLog(@"CONFIGURATION_AppStore");
+//    return _generatedUDID;
+////    if ([[UIDevice currentDevice] respondsToSelector:@selector(uniqueIdentifier)]) {
+////        NSLog(@"%@", [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)]);
+////        return [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)];
+////    }
+//#endif
+//    return nil;
+//}
 
 #pragma mark - Push Notifications
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
