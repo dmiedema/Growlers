@@ -180,7 +180,7 @@
            @"store": favorite.store
            }];
     }
-    NSLog(@"Favorites as dictionaries %@", favoritesAsDictionarys);
+//    NSLog(@"Favorites as dictionaries %@", favoritesAsDictionarys);
     
     return favoritesAsDictionarys;
 }
