@@ -114,8 +114,8 @@
     favorite.tap_id     = [NSNumber numberWithInt:[newBeerToFavorite[@"tap_id"] intValue]];
     favorite.name       = newBeerToFavorite[@"name"];
     favorite.brewer     = newBeerToFavorite[@"brewer"];
-    favorite.abv        = newBeerToFavorite[@"abv"];
-    favorite.ibu        = newBeerToFavorite[@"ibu"];
+    favorite.abv        = newBeerToFavorite[@"abv"] ? newBeerToFavorite[@"abv"] : @"";
+    favorite.ibu        = newBeerToFavorite[@"ibu"] ? newBeerToFavorite[@"ibu"] : @"";
     favorite.brewerURL  = newBeerToFavorite[@"brew_url"];
     favorite.store      = newBeerToFavorite[@"store"];
     
