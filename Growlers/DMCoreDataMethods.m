@@ -111,7 +111,7 @@
 - (void)favoriteBeer:(NSDictionary *)newBeerToFavorite
 {
     Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
-    favorite.tap_id     = newBeerToFavorite[@"tap_id"];
+    favorite.tap_id     = [NSNumber numberWithInt:[newBeerToFavorite[@"tap_id"] intValue]];
     favorite.name       = newBeerToFavorite[@"name"];
     favorite.brewer     = newBeerToFavorite[@"brewer"];
     favorite.abv        = newBeerToFavorite[@"abv"];
