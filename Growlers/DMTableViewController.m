@@ -100,10 +100,10 @@ BOOL _performSegmentChange;
     
     // ActionSheet and Selected Store
     _growlMovementStores = kGrowler_Stores;
-    NSLog(@"stores - %@", _growlMovementStores);
+//    NSLog(@"stores - %@", _growlMovementStores);
     NSString *lastSelectedStore = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Last_Selected_Store];
     self.selectedStore = lastSelectedStore ? lastSelectedStore : _growlMovementStores[0];
-    NSLog(@"selected - %@", self.selectedStore);
+//    NSLog(@"selected - %@", self.selectedStore);
     
     // Load up my .xib 
     [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
@@ -398,7 +398,7 @@ BOOL _performSegmentChange;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K contains[cd] %@ OR %K contains[cd] %@", @"name", strippedSearch, @"brewer", strippedSearch];
     
     self.filteredBeers = [[self.filteredBeers filteredArrayUsingPredicate:predicate] mutableCopy];
-    NSLog(@"Filtered after search %@", self.filteredBeers);
+//    NSLog(@"Filtered after search %@", self.filteredBeers);
 }
 
 #pragma mark UISearchDisplayDelegate

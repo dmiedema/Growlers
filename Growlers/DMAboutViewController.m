@@ -9,7 +9,6 @@
 #import "DMAboutViewController.h"
 #import <MapKit/MapKit.h>
 #import <MessageUI/MessageUI.h>
-#import "MYIntroductionView.h"
 
 @interface DMAboutViewController () <MFMailComposeViewControllerDelegate>
 
