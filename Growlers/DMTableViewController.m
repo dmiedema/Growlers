@@ -236,13 +236,13 @@ BOOL _performSegmentChange;
 
 - (void)loadFavorites
 {
-//    NSArray *favorites = [_coreData getAllFavorites];
-//    if (favorites.count > 0) {
-//        self.beers = favorites;
-//    } else {
-//        self.beers = @[@{@"name": @"", @"brewer": @""}];
-//    }
-    self.beers = [_coreData getAllFavorites];
+    NSArray *favorites = [_coreData getAllFavorites];
+    if (favorites.count > 0) {
+        self.beers = favorites;
+    } else {
+        self.beers = @[@{@"name": @"", @"brewer": @""}];
+    }
+//    self.beers = [_coreData getAllFavorites];
     NSLog(@"%@",self.selectedStore);
     [self.tableView reloadData];
 }
