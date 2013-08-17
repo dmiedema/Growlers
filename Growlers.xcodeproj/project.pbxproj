@@ -15,11 +15,11 @@
 		C33DACA617A2619700F208AB /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DACA517A2619700F208AB /* CoreText.framework */; };
 		C3477C0E17A56E6F008900B5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3477C0D17A56E6F008900B5 /* Default-568h@2x.png */; };
 		C349589D17A79FEA00E45B3D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C349589C17A79FEA00E45B3D /* Settings.bundle */; };
+		C35C28BC17BF5A4700202121 /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C28BB17BF5A4700202121 /* Beer.m */; };
+		C35C28BF17BF5A4800202121 /* Favorites.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C28BE17BF5A4800202121 /* Favorites.m */; };
 		C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DD34C17A3AD6300EAC24A /* MapKit.framework */; };
 		C38285C717A4D0700058D304 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C617A4D0700058D304 /* MessageUI.framework */; };
 		C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C817A4D0930058D304 /* CoreLocation.framework */; };
-		C3A45E7617BEF14E005B6498 /* Favorites.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A45E7517BEF14E005B6498 /* Favorites.m */; };
-		C3A45E7917BEF14E005B6498 /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A45E7817BEF14E005B6498 /* Beer.m */; };
 		C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D117967D470086A7E2 /* Foundation.framework */; };
 		C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D317967D470086A7E2 /* CoreGraphics.framework */; };
 		C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
@@ -69,13 +69,13 @@
 		C3477C0D17A56E6F008900B5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C349589917A774F500E45B3D /* Growlers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Growlers.entitlements; sourceTree = "<group>"; };
 		C349589C17A79FEA00E45B3D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Growlers/Settings.bundle; sourceTree = "<group>"; };
+		C35C28BA17BF5A4700202121 /* Beer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beer.h; sourceTree = "<group>"; };
+		C35C28BB17BF5A4700202121 /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
+		C35C28BD17BF5A4800202121 /* Favorites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Favorites.h; sourceTree = "<group>"; };
+		C35C28BE17BF5A4800202121 /* Favorites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Favorites.m; sourceTree = "<group>"; };
 		C37DD34C17A3AD6300EAC24A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C38285C617A4D0700058D304 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		C38285C817A4D0930058D304 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		C3A45E7417BEF14E005B6498 /* Favorites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Favorites.h; sourceTree = "<group>"; };
-		C3A45E7517BEF14E005B6498 /* Favorites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Favorites.m; sourceTree = "<group>"; };
-		C3A45E7717BEF14E005B6498 /* Beer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beer.h; sourceTree = "<group>"; };
-		C3A45E7817BEF14E005B6498 /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
 		C3DD53CE17967D470086A7E2 /* Growlers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Growlers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DD53D117967D470086A7E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3DD53D317967D470086A7E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -150,10 +150,10 @@
 		C33DAC92179C91AD00F208AB /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				C3A45E7717BEF14E005B6498 /* Beer.h */,
-				C3A45E7817BEF14E005B6498 /* Beer.m */,
-				C3A45E7417BEF14E005B6498 /* Favorites.h */,
-				C3A45E7517BEF14E005B6498 /* Favorites.m */,
+				C35C28BD17BF5A4800202121 /* Favorites.h */,
+				C35C28BE17BF5A4800202121 /* Favorites.m */,
+				C35C28BA17BF5A4700202121 /* Beer.h */,
+				C35C28BB17BF5A4700202121 /* Beer.m */,
 				C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */,
 				C3E5DE0917B75CB4006DE900 /* DMCoreDataMethods.h */,
 				C3E5DE0A17B75CB4006DE900 /* DMCoreDataMethods.m */,
@@ -441,8 +441,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3DD54121797AEEB0086A7E2 /* DMGrowlerTableViewCell.m in Sources */,
+				C35C28BF17BF5A4800202121 /* Favorites.m in Sources */,
 				C3DD53DE17967D470086A7E2 /* main.m in Sources */,
 				C3DD540817967DAC0086A7E2 /* DMTableViewController.m in Sources */,
+				C35C28BC17BF5A4700202121 /* Beer.m in Sources */,
 				C3E5DE1D17BC713A006DE900 /* DRNRealTimeBlurView.m in Sources */,
 				C3E5DE0B17B75CB4006DE900 /* DMCoreDataMethods.m in Sources */,
 				C3E5DE2017BC7209006DE900 /* UIImage+BoxBlur.m in Sources */,
@@ -450,8 +452,6 @@
 				C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */,
 				C3DD54151797B7EB0086A7E2 /* DMAboutViewController.m in Sources */,
 				C33DAC98179F7D5C00F208AB /* DMGrowlerAPI.m in Sources */,
-				C3A45E7617BEF14E005B6498 /* Favorites.m in Sources */,
-				C3A45E7917BEF14E005B6498 /* Beer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
