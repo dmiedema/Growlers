@@ -122,7 +122,7 @@ BOOL _performSegmentChange;
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
     UIBarButtonItem *storeButton = [[UIBarButtonItem alloc] initWithTitle:@"Store" style:UIBarButtonItemStyleBordered target:self action:@selector(showActionSheet:)];
     self.navigationItem.leftBarButtonItem = info;
-    self.navigationItem.rightBarButtonItem = storeButton;
+//    self.navigationItem.rightBarButtonItem = storeButton;
 
     // Setup Refresh control
     [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
@@ -151,7 +151,7 @@ BOOL _performSegmentChange;
     
 }
 
-#pragma mark - Implementation
+#pragma mark Implementation
 
 - (BOOL)setNavigationBarTint
 {
