@@ -73,19 +73,8 @@
     for (NSDictionary *beer in newDatabaseContents) {
         NSLog(@"Creating new entry - %@", beer);
         Beer *newBeer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:self.managedContext];
-        
-//        NSLog(@"%@", [beer[@"tap_id"] class]);
-//        NSLog(@"%@", [beer[@"abv"] class]);
-//        NSLog(@"%@", [beer[@"brewer"] class]);
-//        NSLog(@"%@", [beer[@"brew_url"] class]);
-//        NSLog(@"%@", [beer[@"growler"] class]);
-//        NSLog(@"%@", [beer[@"growlette"] class]);
-//        NSLog(@"%@", beer[@"ibu"]);
-//        NSLog(@"%@", beer[@"name"]);
-//        NSLog(@"%@", beer[@"style"]);
-//        NSLog(@"%@", beer[@"store"]);
-        
-        newBeer.tap_id          = beer[@"tap_id"];
+
+        newBeer.tap_id          = [NSNumber numberWithInt:[beer[@"tap_id"] intValue]];
         newBeer.abv             = beer[@"abv"];
         newBeer.brewer          = beer[@"brewer"];
         newBeer.brewerURL       = beer[@"brew_url"];
