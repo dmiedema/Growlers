@@ -204,7 +204,7 @@ Friday - Saturday: 11am to 11pm</string>
             <point key="canvasLocation" x="-529" y="-156"/>
         </scene>
     </scenes>
-    <color key="tintColor" red="0.92156862745098034" green="0.85882352941176465" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+    <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
