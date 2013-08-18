@@ -5,7 +5,7 @@
 //
 
 #import <Availability.h>
-#import "TestFlight.h"
+
 
 #ifndef __IPHONE_5_0
 #warning "This project uses features only available in iOS SDK 5.0 and later."
@@ -21,8 +21,7 @@
     #import <CoreGraphics/CoreGraphics.h>
 
     #import <AFNetworking/AFNetworking.h>
-    #import <TestFlightSDK/TestFlight.h>
-//    #import <HockeySDK/HockeySDK.h>
+    #import <HockeySDK/HockeySDK.h>
 
 #define TESTING 1
 #define SYSTEM_VERSION_LESS_THAN(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
@@ -33,9 +32,6 @@
 #define kGrowler_Push_ID @"Growlers-Push-ID"
 #define kGrowler_Last_Selected_Store @"Growlers-Last-Selected-Location"
 #define kGrowler_Stores @[@"Keizer"]
-
-// Testflight stuff
-#define NSLog(__FORMAT__, ...) TFLog((@"%s [Line %d] " __FORMAT__), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 
 #endif
