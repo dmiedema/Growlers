@@ -34,7 +34,7 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Support" style:UIBarButtonItemStylePlain target:self action:@selector(contactSupport:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Feedback" style:UIBarButtonItemStylePlain target:self action:@selector(contactSupport:)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,16 +75,19 @@
 }
 
 - (void)contactSupport:(UIButton *)sender {
-    if ([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
-        [mailer setMailComposeDelegate:self];
-        NSArray *recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
-        [mailer setToRecipients:recipients];
-        [self presentViewController:mailer animated:YES completion:nil];
-    } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops" message:@"Looks like you can't send an email this way." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
-    }
+    BITFeedbackListViewController *feedbackListViewController = [[BITFeedbackListViewController alloc] init];
+    [self.navigationController pushViewController:feedbackListViewController animated:YES];
+    
+//    if ([MFMailComposeViewController canSendMail]) {
+//        MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+//        [mailer setMailComposeDelegate:self];
+//        NSArray *recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
+//        [mailer setToRecipients:recipients];
+//        [self presentViewController:mailer animated:YES completion:nil];
+//    } else {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops" message:@"Looks like you can't send an email this way." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//        [alert show];
+//    }
 }
 
 - (IBAction)showTutorial:(UIButton *)sender {
