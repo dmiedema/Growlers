@@ -75,14 +75,14 @@
         Beer *newBeer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:self.managedContext];
 
         newBeer.tap_id          = [NSNumber numberWithInt:[beer[@"tap_id"] intValue]];
-        newBeer.abv             = beer[@"abv"];
+        newBeer.abv             = (beer[@"abv"] == [NSNull null]) ? @"" : beer[@"abv"];
         newBeer.brewer          = beer[@"brewer"];
-        newBeer.brewerURL       = beer[@"brew_url"];
+        newBeer.brewerURL       = (beer[@"brew_url"] == [NSNull null]) ? @"" : beer[@"brew_url"];
         newBeer.growlerPrice    = beer[@"growler"];
         newBeer.growlettePrice  = beer[@"growlette"];
-        newBeer.ibu             = beer[@"ibu"];
+        newBeer.ibu             = (beer[@"ibu"] == [NSNull null]) ? @"" : beer[@"ibu"];
         newBeer.name            = beer[@"name"];
-        newBeer.style           = beer[@"style"];
+        newBeer.style           = (beer[@"style"] == [NSNull null]) ? @"" : beer[@"style"];
         newBeer.store           = beer[@"store"];
         
         NSLog(@"New Beer - %@", newBeer);
