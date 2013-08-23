@@ -64,33 +64,6 @@ BOOL _performSegmentChange;
 //    [_coreData resetBeerDatabase:self.beers];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-    } else {
-        // Get tint based on if they're open.
-//        if ([self setNavigationBarTint]) {
-//            UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
-////            UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
-//            self.navigationController.navigationBar.tintColor = growlYellow;
-//            self.refreshControl.tintColor = growlYellow;
-//            self.headerSegmentControl.tintColor = growlYellow;
-//        } else {
-            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-            self.refreshControl.tintColor = [UIColor darkGrayColor];
-            self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
-//        }
-    
-        // This helps subliment removing the back text from a pushed view controller.
-        self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    }
-    
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -140,6 +113,31 @@ BOOL _performSegmentChange;
     _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"j:m" options:0 locale:[NSLocale currentLocale]];
     _dateFormatter.defaultDate = [NSDate date];
     
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+    } else {
+        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+        self.refreshControl.tintColor = [UIColor darkGrayColor];
+        self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
+        
+        // This helps subliment removing the back text from a pushed view controller.
+        self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    }
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
     UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
     UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
     leftSwipeGesture.direction = (UISwipeGestureRecognizerDirectionLeft);
@@ -148,7 +146,6 @@ BOOL _performSegmentChange;
     rightSwipeGesture.numberOfTouchesRequired = 1;
     [self.tableView addGestureRecognizer:leftSwipeGesture];
     [self.tableView addGestureRecognizer:rightSwipeGesture];
-    
 }
 
 #pragma mark Implementation
