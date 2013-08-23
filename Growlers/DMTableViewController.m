@@ -73,10 +73,8 @@ BOOL _performSegmentChange;
     
     // ActionSheet and Selected Store
     _growlMovementStores = kGrowler_Stores;
-//    NSLog(@"stores - %@", _growlMovementStores);
     NSString *lastSelectedStore = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Last_Selected_Store];
     self.selectedStore = lastSelectedStore ? lastSelectedStore : _growlMovementStores[0];
-//    NSLog(@"selected - %@", self.selectedStore);
     
     // Load up my .xib 
     [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
@@ -93,7 +91,7 @@ BOOL _performSegmentChange;
     
     // Setup Navigation Bar button Items
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
-    UIBarButtonItem *storeButton = [[UIBarButtonItem alloc] initWithTitle:@"Store" style:UIBarButtonItemStyleBordered target:self action:@selector(showActionSheet:)];
+//    UIBarButtonItem *storeButton = [[UIBarButtonItem alloc] initWithTitle:@"Store" style:UIBarButtonItemStyleBordered target:self action:@selector(showActionSheet:)];
     self.navigationItem.leftBarButtonItem = info;
 //    self.navigationItem.rightBarButtonItem = storeButton;
 
