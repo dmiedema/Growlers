@@ -57,8 +57,8 @@
     NSError *error = nil;
     NSArray *allCurrentBeers = [self.managedContext executeFetchRequest:request error:&error];
     
-    NSLog(@"Removing Beer Database...");
-    NSLog(@"AllBeers - %@", allCurrentBeers);
+//    NSLog(@"Removing Beer Database...");
+//    NSLog(@"AllBeers - %@", allCurrentBeers);
     if (allCurrentBeers.count > 0) {
         for (NSManagedObject *beer in allCurrentBeers) {
             [self.managedContext deleteObject:beer];
@@ -68,10 +68,10 @@
         }
     }
     
-    NSLog(@"All Current Beers removed");
+//    NSLog(@"All Current Beers removed");
     
     for (NSDictionary *beer in newDatabaseContents) {
-        NSLog(@"Creating new entry - %@", beer);
+//        NSLog(@"Creating new entry - %@", beer);
         Beer *newBeer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:self.managedContext];
 
         newBeer.tap_id          = [NSNumber numberWithInt:[beer[@"tap_id"] intValue]];
@@ -85,7 +85,7 @@
         newBeer.style           = (beer[@"style"] == [NSNull null]) ? @"" : beer[@"style"];
         newBeer.store           = beer[@"store"];
         
-        NSLog(@"New Beer - %@", newBeer);
+//        NSLog(@"New Beer - %@", newBeer);
     }
     
     NSLog(@"Saving New Database...");
