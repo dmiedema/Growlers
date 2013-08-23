@@ -15,7 +15,7 @@
 #import "DRNRealTimeBlurView.h"
 
 
-@interface DMTableViewController () <UIGestureRecognizerDelegate>
+@interface DMTableViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
 @property (nonatomic, strong) NSArray *beers;
 @property (nonatomic, strong) NSMutableArray *filteredBeers;
 @property (nonatomic, strong) NSDate *lastUpdated;
@@ -443,6 +443,10 @@ BOOL _performSegmentChange;
 //    NSLog(@"self.beers %@", self.beers);
 //    NSLog(@"self.beers exists %@", (self.beers) ? self.beers : @"lulnope");
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    
+//    [self.tableView scrollRectToVisible:[self.tableView rectForHeaderInSection:0] animated:YES];
+//    self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height + self.tableView.sectionHeaderHeight);
+//    [self.tableView scrollRectToVisible:CGRectMake(self.tableView.frame.origin.x +self.navigationController.navigationBar.frame.size.height, self.tableView.frame.origin.y, 0, 0) animated:YES];
     switch (sender.selectedSegmentIndex) {
         case SHOW_ON_TAP: // on tap
             [self loadBeers];
@@ -473,6 +477,21 @@ BOOL _performSegmentChange;
             self.headerSegmentControl.selectedSegmentIndex--;
             [self segmentedControlChanged:self.headerSegmentControl];
         } else return;
+    }
+}
+
+# pragma mark UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat sectionHeaderHeight = self.tableView.sectionHeaderHeight;
+
+    if (scrollView.contentOffset.y <= sectionHeaderHeight && scrollView.contentOffset.y >= 0) {
+        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y + self.searchDisplayController.searchBar.frame.size.height+22, 0, 0, 0);
+//        UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
+//        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
+    } else if (scrollView.contentOffset.y >= sectionHeaderHeight){
+        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
     }
 }
 
