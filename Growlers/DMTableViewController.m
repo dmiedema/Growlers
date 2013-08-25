@@ -278,18 +278,19 @@ BOOL _performSegmentChange;
     }
     // Configure the cell...
     
-    cell.beerName.text = beer[@"name"];
-    cell.brewery.text  = beer[@"brewer"];
-    
     switch (self.headerSegmentControl.selectedSegmentIndex) {
         case SHOW_ON_TAP:
+            cell.beerName.text = [NSString stringWithFormat:@"%@. %@", beer[@"tap_id"], beer[@"name"]];
             cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
                                   beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
             break;
         default:
+            cell.beerName.text = beer[@"name"];
             cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
             break;
     }
+    
+    cell.brewery.text  = beer[@"brewer"];
 
     // Get ID and check for today == tap.id and highlight
     // last day of month, ending ones go on sale
