@@ -119,12 +119,22 @@ BOOL _performSegmentChange;
     [super viewWillAppear:animated];
     
     if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+//        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+            self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
     } else {
-        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-        self.refreshControl.tintColor = [UIColor darkGrayColor];
-        self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
-        
+        if ([self setNavigationBarTint]) {
+            //            UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
+            UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
+            self.navigationController.navigationBar.tintColor = growlYellow;
+            self.refreshControl.tintColor = growlYellow;
+            self.headerSegmentControl.tintColor = growlYellow;
+        } else {
+            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+            self.refreshControl.tintColor = [UIColor darkGrayColor];
+            self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
+        }
         // This helps subliment removing the back text from a pushed view controller.
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -295,7 +305,8 @@ BOOL _performSegmentChange;
     // Get ID and check for today == tap.id and highlight
     // last day of month, ending ones go on sale
     if ([self checkToday:beer[@"tap_id"]] && self.headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY) {
-        cell.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:0.35];
+        NSLog(@"Beer o the day in view");
+        cell.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.35];
         cell.beerName.textColor = [UIColor whiteColor];
         cell.brewery.textColor = [UIColor whiteColor];
         cell.beerInfo.textColor = [UIColor lightTextColor];
@@ -321,7 +332,7 @@ BOOL _performSegmentChange;
     return cell;
 }
 
-#pragma mark Table view Other
+#pragma mark Table View Delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -330,12 +341,16 @@ BOOL _performSegmentChange;
 //    [blurView addSubview:self.headerSegmentControl];
 //    self.headerSegmentControl.backgroundColor = [UIColor colorWithRed:255 green:255 blue:255 alpha:0.75];
 //    return blurView;
-    return self.headerSegmentControl;
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 34.0f)];
+    headerView.backgroundColor = [UIColor whiteColor];
+    self.headerSegmentControl.frame = CGRectInset(headerView.frame, 12, 4);
+    [headerView addSubview:self.headerSegmentControl];
+    return headerView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 26.0f;
+    return 34.0f;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -440,14 +455,7 @@ BOOL _performSegmentChange;
 /* Handle Segmented Control change */
 - (void)segmentedControlChanged:(UISegmentedControl *)sender
 {
-    NSLog(@"SegmentControlChanged");
-//    NSLog(@"self.beers %@", self.beers);
-//    NSLog(@"self.beers exists %@", (self.beers) ? self.beers : @"lulnope");
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
-//    [self.tableView scrollRectToVisible:[self.tableView rectForHeaderInSection:0] animated:YES];
-//    self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height + self.tableView.sectionHeaderHeight);
-//    [self.tableView scrollRectToVisible:CGRectMake(self.tableView.frame.origin.x +self.navigationController.navigationBar.frame.size.height, self.tableView.frame.origin.y, 0, 0) animated:YES];
     switch (sender.selectedSegmentIndex) {
         case SHOW_ON_TAP: // on tap
             [self loadBeers];
@@ -482,18 +490,18 @@ BOOL _performSegmentChange;
 }
 
 # pragma mark UIScrollViewDelegate
-
+/*
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat sectionHeaderHeight = self.tableView.sectionHeaderHeight;
-
-    if (scrollView.contentOffset.y <= sectionHeaderHeight && scrollView.contentOffset.y >= 0) {
-        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y + self.searchDisplayController.searchBar.frame.size.height+22, 0, 0, 0);
-//        UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
-//        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
-    } else if (scrollView.contentOffset.y >= sectionHeaderHeight){
-        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
-    }
+//    CGFloat sectionHeaderHeight = self.tableView.sectionHeaderHeight;
+//
+//    if (scrollView.contentOffset.y <= sectionHeaderHeight && scrollView.contentOffset.y >= 0) {
+//        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y + self.searchDisplayController.searchBar.frame.size.height+22, 0, 0, 0);
+////        UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
+////        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
+//    } else if (scrollView.contentOffset.y >= sectionHeaderHeight){
+//        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+//    }
 }
-
+*/
 @end
