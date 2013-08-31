@@ -4,6 +4,7 @@ pod 'AFNetworking', '~> 1'
 #pod 'TestFlightSDK'
 pod 'HockeySDK'
 #pod 'MYIntroduction', :git => 'https://github.com/MatthewYork/iPhone-IntroductionTutorial.git'
+pod 'SparkInspector'
 
 post_install do | installer |
   require 'fileutils'

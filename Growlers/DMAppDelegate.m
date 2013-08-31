@@ -8,6 +8,7 @@
 
 #import "DMAppDelegate.h"
 #import "DMTableViewController.h"
+#import <SparkInspector/SparkInspector.h>
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
@@ -23,6 +24,8 @@
 {
     // Override point for customization after application launch.
     //
+    [SparkInspector enableObservation];
+    
     _generatedUDID = [NSString string];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     _generatedUDID = [defaults objectForKey:kGrowler_UUID];
