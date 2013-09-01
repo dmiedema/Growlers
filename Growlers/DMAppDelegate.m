@@ -24,6 +24,18 @@
 {
     // Override point for customization after application launch.
     //
+    /*
+     
+     */
+    
+//    NSDate *today = [NSDate date];
+//    NSCalendar *calendar = [NSCalendar currentCalendar];
+//    NSDateComponents *component = [calendar components:(NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:today];
+//    
+//    NSLog(@"%ld", (long)component.month);
+//    NSLog(@"%ld", (long)component.day);
+
+    
     [SparkInspector enableObservation];
     
     _generatedUDID = [NSString string];

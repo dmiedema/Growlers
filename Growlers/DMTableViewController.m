@@ -40,6 +40,7 @@
 
 - (int)getToday;
 - (BOOL)checkToday:(id)tapID;
+- (BOOL)checkLastDateOfMonth;
 
 @property (nonatomic, strong) UIGestureRecognizer *swipeGesture;
 
@@ -192,6 +193,62 @@ BOOL _performSegmentChange;
     return [tap_id integerValue] == [self getToday];
 }
 
+- (BOOL)checkLastDateOfMonth
+{
+    NSDate *today = [NSDate date];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    NSDateComponents *todaysDate = [calendar components:(NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:today];
+    
+    int month = todaysDate.month;
+    int day   = todaysDate.day;
+    
+    switch (month) {
+        case 1:
+            return day == 31;
+            break;
+        case 2:
+            return day == 28;
+            break;
+        case 3:
+            return day == 31;
+            break;
+        case 4:
+            return day == 30;
+            break;
+        case 5:
+            return day == 31;
+            break;
+        case 6:
+            return day == 30;
+            break;
+        case 7:
+            return day == 31;
+            break;
+        case 8:
+            return day == 31;
+            break;
+        case 9:
+            return day == 30;
+            break;
+        case 10:
+            return day == 31;
+            break;
+        case 11:
+            return day == 30;
+            break;
+        case 12:
+            return day == 31;
+            break;
+        default:
+            return NO;
+            break;
+    }
+    
+    
+    return NO;
+}
+
 - (void)loadBeers
 {
     NSLog(@"Load beers called");
@@ -304,7 +361,9 @@ BOOL _performSegmentChange;
 
     // Get ID and check for today == tap.id and highlight
     // last day of month, ending ones go on sale
-    if ([self checkToday:beer[@"tap_id"]] && self.headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY) {
+    if (([self checkToday:beer[@"tap_id"]] || ([self checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= self.getToday ))
+        && self.headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY) {
+        
         NSLog(@"Beer o the day in view");
         cell.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.35];
         cell.beerName.textColor = [UIColor whiteColor];
@@ -387,10 +446,12 @@ BOOL _performSegmentChange;
             NSLog(@"Favoriting failed: %@", JSON);
         }];
     }
+    
+
     // Deselect the row.
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     // reload the data so the favorite marker stays.
-    [self.tableView reloadData];
+    [tableView reloadData];
 }
 
 #pragma mark UISearchController
