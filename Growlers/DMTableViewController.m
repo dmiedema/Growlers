@@ -272,10 +272,12 @@ BOOL _performSegmentChange;
     
     // if we're on favorites, we shouldn't be here. Bail.
     if (self.headerSegmentControl.selectedSegmentIndex == SHOW_FAVORITES) {
+        NSLog(@"on favs");
         return;
     }
     
     if (self.refreshControl.bounds.size.height >= 65) {
+        NSLog(@"reseting beer database");
         [self resetHighlightedBeers];
     }
     
@@ -418,7 +420,13 @@ BOOL _performSegmentChange;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *beer = self.beers[indexPath.row];
+    NSDictionary *beer;
+    
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        beer = self.filteredBeers[indexPath.row];
+    } else {
+        beer = self.beers[indexPath.row];
+    }
     
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Push_ID];
     
@@ -516,6 +524,7 @@ BOOL _performSegmentChange;
 /* Handle Segmented Control change */
 - (void)segmentedControlChanged:(UISegmentedControl *)sender
 {
+    NSLog(@"%@", self.highlightedBeers);
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     switch (sender.selectedSegmentIndex) {
         case SHOW_ON_TAP: // on tap
@@ -551,7 +560,7 @@ BOOL _performSegmentChange;
 }
 
 # pragma mark UIScrollViewDelegate
-
+/*
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat sectionHeaderHeight = self.tableView.sectionHeaderHeight;
@@ -566,6 +575,6 @@ BOOL _performSegmentChange;
         self.navigationController.navigationBar.topItem.title = [self.headerSegmentControl titleForSegmentAtIndex:self.headerSegmentControl.selectedSegmentIndex];
     }
 }
-
+*/
 
 @end
