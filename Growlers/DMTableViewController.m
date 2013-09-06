@@ -525,7 +525,7 @@ BOOL _performSegmentChange;
 - (void)segmentedControlChanged:(UISegmentedControl *)sender
 {
     NSLog(@"%@", self.highlightedBeers);
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     switch (sender.selectedSegmentIndex) {
         case SHOW_ON_TAP: // on tap
             [self loadBeers];
