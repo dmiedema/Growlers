@@ -9,6 +9,7 @@
 #import "DMAppDelegate.h"
 #import "DMTableViewController.h"
 #import <SparkInspector/SparkInspector.h>
+#import <NewRelicAgent/NewRelicAgent.h>
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
@@ -55,6 +56,9 @@
     [[BITHockeyManager sharedHockeyManager] startManager];
     
     #endif
+    
+    /* NewRelic */
+    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
     
     /* Push Notifications */
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
