@@ -9,8 +9,8 @@
 #import "DMGrowlerAPI.h"
 
 //static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
-static NSString *DMGrowlerAPIURLString  = @"http://shittie.st:8000";
-//static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/";
+//static NSString *DMGrowlerAPIURLString  = @"http://shittie.st:8000";
+static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/GrowlersAppPage.php";
 //static NSString *DMGrowlerAPIURLString  = @"http://192.168.1.107:8000";
 //static NSString *DMGrowlerAPIURLString = @"http://localhost:8000";
 @implementation DMGrowlerAPI
@@ -39,10 +39,10 @@ static NSString *DMGrowlerAPIURLString  = @"http://shittie.st:8000";
     // [NSURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]]
     NSString *requestUrlString = nil;
     if (serverAction == ALL) {
-        requestUrlString = [NSString stringWithFormat:@"%@/all", DMGrowlerAPIURLString];
+        requestUrlString = [NSString stringWithFormat:@"%@?store=all", DMGrowlerAPIURLString];
     }
     else {
-        requestUrlString = [NSString stringWithFormat:@"%@/%@", DMGrowlerAPIURLString, [store lowercaseString]];
+        requestUrlString = [NSString stringWithFormat:@"%@?store=%@", DMGrowlerAPIURLString, [store lowercaseString]];
     }
     
     NSLog(@"Sending request with URL %@", requestUrlString);
