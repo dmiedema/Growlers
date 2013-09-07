@@ -432,7 +432,9 @@ BOOL _performSegmentChange;
     if ([_coreData isBeerFavorited:beer]) {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [self.selectedStore lowercaseString], @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
             // CoreData Save
-            [_coreData unFavoriteBeer:beer];
+            NSMutableDictionary *favBeer = [beer mutableCopy];
+            favBeer[@"store"] = self.selectedStore;
+            [_coreData unFavoriteBeer:favBeer];
             NSLog(@"Beer unfavorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor clearColor];
@@ -444,7 +446,9 @@ BOOL _performSegmentChange;
     else {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [self.selectedStore lowercaseString], @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
             // CoreData save
-            [_coreData favoriteBeer:beer];
+            NSMutableDictionary *favBeer = [beer mutableCopy];
+            favBeer[@"store"] = self.selectedStore;
+            [_coreData favoriteBeer:favBeer];
             NSLog(@"Beer favorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];

@@ -71,7 +71,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         success(JSON);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSLog(@"Error favoriing - %@", error);
+        NSLog(@"Error favoritng - %@", error);
         failure(JSON);
     }];
     [AFNetworkActivityIndicatorManager sharedManager];
