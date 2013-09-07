@@ -365,7 +365,6 @@ BOOL _performSegmentChange;
     // last day of month, ending ones go on sale
     if (self.headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY && ([self checkToday:beer[@"tap_id"]] || ([self checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= self.getToday )))
     {
-        
         NSLog(@"Beer o the day in view");
         cell.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.35];
         cell.beerName.textColor = [UIColor whiteColor];
@@ -373,6 +372,9 @@ BOOL _performSegmentChange;
         cell.beerInfo.textColor = [UIColor lightTextColor];
     } else if ([_highlightedBeers containsObject:beer]) {
         cell.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
+        cell.beerName.textColor = [UIColor blackColor];
+        cell.brewery.textColor = [UIColor blackColor];
+        cell.beerInfo.textColor = [UIColor darkGrayColor];
     } else {
         cell.backgroundColor = [UIColor whiteColor];
         cell.beerName.textColor = [UIColor blackColor];
@@ -397,11 +399,6 @@ BOOL _performSegmentChange;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-//    DRNRealTimeBlurView *blurView = [[DRNRealTimeBlurView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 26)];
-//    self.headerSegmentControl.frame = blurView.frame;
-//    [blurView addSubview:self.headerSegmentControl];
-//    self.headerSegmentControl.backgroundColor = [UIColor colorWithRed:255 green:255 blue:255 alpha:0.75];
-//    return blurView;
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 34.0f)];
     headerView.backgroundColor = [UIColor whiteColor];
     self.headerSegmentControl.frame = CGRectInset(headerView.frame, 12, 4);
@@ -421,6 +418,8 @@ BOOL _performSegmentChange;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *beer;
+    
+    NSLog(@"Store -- %@", self.selectedStore);
     
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         beer = self.filteredBeers[indexPath.row];
