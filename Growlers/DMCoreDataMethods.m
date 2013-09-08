@@ -111,13 +111,13 @@
     favorite.store      = newBeerToFavorite[@"store"];
     // store & brewer url
     
-//    NSLog(@"Favorite -- %@", favorite.tap_id);
-//    NSLog(@"Favorite -- %@", favorite.name);
-//    NSLog(@"Favorite -- %@", favorite.brewer);
-//    NSLog(@"Favorite -- %@", favorite.abv);
-//    NSLog(@"Favorite -- %@", favorite.ibu);
-//    NSLog(@"Favorite -- %@", favorite.brewerURL);
-//    NSLog(@"Favorite -- %@", favorite.store);
+    NSLog(@"Favorite -- %@", favorite.tap_id);
+    NSLog(@"Favorite -- %@", favorite.name);
+    NSLog(@"Favorite -- %@", favorite.brewer);
+    NSLog(@"Favorite -- %@", favorite.abv);
+    NSLog(@"Favorite -- %@", favorite.ibu);
+    NSLog(@"Favorite -- %@", favorite.brewerURL);
+    NSLog(@"Favorite -- %@", favorite.store);
     
     NSError *coreDataErr = nil;
     if (![self.managedContext save:&coreDataErr]) {
@@ -173,23 +173,23 @@
     NSMutableArray *favoritesAsDictionarys = [NSMutableArray new];
     
     for (Favorites *favorite in allFavorites) {
-//        NSLog(@"fav - %@", favorite);
-//        NSLog(@"fav - %@", favorite.tap_id);
-//        NSLog(@"fav - %@", favorite.name);
-//        NSLog(@"fav - %@", favorite.brewer);
-//        NSLog(@"fav - %@", favorite.brewerURL);
-//        NSLog(@"fav - %@", favorite.abv);
-//        NSLog(@"fav - %@", favorite.ibu);
-//        NSLog(@"fav - %@", favorite.store);
+        NSLog(@"fav - %@", favorite);
+        NSLog(@"fav - %@", favorite.tap_id);
+        NSLog(@"fav - %@", favorite.name);
+        NSLog(@"fav - %@", favorite.brewer);
+        NSLog(@"fav - %@", favorite.brewerURL);
+        NSLog(@"fav - %@", favorite.abv);
+        NSLog(@"fav - %@", favorite.ibu);
+        NSLog(@"fav - %@", favorite.store);
         
         [favoritesAsDictionarys addObject:
          @{@"tap_id": favorite.tap_id,
            @"name": favorite.name,
            @"brewer": favorite.brewer,
-           @"brew_url": favorite.brewerURL,
+           @"brew_url": (favorite.brewerURL != nil) ? favorite.brewerURL : @"url fail",
            @"abv": favorite.abv,
            @"ibu": favorite.ibu,
-           @"store": favorite.store
+           @"store": (favorite.store != nil) ? favorite.store : @"store"
            }];
     }
     NSLog(@"Favorites as dictionaries %@", favoritesAsDictionarys);
