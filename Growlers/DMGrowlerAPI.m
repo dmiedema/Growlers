@@ -7,6 +7,7 @@
 //
 
 #import "DMGrowlerAPI.h"
+#import "TSTapstream.h"
 
 //static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
 //static NSString *DMGrowlerAPIURLString  = @"http://shittie.st:8000";
@@ -36,14 +37,22 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
 
 - (void)getBeersWithFlag:(SERVER_FLAG)serverAction forStore:(NSString *)store andSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
 {
+    
+    TSTapstream *tracker = [TSTapstream instance];
+    TSEvent *e = [TSEvent eventWithName:@"getBeers" oneTimeOnly:NO];
+    
+    
     // [NSURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]]
     NSString *requestUrlString = nil;
     if (serverAction == ALL) {
         requestUrlString = [NSString stringWithFormat:@"%@?store=all", DMGrowlerAPIURLString];
+        [e addValue:@"all" forKey:@"store"];
     }
     else {
         requestUrlString = [NSString stringWithFormat:@"%@?store=%@", DMGrowlerAPIURLString, [store lowercaseString]];
+        [e addValue:store forKey:@"store"];
     }
+    [tracker fireEvent:e];
     
     NSLog(@"Sending request with URL %@", requestUrlString);
     
@@ -61,7 +70,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
 }
 
 - (void)favoriteBeer:(NSDictionary *)beer withAction:(BEER_ACTION)action withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
-{
+{  
     NSError *error = nil;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
     request.HTTPMethod = @"POST";
@@ -81,9 +90,15 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     if (action == FAVORITE) {
         NSLog(@"Favorite Beer");
         NSLog(@"%@", beer);
+        TSEvent *e = [TSEvent eventWithName:@"FavoriteBeer" oneTimeOnly:NO];
+        [[TSTapstream instance] fireEvent:e];
+
     } else {
         NSLog(@"Unfavorite Beer");
         NSLog(@"%@", beer);
+        TSEvent *e = [TSEvent eventWithName:@"UnfavoriteBeer" oneTimeOnly:NO];
+        [[TSTapstream instance] fireEvent:e];
+
     }
 }
 

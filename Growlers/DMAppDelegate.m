@@ -10,6 +10,7 @@
 #import "DMTableViewController.h"
 #import <SparkInspector/SparkInspector.h>
 #import <NewRelicAgent/NewRelicAgent.h>
+#import "TSTapstream.h"
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
@@ -57,8 +58,18 @@
     
     #endif
     
-    /* NewRelic */
-    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
+    /* If we're sending anonymous usage reports */
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"anonymous_usage"]) {
+        /* NewRelic */
+        [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
+        /* Auto submit crash reports to hockey */
+        [BITHockeyManager sharedHockeyManager].crashManager.crashManagerStatus = BITCrashManagerStatusAutoSend;
+        /* Tapstream */
+        TSConfig *config = [TSConfig configWithDefaults];
+        [TSTapstream createWithAccountName:@"dmiedema" developerSecret:@"fjOF0VDGQ8iLcfFqnTyhlw" config:config];
+        config.collectWifiMac = NO;
+        config.idfa = _generatedUDID;
+    }
     
     /* Push Notifications */
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
@@ -72,6 +83,9 @@
     
     NSString *verison = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [[NSUserDefaults standardUserDefaults] setObject:verison forKey:@"version_preferences"];
+    
+    NSString *madeBy = @"Daniel Miedema";
+    [[NSUserDefaults standardUserDefaults] setObject:madeBy forKey:@"made_by"];
     
     /* AFNetworking indicator */
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;

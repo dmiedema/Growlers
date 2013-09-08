@@ -22,7 +22,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>91050</string>
+			<string>0</string>
 			<key>Type</key>
 			<string>PSTitleValueSpecifier</string>
 			<key>Title</key>
@@ -39,6 +39,40 @@
 			<string>Acknowledgements</string>
 			<key>File</key>
 			<string>Acknowledgements</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Other</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<string>Daniel Miedema</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Made with Love by</string>
+			<key>Key</key>
+			<string>made_by</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>Growlers can send anonymous usage reports to help us improve the app. Those reports are not shared with any third parties.</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Anonymous Usage Reports</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Send Usage Reports</string>
+			<key>Key</key>
+			<string>anonymous_usage</string>
+			<key>DefaultValue</key>
+			<true/>
 		</dict>
 	</array>
 	<key>StringsTable</key>

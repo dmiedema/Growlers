@@ -6,6 +6,7 @@ pod 'HockeySDK'
 #pod 'MYIntroduction', :git => 'https://github.com/MatthewYork/iPhone-IntroductionTutorial.git'
 pod 'SparkInspector'
 pod 'NewRelicAgent'
+pod 'Tapstream'
 
 post_install do | installer |
   require 'fileutils'
