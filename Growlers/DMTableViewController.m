@@ -363,7 +363,7 @@ BOOL _performSegmentChange;
 
     // Get ID and check for today == tap.id and highlight
     // last day of month, ending ones go on sale
-    if (self.headerSegmentControl.selectedSegmentIndex != SHOW_FULL_HISTORY && ([self checkToday:beer[@"tap_id"]] || ([self checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= self.getToday )))
+    if (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP && ([self checkToday:beer[@"tap_id"]] || ([self checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= self.getToday )))
     {
         NSLog(@"Beer o the day in view");
         cell.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.35];
