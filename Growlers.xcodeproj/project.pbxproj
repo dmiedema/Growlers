@@ -345,7 +345,7 @@
 				ORGANIZATIONNAME = "Daniel Miedema";
 				TargetAttributes = {
 					C3DD53CD17967D470086A7E2 = {
-						DevelopmentTeam = 7AM27DZVQU;
+						DevelopmentTeam = SFNXE634D9;
 						SystemCapabilities = {
 							com.apple.iCloud = {
 								enabled = 0;
