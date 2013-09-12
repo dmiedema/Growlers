@@ -95,6 +95,11 @@ BOOL _performSegmentChange;
 //    UIBarButtonItem *storeButton = [[UIBarButtonItem alloc] initWithTitle:@"Store" style:UIBarButtonItemStyleBordered target:self action:@selector(showActionSheet:)];
     self.navigationItem.leftBarButtonItem = info;
 //    self.navigationItem.rightBarButtonItem = storeButton;
+    
+    // Modify Search Controller
+    self.searchDisplayController.delegate = self;
+    self.searchDisplayController.searchBar.delegate = self;
+    self.searchDisplayController.searchBar.showsScopeBar = NO;
 
     // Setup Refresh control
     [self.refreshControl addTarget:self action:@selector(loadBeers) forControlEvents:UIControlEventValueChanged];
@@ -492,6 +497,25 @@ BOOL _performSegmentChange;
     return YES;
 }
 
+#pragma mark UISearchBarDelegate
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    searchBar.showsScopeBar = NO;
+    [searchBar sizeToFit];
+    
+    return YES;
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    searchBar.showsScopeBar = NO;
+    [searchBar sizeToFit];
+    
+    [self.tableView reloadData];
+    return YES;
+}
+
 #pragma mark UIActionSheet
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -529,6 +553,7 @@ BOOL _performSegmentChange;
 {
     NSLog(@"%@", self.highlightedBeers);
 //    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    [self.tableView setContentOffset:CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height) animated:YES];
     switch (sender.selectedSegmentIndex) {
         case SHOW_ON_TAP: // on tap
             [self loadBeers];
