@@ -7,6 +7,7 @@ pod 'HockeySDK'
 pod 'SparkInspector'
 pod 'NewRelicAgent'
 pod 'Tapstream'
+pod 'GoogleAnalytics-iOS-SDK'
 
 post_install do | installer |
   require 'fileutils'

@@ -11,6 +11,8 @@
 #import <SparkInspector/SparkInspector.h>
 #import <NewRelicAgent/NewRelicAgent.h>
 #import "TSTapstream.h"
+// google analytics
+#import "GAI.h"
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
@@ -69,6 +71,10 @@
         [TSTapstream createWithAccountName:@"dmiedema" developerSecret:@"fjOF0VDGQ8iLcfFqnTyhlw" config:config];
         config.collectWifiMac = NO;
         config.idfa = _generatedUDID;
+        /* Google Anayltics */
+        [GAI sharedInstance].dispatchInterval = 20;
+        [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
+        id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-43859185-1"];
     }
     
     /* Push Notifications */
@@ -94,6 +100,7 @@
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     DMTableViewController *controller = (DMTableViewController *)navigationController.topViewController;
     controller.managedContext = self.managedObjectContext;
+    controller.searchDisplayController.searchBar.showsScopeBar = NO;
     
     return YES;
 }
