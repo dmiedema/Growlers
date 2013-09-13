@@ -136,9 +136,6 @@
     NSError *error = nil;
     NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
     
-//    NSLog(@"Matches - %@", matches);
-//    NSLog(@"Matches Lastobject - %@", matches.lastObject);
-    
     [self.managedContext deleteObject:matches.lastObject];
     if (![self.managedContext save:&error]){
         // handle error
