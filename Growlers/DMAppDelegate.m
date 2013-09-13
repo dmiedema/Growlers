@@ -110,7 +110,6 @@
     config.idfa = _generatedUDID;
     
     /* Google Anayltics */
-    
     [GAI sharedInstance].dispatchInterval = 20;
     [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-43859185-1"];
