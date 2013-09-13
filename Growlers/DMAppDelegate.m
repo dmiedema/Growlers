@@ -90,7 +90,7 @@
     NSString *verison = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [[NSUserDefaults standardUserDefaults] setObject:verison forKey:@"version_preferences"];
     
-    NSString *madeBy = @"Daniel Miedema";
+    NSString *madeBy = @"";
     [[NSUserDefaults standardUserDefaults] setObject:madeBy forKey:@"made_by"];
     
     /* AFNetworking indicator */
@@ -172,6 +172,12 @@
             // Replace this implementation with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoa! Something went wrong"
+                                                                message:@"Don't worry it's not your fault! I messed up and I'm sorry. But if you could email\nappsupport@growlmovement.com\nand reference\nError Code: cats-meow\nThanks! I'm going to close now :("
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"Okay"
+                                                      otherButtonTitles: nil];
+            [alertView show];
             abort();
         }
     }
