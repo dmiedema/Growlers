@@ -233,8 +233,6 @@ BOOL _performSegmentChange;
             return NO;
             break;
     }
-    
-    
     return NO;
 }
 
@@ -264,7 +262,6 @@ BOOL _performSegmentChange;
         NSLog(@"on favs");
         return;
     }
-    
     if (self.refreshControl.bounds.size.height >= 65) {
         NSLog(@"reseting beer database");
         [self resetHighlightedBeers];
