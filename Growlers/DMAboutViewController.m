@@ -16,20 +16,10 @@
 
 @implementation DMAboutViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
     // Removes the title from the back button when this view is pushed.
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -43,15 +33,6 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.topItem.title = @"About";
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-- (void)acknowledgements:(UIButton *)sender {
-    // noop right now
 }
 
 - (IBAction)checkUsOut:(UIButton *)sender {
@@ -77,7 +58,12 @@
         [MKMapItem openMapsWithItems:@[currentLocationMapItem, mapItem]
                        launchOptions:launchOptions];
     } else {
-        NSLog(@"Does not respond.");
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoa! Something went wrong"
+                                                            message:@"Looks like I wasn't able to open maps for you. I'm sorry!"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Okay"
+                                                  otherButtonTitles: nil];
+        [alertView show];
     }
 }
 

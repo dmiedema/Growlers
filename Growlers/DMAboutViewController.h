@@ -10,7 +10,6 @@
 
 @interface DMAboutViewController : UIViewController
 - (IBAction)checkUsOut:(UIButton *)sender;
-- (IBAction)acknowledgements:(UIButton *)sender;
 - (IBAction)contactSupport:(id)sender;
 - (IBAction)showTutorial:(UIButton *)sender;
 @end
