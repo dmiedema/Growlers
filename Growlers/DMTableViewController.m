@@ -35,8 +35,8 @@
 - (void)showActionSheet:(id)sender;
 
 - (void)resetHighlightedBeers;
-
-- (BOOL)setNavigationBarTint;
+- (BOOL)checkIfOpen;
+- (void)setNavigationBarTint;
 
 - (int)getToday;
 - (BOOL)checkToday:(id)tapID;
@@ -123,29 +123,7 @@ BOOL _performSegmentChange;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-//        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-            self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
-    } else {
-        if ([self setNavigationBarTint]) {
-            //            UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
-            UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
-            self.navigationController.navigationBar.tintColor = growlYellow;
-            self.refreshControl.tintColor = growlYellow;
-            self.headerSegmentControl.tintColor = growlYellow;
-        } else {
-            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-            self.refreshControl.tintColor = [UIColor darkGrayColor];
-            self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
-        }
-        // This helps subliment removing the back text from a pushed view controller.
-        self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    }
-    
+    [self setNavigationBarTint];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -163,8 +141,7 @@ BOOL _performSegmentChange;
 }
 
 #pragma mark Implementation
-
-- (BOOL)setNavigationBarTint
+- (BOOL)checkIfOpen
 {
     // Get today
     NSDate *today = [NSDate date];
@@ -175,11 +152,36 @@ BOOL _performSegmentChange;
     // Get the values out.
     NSInteger hour = [weekdayComponents hour];
     NSInteger weekday = [weekdayComponents weekday];
-
+    
     if (weekday < 5) { // If we're before Friday, noon - 8
         return hour > 11 && hour < 20;
     } else { // Friday and Saturday, 11 to 11
         return hour > 10 && hour < 23;
+    }
+}
+
+- (void)setNavigationBarTint
+{
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+        //        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+        self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
+    } else {
+        if ([self checkIfOpen]) {
+            //            UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
+            UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
+            self.navigationController.navigationBar.tintColor = growlYellow;
+            self.refreshControl.tintColor = growlYellow;
+            self.headerSegmentControl.tintColor = growlYellow;
+        } else {
+            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+            self.refreshControl.tintColor = [UIColor darkGrayColor];
+            self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
+        }
+        // This helps subliment removing the back text from a pushed view controller.
+        self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
 }
 
@@ -210,40 +212,22 @@ BOOL _performSegmentChange;
     
     switch (month) {
         case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
             return day == 31;
             break;
         case 2:
             return day == 28;
             break;
-        case 3:
-            return day == 31;
-            break;
         case 4:
-            return day == 30;
-            break;
-        case 5:
-            return day == 31;
-            break;
         case 6:
-            return day == 30;
-            break;
-        case 7:
-            return day == 31;
-            break;
-        case 8:
-            return day == 31;
-            break;
         case 9:
-            return day == 30;
-            break;
-        case 10:
-            return day == 31;
-            break;
         case 11:
             return day == 30;
-            break;
-        case 12:
-            return day == 31;
             break;
         default:
             return NO;
@@ -354,7 +338,6 @@ BOOL _performSegmentChange;
     cell.beerInfo.adjustsLetterSpacingToFitWidth = YES;
     cell.beerInfo.adjustsFontSizeToFitWidth = YES;
     
-    
     NSDictionary *beer;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         beer = self.filteredBeers[indexPath.row];
@@ -362,7 +345,6 @@ BOOL _performSegmentChange;
         beer = self.beers[indexPath.row];
     }
     // Configure the cell...
-    
     switch (self.headerSegmentControl.selectedSegmentIndex) {
         case SHOW_ON_TAP:
             cell.beerName.text = [NSString stringWithFormat:@"%@. %@", beer[@"tap_id"], beer[@"name"]];
@@ -379,9 +361,10 @@ BOOL _performSegmentChange;
 
     // Get ID and check for today == tap.id and highlight
     // last day of month, ending ones go on sale
-    if (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP && ([self checkToday:beer[@"tap_id"]] || ([self checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= self.getToday )))
+    if (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP &&
+        ([self checkToday:beer[@"tap_id"]] || ([self checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= self.getToday ))
+        )
     {
-        NSLog(@"Beer o the day in view");
         cell.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.35];
         cell.beerName.textColor = [UIColor whiteColor];
         cell.brewery.textColor = [UIColor whiteColor];
@@ -404,7 +387,6 @@ BOOL _performSegmentChange;
     } else {
         cell.favoriteMarker.backgroundColor = [UIColor clearColor];
     }
-    
     cell.favoriteMarker.layer.masksToBounds = YES;
     cell.favoriteMarker.layer.cornerRadius = cell.favoriteMarker.bounds.size.width / 2.0;
 
@@ -434,9 +416,6 @@ BOOL _performSegmentChange;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *beer;
-    
-    NSLog(@"Store -- %@", self.selectedStore);
-    
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         beer = self.filteredBeers[indexPath.row];
     } else {
@@ -451,7 +430,6 @@ BOOL _performSegmentChange;
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = self.selectedStore;
             [_coreData unFavoriteBeer:favBeer];
-            NSLog(@"Beer unfavorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor clearColor];
         } andFailure:^(id JSON) {
@@ -465,7 +443,6 @@ BOOL _performSegmentChange;
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = self.selectedStore;
             [_coreData favoriteBeer:favBeer];
-            NSLog(@"Beer favorited successfully");
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
         } andFailure:^(id JSON) {
@@ -487,17 +464,12 @@ BOOL _performSegmentChange;
 {
     // Make a mutable copy
     self.filteredBeers = [self.beers mutableCopy];
-    
     // Trim off whitespace
     NSString *strippedSearch = [searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    // Append a wild card
-//    strippedSearch = [strippedSearch stringByAppendingString:@"*"];
-    
+
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K contains[cd] %@ OR %K contains[cd] %@", @"name", strippedSearch, @"brewer", strippedSearch];
     
     self.filteredBeers = [[self.filteredBeers filteredArrayUsingPredicate:predicate] mutableCopy];
-//    NSLog(@"Filtered after search %@", self.filteredBeers);
 }
 
 #pragma mark UISearchDisplayDelegate
@@ -549,7 +521,11 @@ BOOL _performSegmentChange;
 
 - (void)showActionSheet:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:Nil otherButtonTitles:@"Keizer", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                               destructiveButtonTitle:Nil
+                                                    otherButtonTitles:@"Keizer", nil];
     [actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
@@ -562,7 +538,6 @@ BOOL _performSegmentChange;
 /* Handle Segmented Control change */
 - (void)segmentedControlChanged:(UISegmentedControl *)sender
 {
-    NSLog(@"%@", self.highlightedBeers);
 //    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 //    [self.tableView setContentOffset:CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height) animated:YES];
     switch (sender.selectedSegmentIndex) {
