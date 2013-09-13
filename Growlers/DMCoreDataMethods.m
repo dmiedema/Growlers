@@ -56,9 +56,7 @@
     
     NSError *error = nil;
     NSArray *allCurrentBeers = [self.managedContext executeFetchRequest:request error:&error];
-    
-//    NSLog(@"Removing Beer Database...");
-//    NSLog(@"AllBeers - %@", allCurrentBeers);
+
     if (allCurrentBeers.count > 0) {
         for (NSManagedObject *beer in allCurrentBeers) {
             [self.managedContext deleteObject:beer];
@@ -68,10 +66,7 @@
         }
     }
     
-//    NSLog(@"All Current Beers removed");
-    
     for (NSDictionary *beer in newDatabaseContents) {
-//        NSLog(@"Creating new entry - %@", beer);
         Beer *newBeer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:self.managedContext];
 
         newBeer.tap_id          = [NSNumber numberWithInt:[beer[@"tap_id"] intValue]];
@@ -84,23 +79,16 @@
         newBeer.name            = beer[@"name"];
         newBeer.style           = (beer[@"style"] == [NSNull null]) ? @"" : beer[@"style"];
         newBeer.store           = beer[@"store"];
-        
-//        NSLog(@"New Beer - %@", newBeer);
     }
-    
-    NSLog(@"Saving New Database...");
     if (![self.managedContext save:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
-    NSLog(@"New Database saved.");
 }
 
 
 #pragma mark Favoriting
 - (void)favoriteBeer:(NSDictionary *)newBeerToFavorite
 {
-    NSLog(@"Favoriting -- %@", newBeerToFavorite);
-    
     Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
     favorite.tap_id     = (newBeerToFavorite[@"tap_id"] == [NSNull null]) ? 0 : [NSNumber numberWithInt:[newBeerToFavorite[@"tap_id"] intValue]];
     favorite.name       = newBeerToFavorite[@"name"];
@@ -111,19 +99,10 @@
     favorite.store      = newBeerToFavorite[@"store"];
     // store & brewer url
     
-    NSLog(@"Favorite -- %@", favorite.tap_id);
-    NSLog(@"Favorite -- %@", favorite.name);
-    NSLog(@"Favorite -- %@", favorite.brewer);
-    NSLog(@"Favorite -- %@", favorite.abv);
-    NSLog(@"Favorite -- %@", favorite.ibu);
-    NSLog(@"Favorite -- %@", favorite.brewerURL);
-    NSLog(@"Favorite -- %@", favorite.store);
-    
     NSError *coreDataErr = nil;
     if (![self.managedContext save:&coreDataErr]) {
         // handle error
     }
-    NSLog(@"Beer Saved");
 }
 
 - (void)unFavoriteBeer:(NSDictionary *)beerToUnfavorite
@@ -140,12 +119,10 @@
     if (![self.managedContext save:&error]){
         // handle error
     }
-    NSLog(@"Beer Unfavorited");
 }
 
 - (BOOL)isBeerFavorited:(NSDictionary *)beer
 {
-    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@ and store = %@", beer[@"name"], beer[@"brewer"], beer[@"store"]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
@@ -156,29 +133,18 @@
     
     return matches.count >= 1;
 }
+
 - (NSArray *)getAllFavorites
 {
-    NSLog(@"Get all favorites");
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
     request.includesPropertyValues = YES;
     
     NSError *error = nil;
     NSArray *allFavorites = [self.managedContext executeFetchRequest:request error:&error];
     
-    NSLog(@"all favs %@", allFavorites);
-    
     NSMutableArray *favoritesAsDictionarys = [NSMutableArray new];
     
     for (Favorites *favorite in allFavorites) {
-        NSLog(@"fav - %@", favorite);
-        NSLog(@"fav - %@", favorite.tap_id);
-        NSLog(@"fav - %@", favorite.name);
-        NSLog(@"fav - %@", favorite.brewer);
-        NSLog(@"fav - %@", favorite.brewerURL);
-        NSLog(@"fav - %@", favorite.abv);
-        NSLog(@"fav - %@", favorite.ibu);
-        NSLog(@"fav - %@", favorite.store);
-        
         [favoritesAsDictionarys addObject:
          @{@"tap_id": favorite.tap_id,
            @"name": favorite.name,
@@ -189,8 +155,6 @@
            @"store": (favorite.store != nil) ? favorite.store : @"store"
            }];
     }
-    NSLog(@"Favorites as dictionaries %@", favoritesAsDictionarys);
-    
     return favoritesAsDictionarys;
 }
 

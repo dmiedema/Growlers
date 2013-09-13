@@ -55,7 +55,6 @@
 }
 
 - (IBAction)checkUsOut:(UIButton *)sender {
-    NSLog(@"Check us Out!");
     // Check for iOS 6
     Class mapItemClass = [MKMapItem class];
     if (mapItemClass && [mapItemClass respondsToSelector:@selector(openMapsWithItems:launchOptions:)])
