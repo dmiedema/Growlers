@@ -239,6 +239,12 @@ BOOL _performSegmentChange;
     NSLog(@"Load beers called");
     // if we're spinnin' and refreshin'
     // ... stop it.
+    
+    if (self.refreshControl.bounds.size.height >= 65 && self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) {
+        NSLog(@"reseting beer database");
+        [self resetHighlightedBeers];
+    }
+    
     if (self.refreshControl.refreshing) {
         // Setup Title
         NSString *str = [NSString stringWithFormat:@"Last Updated at %@", [_dateFormatter stringFromDate:[NSDate date]]];
@@ -257,12 +263,8 @@ BOOL _performSegmentChange;
     
     // if we're on favorites, we shouldn't be here. Bail.
     if (self.headerSegmentControl.selectedSegmentIndex == SHOW_FAVORITES) {
-        NSLog(@"on favs");
+        NSLog(@"ViewingFavorites");
         return;
-    }
-    if (self.refreshControl.bounds.size.height >= 65) {
-        NSLog(@"reseting beer database");
-        [self resetHighlightedBeers];
     }
     
     // check segment control to see what action I should perform

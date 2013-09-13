@@ -49,10 +49,8 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestUrlString]];
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSLog(@"Success API Call - %@", JSON);
         success(JSON);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSLog(@"Error getting beers - %@", error);
         failure(JSON);
     }];
     
