@@ -8,6 +8,7 @@ pod 'SparkInspector'
 pod 'NewRelicAgent'
 pod 'Tapstream'
 pod 'GoogleAnalytics-iOS-SDK'
+#pod 'OHAttributedLabel'
 
 post_install do | installer |
   require 'fileutils'

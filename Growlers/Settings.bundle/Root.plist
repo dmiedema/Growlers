@@ -48,11 +48,11 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>Daniel Miedema</string>
+			<string> </string>
 			<key>Type</key>
 			<string>PSTitleValueSpecifier</string>
 			<key>Title</key>
-			<string>Made with Love by</string>
+			<string>Made with Love by Daniel Miedema</string>
 			<key>Key</key>
 			<string>made_by</string>
 		</dict>
