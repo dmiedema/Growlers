@@ -8,7 +8,6 @@
 
 #import "DMAppDelegate.h"
 #import "DMTableViewController.h"
-#import <SparkInspector/SparkInspector.h>
 #import <NewRelicAgent/NewRelicAgent.h>
 #import "TSTapstream.h"
 // google analytics
@@ -16,6 +15,9 @@
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
+
+- (void)setupTracking;
+
 @end
 
 @implementation DMAppDelegate
@@ -38,9 +40,6 @@
 //    
 //    NSLog(@"%ld", (long)component.month);
 //    NSLog(@"%ld", (long)component.day);
-
-    
-    [SparkInspector enableObservation];
     
     _generatedUDID = [NSString string];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -61,20 +60,10 @@
     #endif
     
     /* If we're sending anonymous usage reports */
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"anonymous_usage"]) {
-        /* NewRelic */
-        [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
-        /* Auto submit crash reports to hockey */
-        [BITHockeyManager sharedHockeyManager].crashManager.crashManagerStatus = BITCrashManagerStatusAutoSend;
-        /* Tapstream */
-        TSConfig *config = [TSConfig configWithDefaults];
-        [TSTapstream createWithAccountName:@"dmiedema" developerSecret:@"fjOF0VDGQ8iLcfFqnTyhlw" config:config];
-        config.collectWifiMac = NO;
-        config.idfa = _generatedUDID;
-        /* Google Anayltics */
-        [GAI sharedInstance].dispatchInterval = 20;
-        [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
-        id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-43859185-1"];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"anonymous_usage"]) {
+        [self setupTracking];
+    } else {
+        [[GAI sharedInstance] setOptOut:YES];
     }
     
     /* Push Notifications */
@@ -103,6 +92,29 @@
     controller.searchDisplayController.searchBar.showsScopeBar = NO;
     
     return YES;
+}
+
+- (void)setupTracking
+{
+    
+    /* NewRelic */
+    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
+    
+    /* Auto submit crash reports to hockey */
+    [BITHockeyManager sharedHockeyManager].crashManager.crashManagerStatus = BITCrashManagerStatusAutoSend;
+    
+    /* Tapstream */
+    TSConfig *config = [TSConfig configWithDefaults];
+    [TSTapstream createWithAccountName:@"dmiedema" developerSecret:@"fjOF0VDGQ8iLcfFqnTyhlw" config:config];
+    config.collectWifiMac = NO;
+    config.idfa = _generatedUDID;
+    
+    /* Google Anayltics */
+    
+    [GAI sharedInstance].dispatchInterval = 20;
+    [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
+    [[GAI sharedInstance] trackerWithTrackingId:@"UA-43859185-1"];
+
 }
 
 - (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {

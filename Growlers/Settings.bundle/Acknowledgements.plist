@@ -213,14 +213,6 @@ data.
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string></string>
-			<key>Title</key>
-			<string>SparkInspector</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>FooterText</key>
 			<string>Copyright 2012 Tapstream Network Inc.
 https://tapstream.com/
 
