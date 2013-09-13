@@ -28,19 +28,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    //
-    /*
-     
-     */
-    
-//    NSDate *today = [NSDate date];
-//    NSCalendar *calendar = [NSCalendar currentCalendar];
-//    NSDateComponents *component = [calendar components:(NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:today];
-//    
-//    NSLog(@"%ld", (long)component.month);
-//    NSLog(@"%ld", (long)component.day);
-    
     _generatedUDID = [NSString string];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     _generatedUDID = [defaults objectForKey:kGrowler_UUID];
@@ -52,11 +39,9 @@
     
     /* Testing */
     #if TESTING
-    
     // Hockeyapp
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"d48bfa2df88def26d6eb9cf3e0603d66" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
-    
     #endif
     
     /* If we're sending anonymous usage reports */
@@ -120,10 +105,6 @@
 #ifndef CONFIGURATION_AppStore
     NSLog(@"CONFIGURATION_AppStore");
     return _generatedUDID;
-//    if ([[UIDevice currentDevice] respondsToSelector:@selector(uniqueIdentifier)]) {
-//        NSLog(@"%@", [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)]);
-//        return [[UIDevice currentDevice] performSelector:@selector(uniqueIdentifier)];
-//    }
 #endif
     return nil;
 }
