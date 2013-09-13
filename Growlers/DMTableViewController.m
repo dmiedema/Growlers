@@ -12,8 +12,6 @@
 #import "Beer.h"
 #import "Favorites.h"
 #import "DMCoreDataMethods.h"
-#import "DRNRealTimeBlurView.h"
-
 
 @interface DMTableViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
 @property (nonatomic, strong) NSArray *beers;
