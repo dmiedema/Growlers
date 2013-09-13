@@ -30,8 +30,11 @@
 
 #define kGrowler_UUID @"Growler-UUID"
 #define kGrowler_Push_ID @"Growlers-Push-ID"
+
 #define kGrowler_Last_Selected_Store @"Growlers-Last-Selected-Location"
 #define kGrowler_Stores @[@"Keizer"]
+
+#define kGrowler_Anonymous_Usage @"anonymous_usage"
 
 
 #endif

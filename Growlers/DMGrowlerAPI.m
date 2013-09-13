@@ -39,24 +39,13 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
 
 - (void)getBeersWithFlag:(SERVER_FLAG)serverAction forStore:(NSString *)store andSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
 {
-    
-    TSTapstream *tracker = [TSTapstream instance];
-    TSEvent *e = [TSEvent eventWithName:@"getBeers" oneTimeOnly:NO];
-    
-    
-    // [NSURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]]
     NSString *requestUrlString = nil;
     if (serverAction == ALL) {
         requestUrlString = [NSString stringWithFormat:@"%@?store=all", DMGrowlerAPIURLString];
-        [e addValue:@"all" forKey:@"store"];
     }
     else {
         requestUrlString = [NSString stringWithFormat:@"%@?store=%@", DMGrowlerAPIURLString, [store lowercaseString]];
-        [e addValue:store forKey:@"store"];
     }
-    [tracker fireEvent:e];
-    
-    NSLog(@"Sending request with URL %@", requestUrlString);
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestUrlString]];
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -69,6 +58,13 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     
     [AFNetworkActivityIndicatorManager sharedManager];
     [operation start];
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kGrowler_Anonymous_Usage]) {
+        TSTapstream *tracker = [TSTapstream instance];
+        TSEvent *e = [TSEvent eventWithName:@"getBeers" oneTimeOnly:NO];
+        [e addValue:(serverAction == ALL) ? @"all" : store forKey:@"store"];
+        [tracker fireEvent:e];
+    }
 }
 
 - (void)favoriteBeer:(NSDictionary *)beer withAction:(BEER_ACTION)action withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
@@ -91,7 +87,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     
     // What am i doing with this?
-    if (([[NSUserDefaults standardUserDefaults] boolForKey:@"anonymous_usage"])) {
+    if (([[NSUserDefaults standardUserDefaults] boolForKey:kGrowler_Anonymous_Usage])) {
         if (action == FAVORITE) {
             NSLog(@"Favorite Beer");
             NSLog(@"%@", beer);

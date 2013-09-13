@@ -60,7 +60,7 @@
     #endif
     
     /* If we're sending anonymous usage reports */
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"anonymous_usage"]) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kGrowler_Anonymous_Usage]) {
         [self setupTracking];
     } else {
         [[GAI sharedInstance] setOptOut:YES];
