@@ -261,6 +261,12 @@
          
          */
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoa! Something went wrong"
+                                                            message:@"Don't worry it's not your fault! I messed up and I'm sorry. But if you could email\nappsupport@growlmovement.com\nand reference\nError Code: dog-bark\nThanks! I'm going to close now :("
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Okay"
+                                                  otherButtonTitles: nil];
+        [alertView show];
         abort();
     }
     
