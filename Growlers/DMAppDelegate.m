@@ -165,7 +165,7 @@
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoa! Something went wrong"
-                                                                message:@"Don't worry it's not your fault! I messed up and I'm sorry. But if you could email\nappsupport@growlmovement.com\nand reference\nError Code: cats-meow\nThanks! I'm going to close now :("
+                                                                message:@"Don't worry it's not your fault! I messed up and I'm sorry. But if you could email\nappsupport@growlmovement.com\nand reference\nError Code: cats-meow\nThat'd be great! Thanks! I'm going to close now :("
                                                                delegate:nil
                                                       cancelButtonTitle:@"Okay"
                                                       otherButtonTitles: nil];
@@ -243,7 +243,7 @@
          */
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoa! Something went wrong"
-                                                            message:@"Don't worry it's not your fault! I messed up and I'm sorry. But if you could email\nappsupport@growlmovement.com\nand reference\nError Code: dog-bark\nThanks! I'm going to close now :("
+                                                            message:@"Don't worry it's not your fault! I messed up and I'm sorry. But if you could email\nappsupport@growlmovement.com\nand reference\nError Code: dog-bark\nThat'd be great! Thanks! I'm going to close now :("
                                                            delegate:nil
                                                   cancelButtonTitle:@"Okay"
                                                   otherButtonTitles: nil];
