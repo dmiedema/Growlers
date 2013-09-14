@@ -12,6 +12,12 @@
 
 @interface DMAboutViewController () <MFMailComposeViewControllerDelegate, UIActionSheetDelegate>
 
+- (NSString *)supportEmailSubject;
+- (NSString *)suggestionEmailSubject;
+
+- (NSString *)supportEmailBody;
+- (NSString *)suggestionEmailBody;
+
 @end
 
 @implementation DMAboutViewController
@@ -68,8 +74,14 @@
 }
 
 - (void)contactSupport:(UIButton *)sender {
-    BITFeedbackListViewController *feedbackListViewController = [[BITFeedbackListViewController alloc] init];
-    [self.navigationController pushViewController:feedbackListViewController animated:YES];
+//    BITFeedbackListViewController *feedbackListViewController = [[BITFeedbackListViewController alloc] init];
+//    [self.navigationController pushViewController:feedbackListViewController animated:YES];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                               destructiveButtonTitle:Nil
+                                                    otherButtonTitles:@"Support", @"Suggestion", nil];
+    [actionSheet showInView:self.view];
     
 //    if ([MFMailComposeViewController canSendMail]) {
 //        MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
@@ -125,7 +137,54 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    NSLog(@"action sheet selected -- %@", [actionSheet buttonTitleAtIndex:buttonIndex]);
+    if (buttonIndex != actionSheet.cancelButtonIndex) {
+        // do shit
+        NSString *message;
+        if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Support"]) {
+            message = self.supportEmailBody;
+        } else {
+            message = self.suggestionEmailBody;
+        }
+        if ([MFMailComposeViewController canSendMail]) {
+            MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+            [mailer setMailComposeDelegate:self];
+            NSArray *recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
+            [mailer setToRecipients:recipients];
+            [mailer setSubject:[actionSheet buttonTitleAtIndex:buttonIndex]];
+            [mailer setMessageBody:message isHTML:YES];
+            [self presentViewController:mailer animated:YES completion:nil];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops" message:@"Looks like you can't send an email this way." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+        }
+    }
+}
+
+#pragma mark Email Body/Subjet
+- (NSString *)supportEmailSubject
+{
     
+    return @"Support";
+}
+
+- (NSString *)suggestionEmailSubject
+{
+    return @"Suggestion";
+}
+
+- (NSString *)supportEmailBody
+{
+    NSString *deviceModel = [[UIDevice currentDevice] model];
+    NSString *iOSVersion = [[UIDevice currentDevice] systemVersion];
+    NSString *appBuild = [[NSUserDefaults standardUserDefaults] stringForKey:@"build_preferences"];
+    NSString *appVersion = [[NSUserDefaults standardUserDefaults] stringForKey:@"version_preferences"];
+    return [NSString stringWithFormat:@"<strong>Please Describe what happened:</strong><br/><br/><br/><br/><strong>What was going on when it happened? Please be as detailed as you can:</strong><br/><br/><br/><br/>Below this line is just diagnostic stuff for me. Please leave there, it helps me a lot.<br/>Thanks!<br/><hr><br/><br/>Device: <em>%@</em><br/>iOS Version: <em>%@</em> <br/>Version: <em>%@</em><br/>Build: <em>%@</em>", deviceModel, iOSVersion, appVersion, appBuild];
+}
+
+- (NSString *)suggestionEmailBody
+{
+    return @"Any new beers you'd love to see us have?<br/>How can we make the app better?<br/>Just want to say hi?<br/>Anything you want to tell us, please do!<br/><br/><br/>";
 }
 
 @end
