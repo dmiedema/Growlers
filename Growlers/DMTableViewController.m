@@ -491,8 +491,11 @@ BOOL _performSegmentChange;
 {
     searchBar.showsScopeBar = NO;
     [searchBar sizeToFit];
-    
-    [self.tableView reloadData];
+    if (searchBar.text.length > 0) {
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    } else {
+        [self.tableView reloadData];
+    }
     return YES;
 }
 
