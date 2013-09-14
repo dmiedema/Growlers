@@ -498,6 +498,10 @@ BOOL _performSegmentChange;
     }
     return YES;
 }
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [self.tableView reloadData];
+}
 
 #pragma mark UIActionSheet
 
