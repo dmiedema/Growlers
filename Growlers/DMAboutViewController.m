@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import <MessageUI/MessageUI.h>
 
-@interface DMAboutViewController () <MFMailComposeViewControllerDelegate>
+@interface DMAboutViewController () <MFMailComposeViewControllerDelegate, UIActionSheetDelegate>
 
 @end
 
@@ -120,4 +120,12 @@
     }
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark UIAlertView Delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+}
+
 @end
