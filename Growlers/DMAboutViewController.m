@@ -141,15 +141,17 @@
     if (buttonIndex != actionSheet.cancelButtonIndex) {
         // do shit
         NSString *message;
+        NSArray *recipients;
         if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Support"]) {
             message = self.supportEmailBody;
+            recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
         } else {
             message = self.suggestionEmailBody;
+            recipients = [NSArray arrayWithObject:@"fill@growlmovement.com"];
         }
         if ([MFMailComposeViewController canSendMail]) {
             MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
             [mailer setMailComposeDelegate:self];
-            NSArray *recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
             [mailer setToRecipients:recipients];
             [mailer setSubject:[actionSheet buttonTitleAtIndex:buttonIndex]];
             [mailer setMessageBody:message isHTML:YES];
