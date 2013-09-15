@@ -167,12 +167,12 @@
 - (NSString *)supportEmailSubject
 {
     
-    return @"Support";
+    return @"[Growlers] Support";
 }
 
 - (NSString *)suggestionEmailSubject
 {
-    return @"Suggestion";
+    return @"[Growlers] Suggestion";
 }
 
 - (NSString *)supportEmailBody
@@ -186,7 +186,7 @@
 
 - (NSString *)suggestionEmailBody
 {
-    return @"Any new beers you'd love to see us have?<br/>How can we make the app better?<br/>Just want to say hi?<br/>Anything you want to tell us, please do!<br/><br/><br/>";
+    return @"Any new beers you'd love to see us have?<br/><br/>How can we make the app better?<br/><br/>Just want to say hi?<br/><br/>Anything you want to tell us, please do!<br/><br/><br/>";
 }
 
 @end
