@@ -316,7 +316,12 @@ BOOL _performSegmentChange;
     }
 //    self.beers = [_coreData getAllFavorites];
     NSLog(@"%@",self.selectedStore);
-    [self.tableView reloadData];
+    if ([self.searchDisplayController isActive]) {
+        [self updateFilteredContentForSearchString:self.searchDisplayController.searchBar.text];
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    } else {
+        [self.tableView reloadData];
+    }
 }
 
 - (void)checkForNewBeers
@@ -358,6 +363,7 @@ BOOL _performSegmentChange;
     cell.beerInfo.adjustsFontSizeToFitWidth = YES;
     
     NSDictionary *beer;
+//    if ([self.searchDisplayController isActive]) {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         beer = self.filteredBeers[indexPath.row];
     } else {
