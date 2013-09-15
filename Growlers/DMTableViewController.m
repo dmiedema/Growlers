@@ -313,7 +313,7 @@ BOOL _performSegmentChange;
     if (favorites.count > 0) {
         self.beers = favorites;
     } else {
-        self.beers = @[@{@"name": @"", @"brewer": @""}];
+        self.beers = @[@{@"name": @"No Favorites!", @"brewer": @"Go Favorite some Beers!", @"ibu": @"", @"abv": @""}];
     }
 //    self.beers = [_coreData getAllFavorites];
     NSLog(@"%@",self.selectedStore);
