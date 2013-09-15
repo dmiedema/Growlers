@@ -125,6 +125,7 @@ BOOL _performSegmentChange;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBar.topItem.title = @"Growl Movement";
     [self setNavigationBarTint];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(orientationChanged:)
