@@ -138,24 +138,16 @@
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
     request.includesPropertyValues = YES;
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    request.resultType = NSDictionaryResultType;
     
     NSError *error = nil;
     NSArray *allFavorites = [self.managedContext executeFetchRequest:request error:&error];
     
-    NSMutableArray *favoritesAsDictionarys = [NSMutableArray new];
+    NSLog(@"all favorites - %@", allFavorites);
     
-    for (Favorites *favorite in allFavorites) {
-        [favoritesAsDictionarys addObject:
-         @{@"tap_id": favorite.tap_id,
-           @"name": favorite.name,
-           @"brewer": favorite.brewer,
-           @"brew_url": (favorite.brewerURL != nil) ? favorite.brewerURL : @"url fail",
-           @"abv": favorite.abv,
-           @"ibu": favorite.ibu,
-           @"store": (favorite.store != nil) ? favorite.store : @"store"
-           }];
-    }
-    return favoritesAsDictionarys;
+    return allFavorites;
 }
 
 @end
