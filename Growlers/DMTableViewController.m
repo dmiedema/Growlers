@@ -61,6 +61,7 @@ BOOL _performSegmentChange;
 {
     [super viewWillDisappear:animated];
 //    [_coreData resetBeerDatabase:self.beers];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -115,6 +116,9 @@ BOOL _performSegmentChange;
     _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"j:m" options:0 locale:[NSLocale currentLocale]];
     _dateFormatter.defaultDate = [NSDate date];
     
+    
+    // Orientation
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 }
 
 
@@ -122,6 +126,10 @@ BOOL _performSegmentChange;
 {
     [super viewWillAppear:animated];
     [self setNavigationBarTint];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(orientationChanged:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -136,6 +144,25 @@ BOOL _performSegmentChange;
     rightSwipeGesture.numberOfTouchesRequired = 1;
     [self.tableView addGestureRecognizer:leftSwipeGesture];
     [self.tableView addGestureRecognizer:rightSwipeGesture];
+}
+
+- (BOOL)shouldAutorotate
+{
+    if (self.tableView == self.searchDisplayController.searchResultsTableView) {
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    } else {
+        [self.tableView reloadData];
+    }
+    return YES;
+}
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    if (self.tableView == self.searchDisplayController.searchResultsTableView) {
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    } else {
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark Implementation
