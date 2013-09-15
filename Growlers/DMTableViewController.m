@@ -146,16 +146,6 @@ BOOL _performSegmentChange;
     [self.tableView addGestureRecognizer:rightSwipeGesture];
 }
 
-- (BOOL)shouldAutorotate
-{
-    if ([self.searchDisplayController isActive]) {
-        [self.searchDisplayController.searchResultsTableView reloadData];
-    } else {
-        [self.tableView reloadData];
-    }
-    return YES;
-}
-
 - (void)orientationChanged:(NSNotification *)notification
 {
     if ([self.searchDisplayController isActive]) {
@@ -305,7 +295,12 @@ BOOL _performSegmentChange;
         if (action == ON_TAP) {
             [self checkForNewBeers];
         }
-        [self.tableView reloadData];
+        if ([self.searchDisplayController isActive]) {
+            [self updateFilteredContentForSearchString:self.searchDisplayController.searchBar.text];
+            [self.searchDisplayController.searchResultsTableView reloadData];
+        } else {
+            [self.tableView reloadData];
+        }
     } andFailure:^(id JSON) {
         NSLog(@"Error - %@", JSON);
     }];
@@ -340,7 +335,7 @@ BOOL _performSegmentChange;
 {
     // Return the number of rows in the section.
     // Based on which I'm showing, filtered results or full list
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if ([self.searchDisplayController isActive]) {
         return self.filteredBeers.count;
     } else {
         return self.beers.count;
