@@ -145,8 +145,10 @@
     NSError *error = nil;
     NSArray *allFavorites = [self.managedContext executeFetchRequest:request error:&error];
     
-    NSLog(@"all favorites - %@", allFavorites);
-    
+    if (error) {
+        NSLog(@"Error - %@", error);
+        return nil;
+    }
     return allFavorites;
 }
 

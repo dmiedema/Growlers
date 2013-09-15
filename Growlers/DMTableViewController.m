@@ -254,12 +254,10 @@ BOOL _performSegmentChange;
 
 - (void)loadBeers
 {
-    NSLog(@"Load beers called");
     // if we're spinnin' and refreshin'
     // ... stop it.
     
     if (self.refreshControl.bounds.size.height >= 65 && self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) {
-        NSLog(@"reseting beer database");
         [self resetHighlightedBeers];
     }
     
@@ -281,17 +279,13 @@ BOOL _performSegmentChange;
     
     // if we're on favorites, we shouldn't be here. Bail.
     if (self.headerSegmentControl.selectedSegmentIndex == SHOW_FAVORITES) {
-        NSLog(@"ViewingFavorites");
         return;
     }
     
     // check segment control to see what action I should perform
     SERVER_FLAG action = (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) ? ON_TAP : ALL;
     
-    NSLog(@"Selected Store %@", self.selectedStore);
-    
     [[DMGrowlerAPI sharedInstance] getBeersWithFlag:action forStore:self.selectedStore andSuccess:^(id JSON) {
-        NSLog(@"Network Call succeeded");
         self.beers = JSON;
         if (action == ON_TAP) {
             [self checkForNewBeers];
@@ -315,8 +309,6 @@ BOOL _performSegmentChange;
     } else {
         self.beers = @[@{@"name": @"No Favorites!", @"brewer": @"Go Favorite some Beers!", @"ibu": @"", @"abv": @""}];
     }
-//    self.beers = [_coreData getAllFavorites];
-    NSLog(@"%@",self.selectedStore);
     if ([self.searchDisplayController isActive]) {
         [self updateFilteredContentForSearchString:self.searchDisplayController.searchBar.text];
         [self.searchDisplayController.searchResultsTableView reloadData];
@@ -536,7 +528,6 @@ BOOL _performSegmentChange;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"%@", self.selectedStore);
     if (actionSheet.cancelButtonIndex != buttonIndex) {
         self.selectedStore = [actionSheet buttonTitleAtIndex:buttonIndex];
         [[NSUserDefaults standardUserDefaults] setObject:self.selectedStore forKey:kGrowler_Last_Selected_Store];
