@@ -148,7 +148,7 @@ BOOL _performSegmentChange;
 
 - (BOOL)shouldAutorotate
 {
-    if (self.tableView == self.searchDisplayController.searchResultsTableView) {
+    if ([self.searchDisplayController isActive]) {
         [self.searchDisplayController.searchResultsTableView reloadData];
     } else {
         [self.tableView reloadData];
@@ -158,7 +158,7 @@ BOOL _performSegmentChange;
 
 - (void)orientationChanged:(NSNotification *)notification
 {
-    if (self.tableView == self.searchDisplayController.searchResultsTableView) {
+    if ([self.searchDisplayController isActive]) {
         [self.searchDisplayController.searchResultsTableView reloadData];
     } else {
         [self.tableView reloadData];
