@@ -346,13 +346,8 @@ BOOL _performSegmentChange;
     DMGrowlerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
     // try my best to make everything fit.
-    cell.beerName.adjustsLetterSpacingToFitWidth = YES;
     cell.beerName.adjustsFontSizeToFitWidth = YES;
-    
-    cell.brewery.adjustsLetterSpacingToFitWidth = YES;
     cell.brewery.adjustsFontSizeToFitWidth = YES;
-    
-    cell.beerInfo.adjustsLetterSpacingToFitWidth = YES;
     cell.beerInfo.adjustsFontSizeToFitWidth = YES;
     
     NSDictionary *beer;
