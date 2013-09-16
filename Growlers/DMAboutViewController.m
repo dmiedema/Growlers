@@ -74,25 +74,12 @@
 }
 
 - (void)contactSupport:(UIButton *)sender {
-//    BITFeedbackListViewController *feedbackListViewController = [[BITFeedbackListViewController alloc] init];
-//    [self.navigationController pushViewController:feedbackListViewController animated:YES];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
                                                     cancelButtonTitle:@"Cancel"
                                                destructiveButtonTitle:Nil
                                                     otherButtonTitles:@"Support", @"Suggestion", nil];
     [actionSheet showInView:self.view];
-    
-//    if ([MFMailComposeViewController canSendMail]) {
-//        MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
-//        [mailer setMailComposeDelegate:self];
-//        NSArray *recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
-//        [mailer setToRecipients:recipients];
-//        [self presentViewController:mailer animated:YES completion:nil];
-//    } else {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops" message:@"Looks like you can't send an email this way." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//        [alert show];
-//    }
 }
 
 - (IBAction)showTutorial:(UIButton *)sender {
