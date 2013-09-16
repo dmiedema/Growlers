@@ -37,13 +37,6 @@
         [defaults synchronize];
     }
     
-    /* Testing */
-    #if TESTING
-    // Hockeyapp
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"d48bfa2df88def26d6eb9cf3e0603d66" delegate:self];
-    [[BITHockeyManager sharedHockeyManager] startManager];
-    #endif
-    
     /* If we're sending anonymous usage reports */
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kGrowler_Anonymous_Usage]) {
         [self setupTracking];
@@ -86,7 +79,9 @@
     [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
     
     /* Auto submit crash reports to hockey */
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"eac2fa62b5ac25511d75922841177a8a" delegate:self];
     [BITHockeyManager sharedHockeyManager].crashManager.crashManagerStatus = BITCrashManagerStatusAutoSend;
+    [[BITHockeyManager sharedHockeyManager] startManager];
     
     /* Tapstream */
     TSConfig *config = [TSConfig configWithDefaults];
@@ -99,14 +94,6 @@
     [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-43859185-1"];
 
-}
-
-- (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
-#ifndef CONFIGURATION_AppStore
-    NSLog(@"CONFIGURATION_AppStore");
-    return _generatedUDID;
-#endif
-    return nil;
 }
 
 #pragma mark - Push Notifications
