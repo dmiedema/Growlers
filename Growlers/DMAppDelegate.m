@@ -131,9 +131,13 @@
             DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedObjectContext];
             [parameters setValue:[[NSUserDefaults standardUserDefaults] stringForKey:kGrowler_Last_Selected_Store] forKey:@"store"];
             if(![coreData isBeerFavorited:parameters]) {
-                [[DMGrowlerAPI sharedInstance] favoriteBeer:parameters withAction:FAVORITE withSuccess:^(id JSON) {
+                [[DMGrowlerAPI sharedInstance] favoriteBeer:parameters
+                                                 withAction:FAVORITE
+                                                withSuccess:^(id JSON) {
                     [coreData favoriteBeer:parameters];
-                } andFailure:nil];
+                }
+                                                 andFailure:nil
+                 ];
             }
             return YES;
         }
