@@ -12,6 +12,8 @@
 #import "TSTapstream.h"
 // google analytics
 #import "GAI.h"
+// CoreDataMethods for URL handling
+#import "DMCoreDataMethods.h"
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
@@ -109,6 +111,29 @@
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
 	NSLog(@"Failed to get token, error: %@", error);
+}
+
+#pragma mark - Handling URL Request
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    // Make sure we have a valid URL scheme
+    if ([url.scheme isEqualToString:@"gmtaplist"]) {
+        NSArray *queryParameters = [url.query componentsSeparatedByString:@"&"];
+        NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithCapacity:queryParameters.count];
+        for (NSString *param in queryParameters) {
+            NSArray *args = [param componentsSeparatedByString:@"="];
+            [parameters setValue:args[1] forKey:args[0]];
+        }
+        
+        // make sure beer & brewer are set
+        if([parameters.allKeys containsObject:@"beer"] && [parameters.allKeys containsObject:@"brewer"]) {
+            DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedObjectContext];
+            [parameters setValue:[[NSUserDefaults standardUserDefaults] stringForKey:kGrowler_Last_Selected_Store] forKey:@"store"];
+            [coreData favoriteBeer:parameters];
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
