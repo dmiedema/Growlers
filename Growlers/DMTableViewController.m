@@ -411,8 +411,9 @@ BOOL _performSegmentChange;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 34.0f)];
-    headerView.backgroundColor = [UIColor whiteColor];
+    headerView.backgroundColor = [UIColor clearColor];
     self.headerSegmentControl.frame = CGRectInset(headerView.frame, 12, 4);
+    self.headerSegmentControl.backgroundColor = [UIColor whiteColor];
     [headerView addSubview:self.headerSegmentControl];
     return headerView;
 }
