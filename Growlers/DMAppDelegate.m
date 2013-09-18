@@ -129,12 +129,17 @@
         // make sure beer & brewer are set
         if([parameters.allKeys containsObject:@"beer"] && [parameters.allKeys containsObject:@"brewer"]) {
             DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedObjectContext];
-            [parameters setValue:[[NSUserDefaults standardUserDefaults] stringForKey:kGrowler_Last_Selected_Store] forKey:@"store"];
+            if (parameters[@"store"] == [NSNull null]) {
+                [parameters setValue:[[NSUserDefaults standardUserDefaults] stringForKey:kGrowler_Last_Selected_Store] forKey:@"store"];
+            }
+            
+            NSLog(@"%@", parameters);
             if(![coreData isBeerFavorited:parameters]) {
                 [[DMGrowlerAPI sharedInstance] favoriteBeer:parameters
                                                  withAction:FAVORITE
                                                 withSuccess:^(id JSON) {
-                    [coreData favoriteBeer:parameters];
+                                                    NSLog(@"favorited! %@", parameters);
+                                                    [coreData favoriteBeer:parameters];
                 }
                                                  andFailure:nil
                  ];
