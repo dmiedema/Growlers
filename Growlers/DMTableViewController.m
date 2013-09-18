@@ -413,7 +413,7 @@ BOOL _performSegmentChange;
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 34.0f)];
     headerView.backgroundColor = [UIColor clearColor];
     self.headerSegmentControl.frame = CGRectInset(headerView.frame, 12, 4);
-    self.headerSegmentControl.backgroundColor = [UIColor whiteColor];
+    self.headerSegmentControl.backgroundColor = [UIColor colorWithWhite:1 alpha:0.85];
     [headerView addSubview:self.headerSegmentControl];
     return headerView;
 }
