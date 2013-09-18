@@ -436,6 +436,10 @@ BOOL _performSegmentChange;
         beer = self.beers[indexPath.row];
     }
     
+    if ([beer[@"name"] isEqualToString:@"No Favorites!"] && [beer[@"brewer"] isEqualToString:@"Go Favorite some Beers!"]) {
+        return;
+    }
+    
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Push_ID];
     
     if ([_coreData isBeerFavorited:beer]) {
