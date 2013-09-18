@@ -125,7 +125,7 @@
             NSArray *args = [param componentsSeparatedByString:@"="];
             [parameters setValue:[args[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] forKey:args[0]];
         }
-        
+        NSLog(@"parameters %@", parameters);
         // make sure beer & brewer are set
         if([parameters.allKeys containsObject:@"beer"] && [parameters.allKeys containsObject:@"brewer"]) {
             DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedObjectContext];
