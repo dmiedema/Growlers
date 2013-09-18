@@ -437,6 +437,7 @@ BOOL _performSegmentChange;
     }
     
     if ([beer[@"name"] isEqualToString:@"No Favorites!"] && [beer[@"brewer"] isEqualToString:@"Go Favorite some Beers!"]) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
     
