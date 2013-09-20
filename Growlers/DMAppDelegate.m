@@ -29,6 +29,8 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
+#pragma mark Implementation
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     _generatedUDID = [NSString string];
@@ -75,6 +77,7 @@
     return YES;
 }
 
+#pragma mark Statistics
 - (void)setupTracking
 {
     
@@ -115,7 +118,7 @@
 }
 
 #pragma mark - Handling URL Request
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     // Make sure we have a valid URL scheme
     if ([url.scheme isEqualToString:@"gmtaplist"]) {
@@ -126,11 +129,15 @@
             [parameters setValue:[args[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] forKey:args[0]];
         }
         NSLog(@"parameters %@", parameters);
+        NSLog(@"Parameters keys %@", parameters.allKeys);
+        NSLog(@"contains name - %d", [parameters.allKeys containsObject:@"name"]);
+        NSLog(@"contains brewer - %d", [parameters.allKeys containsObject:@"brewer"]);        
         // make sure beer & brewer are set
-        if([parameters.allKeys containsObject:@"beer"] && [parameters.allKeys containsObject:@"brewer"]) {
+        if([parameters.allKeys containsObject:@"name"] && [parameters.allKeys containsObject:@"brewer"]) {
             DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedObjectContext];
             if (parameters[@"store"] == [NSNull null]) {
                 [parameters setValue:[[NSUserDefaults standardUserDefaults] stringForKey:kGrowler_Last_Selected_Store] forKey:@"store"];
+                NSLog(@"Store param set");
             }
             
             NSLog(@"%@", parameters);
@@ -146,7 +153,9 @@
             }
             return YES;
         }
+        return YES;
     }
+    // url.scheme isn't gmtaplist
     return NO;
 }
 
