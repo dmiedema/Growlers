@@ -116,7 +116,6 @@ BOOL _performSegmentChange;
     _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"j:m" options:0 locale:[NSLocale currentLocale]];
     _dateFormatter.defaultDate = [NSDate date];
     
-    
     // Orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 }
@@ -469,7 +468,6 @@ BOOL _performSegmentChange;
             NSLog(@"Favoriting failed: %@", JSON);
         }];
     }
-    
 
     // Deselect the row.
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
