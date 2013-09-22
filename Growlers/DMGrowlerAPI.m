@@ -57,7 +57,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     [AFNetworkActivityIndicatorManager sharedManager];
     [operation start];
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kGrowler_Anonymous_Usage]) {
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
         TSTapstream *tracker = [TSTapstream instance];
         TSEvent *e = [TSEvent eventWithName:@"getBeers" oneTimeOnly:NO];
         [e addValue:(serverAction == ALL) ? @"all" : store forKey:@"store"];
@@ -85,7 +85,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     
     // What am i doing with this?
-    if (([[NSUserDefaults standardUserDefaults] boolForKey:kGrowler_Anonymous_Usage])) {
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
         if (action == FAVORITE) {
             NSLog(@"Favorite Beer");
             NSLog(@"%@", beer);
