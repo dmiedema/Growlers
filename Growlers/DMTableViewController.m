@@ -8,7 +8,7 @@
 
 #import "DMTableViewController.h"
 #import "DMGrowlerTableViewCell.h"
-#import "DMAboutViewController.h"
+#import "DMSettingsTableViewController.h"
 #import "Beer.h"
 #import "Favorites.h"
 #import "DMCoreDataMethods.h"
@@ -29,7 +29,7 @@
 
 - (void)loadBeers;
 - (void)loadFavorites;
-- (void)about:(id)sender;
+- (void)settings:(id)sender;
 - (void)showActionSheet:(id)sender;
 
 - (void)resetHighlightedBeers;
@@ -69,11 +69,11 @@ BOOL _performSegmentChange;
     [super viewDidLoad];
     
     // get my udid for favoriting
-    _udid = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_UUID];
+    _udid = [DMDefaultsInterfaceConstants generatedUDID];
     
     // ActionSheet and Selected Store
-    _growlMovementStores = kGrowler_Stores;
-    NSString *lastSelectedStore = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Last_Selected_Store];
+    _growlMovementStores = [DMDefaultsInterfaceConstants stores];
+    NSString *lastSelectedStore = [DMDefaultsInterfaceConstants lastStore];
     self.selectedStore = lastSelectedStore ? lastSelectedStore : _growlMovementStores[0];
     
     // Load up my .xib 
@@ -90,10 +90,12 @@ BOOL _performSegmentChange;
     [self loadBeers];
     
     // Setup Navigation Bar button Items
-    UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleBordered target:self action:@selector(about:)];
-//    UIBarButtonItem *storeButton = [[UIBarButtonItem alloc] initWithTitle:@"Store" style:UIBarButtonItemStyleBordered target:self action:@selector(showActionSheet:)];
+    UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings:)];
+    UIBarButtonItem *storeButton = [[UIBarButtonItem alloc] initWithTitle:@"Store" style:UIBarButtonItemStyleBordered target:self action:@selector(showActionSheet:)];
     self.navigationItem.leftBarButtonItem = info;
-//    self.navigationItem.rightBarButtonItem = storeButton;
+    // If multiple stores -- show store button
+    if([DMDefaultsInterfaceConstants multipleStoresEnabled])
+        self.navigationItem.rightBarButtonItem = storeButton;
     
     // Modify Search Controller
     self.searchDisplayController.delegate = self;
@@ -440,7 +442,7 @@ BOOL _performSegmentChange;
         return;
     }
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Push_ID];
+    NSString *token = [DMDefaultsInterfaceConstants pushID];
     
     if ([_coreData isBeerFavorited:beer]) {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [self.selectedStore lowercaseString], @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
@@ -529,17 +531,17 @@ BOOL _performSegmentChange;
 {
     if (actionSheet.cancelButtonIndex != buttonIndex) {
         self.selectedStore = [actionSheet buttonTitleAtIndex:buttonIndex];
-        [[NSUserDefaults standardUserDefaults] setObject:self.selectedStore forKey:kGrowler_Last_Selected_Store];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [DMDefaultsInterfaceConstants setLastStore:self.selectedStore];
     }
 }
 
 #pragma mark Navigation/BarButtonItems
 
-- (void)about:(id)sender
+- (void)settings:(id)sender
 {
-    DMAboutViewController *aboutView = [self.storyboard instantiateViewControllerWithIdentifier:@"DMAboutViewController"];
-    [self.navigationController pushViewController:aboutView animated:YES];
+    
+    DMSettingsTableViewController *settingsView = [self.storyboard instantiateViewControllerWithIdentifier:@"DMSettingsTableViewController"];
+    [self.navigationController pushViewController:settingsView animated:YES];
 }
 
 - (void)showActionSheet:(id)sender
