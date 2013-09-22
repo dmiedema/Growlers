@@ -34,16 +34,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     _generatedUDID = [NSString string];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    _generatedUDID = [defaults objectForKey:kGrowler_UUID];
+    _generatedUDID = [DMDefaultsInterfaceConstants generatedUDID];
     if (_generatedUDID == nil) {
         _generatedUDID = [[NSUUID UUID] UUIDString];
-        [defaults setObject:_generatedUDID forKey:kGrowler_UUID];
-        [defaults synchronize];
+        [DMDefaultsInterfaceConstants setGeneratedUDID:_generatedUDID];
     }
     
     /* If we're sending anonymous usage reports */
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kGrowler_Anonymous_Usage]) {
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
         [self setupTracking];
     } else {
         [[GAI sharedInstance] setOptOut:YES];
@@ -67,6 +65,9 @@
     
     /* AFNetworking indicator */
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    
+    /* Multiple Stores */
+    [DMDefaultsInterfaceConstants setMultipleStoresEnabled:YES];
     
     /* Launch */
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
@@ -107,8 +108,7 @@
 {
     NSString *token = [deviceToken.description stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
-    [[NSUserDefaults standardUserDefaults] setObject:token forKey:kGrowler_Push_ID];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [DMDefaultsInterfaceConstants setPushID:token];
 	NSLog(@"My token is: %@", token);
 }
 
@@ -136,7 +136,7 @@
         if([parameters.allKeys containsObject:@"name"] && [parameters.allKeys containsObject:@"brewer"]) {
             DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedObjectContext];
             if (parameters[@"store"] == [NSNull null]) {
-                [parameters setValue:[[NSUserDefaults standardUserDefaults] stringForKey:kGrowler_Last_Selected_Store] forKey:@"store"];
+                [parameters setValue:[DMDefaultsInterfaceConstants lastStore] forKey:@"store"];
                 NSLog(@"Store param set");
             }
             
