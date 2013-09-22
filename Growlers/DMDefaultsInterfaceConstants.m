@@ -21,8 +21,10 @@ static NSString *askedAboutSharing = @"Growlers_Asked_About_Sharing";
 // UDID
 static NSString *generatedUDID = @"Growler-UUID";
 static NSString *pushID = @"Growlers-Push-ID";
-// Last Store
+// Store
 static NSString *lastSelectedStore = @"Growlers-Last-Selected-Location";
+static NSString *preferredStore = @"Growlers_Preferred_Store";
+static NSString *multipleStoresKey =@"Growlers_Multiple_Stores";
 // Anonymouse
 static NSString *anonymousUsage = @"anonymous_usage";
 
@@ -46,9 +48,17 @@ static NSString *anonymousUsage = @"anonymous_usage";
     return [[NSUserDefaults standardUserDefaults] boolForKey:askedAboutSharing];
 }
 // Store
++ (BOOL)multipleStoresEnabled
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:multipleStoresKey];
+}
 + (NSString *)lastStore
 {
     return [[NSUserDefaults standardUserDefaults] stringForKey:lastSelectedStore];
+}
++ (NSString *)preferredStore
+{
+    return [[NSUserDefaults standardUserDefaults] stringForKey:preferredStore];
 }
 + (NSArray *)stores
 {
@@ -84,9 +94,19 @@ static NSString *anonymousUsage = @"anonymous_usage";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 // Store
++ (void)setMultipleStoresEnabled:(BOOL)weBallin
+{
+    [[NSUserDefaults standardUserDefaults] setBool:weBallin forKey:multipleStoresKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 + (void)setLastStore:(NSString *)lastStore
 {
     [[NSUserDefaults standardUserDefaults] setValue:lastStore forKey:lastSelectedStore];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
++ (void)setPreferredStore:(NSString *)preferred
+{
+    [[NSUserDefaults standardUserDefaults] setValue:preferred forKey:preferredStore];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 // Push/UDID

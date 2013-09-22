@@ -14,7 +14,9 @@
 + (BOOL)shareWithFacebookOnFavorite;
 + (BOOL)shareWithTwitterOnFavorite;
 + (BOOL)askedAboutSharing;
++ (BOOL)multipleStoresEnabled;
 + (NSString *)lastStore;
++ (NSString *)preferredStore;
 + (NSArray *)stores;
 + (NSString *)pushID;
 + (NSString *)generatedUDID;
@@ -23,10 +25,11 @@
 + (void)shareWithFacebookOnFavorite:(BOOL)imSocial;
 + (void)shareWithTwitterOnFavorite:(BOOL)imSocial;
 + (void)askedAboutSharing:(BOOL)imSocial;
++ (void)setMultipleStoresEnabled:(BOOL)weBallin;
 + (void)setPushID:(NSString *)pushID;
 + (void)setGeneratedUDID:(NSString *)generatedUDID;
 + (void)setLastStore:(NSString *)lastStore;
-
++ (void)setPreferredStore:(NSString *)preferredStore;
 + (void)batchUpdate:(NSArray *)updateValues;
 
 @end
