@@ -15,11 +15,11 @@
 @property (nonatomic) BOOL multipleStores;
 - (void)handeStore;
 // About
-- (void)handleAbout:(int)index;
+- (void)handleAbout:(NSInteger)index;
 // Social
-- (void)handleSocial:(int)index;
+- (void)handleSocial:(NSInteger)index;
 // Feedback Email
-- (void)handleSupport:(int)index;
+- (void)handleSupport:(NSInteger)index;
 - (NSString *)suggestionEmailSubject;
 - (NSString *)suggestionEmailBody;
 - (NSString *)supportEmailSubject;
@@ -92,7 +92,7 @@
 }
 
 #pragma mark Implementation
-- (void)handleAbout:(int)index
+- (void)handleAbout:(NSInteger)index
 {
     switch (index) {
         case 0: // about
@@ -112,7 +112,7 @@
     }
 }
 
-- (void)handleSocial:(int)index
+- (void)handleSocial:(NSInteger)index
 {
     switch (index) {
         case 0:
@@ -146,7 +146,7 @@
     [actionSheet showInView:self.view];
 }
 
-- (void)handleSupport:(int)index
+- (void)handleSupport:(NSInteger)index
 {
     NSString *subject;
     NSString *message;

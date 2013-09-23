@@ -38,7 +38,7 @@
 - (BOOL)checkIfOpen;
 - (void)setNavigationBarTint;
 
-- (int)getToday;
+- (NSInteger)getToday;
 - (BOOL)checkToday:(id)tapID;
 - (BOOL)checkLastDateOfMonth;
 
@@ -209,14 +209,14 @@ BOOL _performSegmentChange;
     }
 }
 
-- (int)getToday
+- (NSInteger)getToday
 {
     NSDate *today = [NSDate date];
     NSCalendar *calendar = [NSCalendar currentCalendar];
     
     NSDateComponents *todaysDate = [calendar components:(NSDayCalendarUnit) fromDate:today];
     
-    return [todaysDate day];
+    return todaysDate.day;
 }
 
 - (BOOL)checkToday:(id)tap_id
@@ -231,8 +231,8 @@ BOOL _performSegmentChange;
     
     NSDateComponents *todaysDate = [calendar components:(NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:today];
     
-    int month = todaysDate.month;
-    int day   = todaysDate.day;
+    int month = (int)todaysDate.month;
+    int day   = (int)todaysDate.day;
     
     switch (month) {
         case 1:
