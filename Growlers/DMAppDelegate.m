@@ -78,6 +78,14 @@
     return YES;
 }
 
+#pragma mark - BITUpdateManagerDelegate
+- (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
+#ifndef CONFIGURATION_AppStore
+    return _generatedUDID;
+#endif
+    return nil;
+}
+
 #pragma mark Statistics
 - (void)setupTracking
 {
@@ -86,7 +94,7 @@
 //    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
     
     /* Auto submit crash reports to hockey */
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"eac2fa62b5ac25511d75922841177a8a" delegate:self];
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"c4e28d986734b9f0c8b5716244112805" delegate:self];
     [BITHockeyManager sharedHockeyManager].crashManager.crashManagerStatus = BITCrashManagerStatusAutoSend;
     [[BITHockeyManager sharedHockeyManager] startManager];
     
