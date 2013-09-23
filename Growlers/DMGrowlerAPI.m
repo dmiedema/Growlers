@@ -82,10 +82,10 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     [AFNetworkActivityIndicatorManager sharedManager];
     [operation start];
     
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    
     // What am i doing with this?
+    
     if ([DMDefaultsInterfaceConstants anonymousUsage]) {
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
         if (action == FAVORITE) {
             NSLog(@"Favorite Beer");
             NSLog(@"%@", beer);
