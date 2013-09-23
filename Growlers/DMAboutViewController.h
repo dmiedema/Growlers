@@ -9,7 +9,4 @@
 #import <UIKit/UIKit.h>
 
 @interface DMAboutViewController : UIViewController
-- (IBAction)checkUsOut:(UIButton *)sender;
-- (IBAction)contactSupport:(id)sender;
-- (IBAction)showTutorial:(UIButton *)sender;
 @end
