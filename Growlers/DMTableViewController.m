@@ -445,7 +445,7 @@ BOOL _performSegmentChange;
     NSString *token = [DMDefaultsInterfaceConstants pushID];
     
     if ([_coreData isBeerFavorited:beer]) {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [self.selectedStore lowercaseString], @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [[DMDefaultsInterfaceConstants preferredStore] lowercaseString], @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
             // CoreData Save
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = self.selectedStore;
@@ -458,7 +458,7 @@ BOOL _performSegmentChange;
         }];
     }
     else {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [self.selectedStore lowercaseString], @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [[DMDefaultsInterfaceConstants preferredStore] lowercaseString], @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
             // CoreData save
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = self.selectedStore;
@@ -539,7 +539,6 @@ BOOL _performSegmentChange;
 
 - (void)settings:(id)sender
 {
-    
     DMSettingsTableViewController *settingsView = [self.storyboard instantiateViewControllerWithIdentifier:@"DMSettingsTableViewController"];
     [self.navigationController pushViewController:settingsView animated:YES];
 }
@@ -548,9 +547,15 @@ BOOL _performSegmentChange;
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
-                                                    cancelButtonTitle:@"Cancel"
+                                                    cancelButtonTitle:nil
                                                destructiveButtonTitle:Nil
-                                                    otherButtonTitles:@"Keizer", nil];
+                                                    otherButtonTitles:nil];
+    
+    for (NSString *store in [DMDefaultsInterfaceConstants stores]) {
+        [actionSheet addButtonWithTitle:store];
+    }
+    [actionSheet addButtonWithTitle:@"Cancel"];
+    actionSheet.cancelButtonIndex = [DMDefaultsInterfaceConstants stores].count;
     [actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
