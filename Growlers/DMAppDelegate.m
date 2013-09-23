@@ -8,10 +8,10 @@
 
 #import "DMAppDelegate.h"
 #import "DMTableViewController.h"
-#import <NewRelicAgent/NewRelicAgent.h>
+//#import <NewRelicAgent/NewRelicAgent.h>
 #import "TSTapstream.h"
 // google analytics
-#import "GAI.h"
+//#import "GAI.h"
 // CoreDataMethods for URL handling
 #import "DMCoreDataMethods.h"
 #import "DMGrowlerAPI.h"
@@ -44,7 +44,7 @@
     if ([DMDefaultsInterfaceConstants anonymousUsage]) {
         [self setupTracking];
     } else {
-        [[GAI sharedInstance] setOptOut:YES];
+//        [[GAI sharedInstance] setOptOut:YES];
     }
     
     /* Push Notifications */
@@ -83,7 +83,7 @@
 {
     
     /* NewRelic */
-    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
+//    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
     
     /* Auto submit crash reports to hockey */
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"eac2fa62b5ac25511d75922841177a8a" delegate:self];
@@ -97,9 +97,9 @@
     config.idfa = _generatedUDID;
     
     /* Google Anayltics */
-    [GAI sharedInstance].dispatchInterval = 20;
-    [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
-    [[GAI sharedInstance] trackerWithTrackingId:@"UA-43859185-1"];
+//    [GAI sharedInstance].dispatchInterval = 20;
+//    [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
+//    [[GAI sharedInstance] trackerWithTrackingId:@"UA-43859185-1"];
 
 }
 
