@@ -11,5 +11,6 @@
 @interface DMSettingsTableViewController : UITableViewController
 @property (strong, nonatomic) IBOutlet UISwitch *facebookSharing;
 @property (strong, nonatomic) IBOutlet UISwitch *twitterSharing;
+@property (strong, nonatomic) IBOutlet UILabel *preferredStore;
 
 @end
