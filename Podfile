@@ -1,15 +1,17 @@
-platform :ios, '6.0'
+platform :ios, '7.0'
 pod 'AFNetworking', '~> 1'
 #pod 'DerpKit'
-#pod 'TestFlightSDK'
 pod 'HockeySDK'
-#pod 'MYIntroduction', :git => 'https://github.com/MatthewYork/iPhone-IntroductionTutorial.git'
 
 #pod 'SparkInspector'
-pod 'NewRelicAgent'
+#pod 'NewRelicAgent'
 pod 'Tapstream'
-pod 'GoogleAnalytics-iOS-SDK'
+#pod 'GoogleAnalytics-iOS-SDK'
 #pod 'OHAttributedLabel'
+
+# Testing
+pod 'SDScreenshotCapture'
+
 
 post_install do | installer |
   require 'fileutils'
