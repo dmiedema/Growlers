@@ -9,6 +9,7 @@
 #import "DMTableViewController.h"
 #import "DMGrowlerTableViewCell.h"
 #import "DMSettingsTableViewController.h"
+#import "DMHelperMethods.h"
 #import "Beer.h"
 #import "Favorites.h"
 #import "DMCoreDataMethods.h"
@@ -35,12 +36,12 @@
 - (void)showActionSheet:(id)sender;
 
 - (void)resetHighlightedBeers;
-- (BOOL)checkIfOpen;
+//- (BOOL)checkIfOpen;
 - (void)setNavigationBarTint;
 
-- (NSInteger)getToday;
-- (BOOL)checkToday:(id)tapID;
-- (BOOL)checkLastDateOfMonth;
+//- (NSInteger)getToday;
+//- (BOOL)checkToday:(id)tapID;
+//- (BOOL)checkLastDateOfMonth;
 
 //** Social
 - (void)letsBeSocial:(NSDictionary *)beer;
@@ -165,24 +166,6 @@ BOOL _performSegmentChange;
 }
 
 #pragma mark Implementation
-- (BOOL)checkIfOpen
-{
-    // Get today
-    NSDate *today = [NSDate date];
-    // Get users calendar
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    // Get date compontents
-    NSDateComponents *weekdayComponents = [calendar components:(NSWeekdayCalendarUnit | NSHourCalendarUnit) fromDate:today];
-    // Get the values out.
-    NSInteger hour = [weekdayComponents hour];
-    NSInteger weekday = [weekdayComponents weekday];
-    
-    if (weekday < 5) { // If we're before Friday, noon - 8
-        return hour > 11 && hour < 20;
-    } else { // Friday and Saturday, 11 to 11
-        return hour > 10 && hour < 23;
-    }
-}
 
 - (void)setNavigationBarTint
 {
@@ -192,7 +175,7 @@ BOOL _performSegmentChange;
         self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
         self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
     } else {
-        if ([self checkIfOpen]) {
+        if ([DMHelperMethods checkIfOpen]) {
             //            UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
             UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
             self.navigationController.navigationBar.tintColor = growlYellow;
@@ -207,57 +190,6 @@ BOOL _performSegmentChange;
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
-}
-
-- (NSInteger)getToday
-{
-    NSDate *today = [NSDate date];
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    
-    NSDateComponents *todaysDate = [calendar components:(NSDayCalendarUnit) fromDate:today];
-    
-    return todaysDate.day;
-}
-
-- (BOOL)checkToday:(id)tap_id
-{
-    return [tap_id integerValue] == [self getToday];
-}
-
-- (BOOL)checkLastDateOfMonth
-{
-    NSDate *today = [NSDate date];
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    
-    NSDateComponents *todaysDate = [calendar components:(NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:today];
-    
-    int month = (int)todaysDate.month;
-    int day   = (int)todaysDate.day;
-    
-    switch (month) {
-        case 1:
-        case 3:
-        case 5:
-        case 7:
-        case 8:
-        case 10:
-        case 12:
-            return day == 31;
-            break;
-        case 2:
-            return day == 28;
-            break;
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-            return day == 30;
-            break;
-        default:
-            return NO;
-            break;
-    }
-    return NO;
 }
 
 - (void)loadBeers
@@ -382,7 +314,9 @@ BOOL _performSegmentChange;
     // Get ID and check for today == tap.id and highlight
     // last day of month, ending ones go on sale
     if (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP &&
-        ([self checkToday:beer[@"tap_id"]] || ([self checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= self.getToday ))
+        ([DMHelperMethods checkToday:beer[@"tap_id"]] ||
+         ([DMHelperMethods checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= [DMHelperMethods getToday] )
+         )
         )
     {
         cell.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.35];
