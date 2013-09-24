@@ -290,7 +290,6 @@ BOOL _performSegmentChange;
     cell.beerInfo.adjustsFontSizeToFitWidth = YES;
     
     NSDictionary *beer;
-//    if ([self.searchDisplayController isActive]) {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         beer = self.filteredBeers[indexPath.row];
     } else {
@@ -390,7 +389,7 @@ BOOL _performSegmentChange;
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": preferredStore, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
             // CoreData Save
             NSMutableDictionary *favBeer = [beer mutableCopy];
-            favBeer[@"store"] = self.selectedStore;
+            favBeer[@"store"] = preferredStore;
             [_coreData unFavoriteBeer:favBeer];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor clearColor];
@@ -403,7 +402,7 @@ BOOL _performSegmentChange;
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": preferredStore, @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
             // CoreData save
             NSMutableDictionary *favBeer = [beer mutableCopy];
-            favBeer[@"store"] = self.selectedStore;
+            favBeer[@"store"] = preferredStore;
             [_coreData favoriteBeer:favBeer];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
@@ -583,7 +582,7 @@ BOOL _performSegmentChange;
 - (void)letsBeSocial:(NSDictionary *)beer
 {
     if (![DMDefaultsInterfaceConstants askedAboutSharing]) {
-        UIAlertView *socialWarning = [[UIAlertView alloc] initWithTitle:@"Want to be Social?" message:@"Do you want to tell your friends on Facebook and/or twitter what you just did?\nYou know you do..." delegate:self cancelButtonTitle:@"Nope" otherButtonTitles:@"Yes!", nil];
+        UIAlertView *socialWarning = [[UIAlertView alloc] initWithTitle:@"Want to be Social?" message:@"Do you want to tell your friends on Facebook and/or twitter what beer you just favorited?\nYou know you do..." delegate:self cancelButtonTitle:@"Nope" otherButtonTitles:@"Yes!", nil];
         [socialWarning show];
     }
     if ([DMDefaultsInterfaceConstants shareWithFacebookOnFavorite]) {
