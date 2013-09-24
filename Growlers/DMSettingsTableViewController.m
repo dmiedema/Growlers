@@ -13,7 +13,8 @@
 
 @interface DMSettingsTableViewController () <UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 @property (nonatomic) BOOL multipleStores;
-- (void)handeStore;
+- (void)handeStore:(NSInteger)index;
+- (void)showStoreNotificationChooser;
 // About
 - (void)handleAbout:(NSInteger)index;
 // Social
@@ -74,7 +75,7 @@
             [self handleSocial:indexPath.row];
             break;
         case 2: // Notifications
-            [self handeStore];
+            [self handeStore:indexPath.row];
             break;
         case 3: // Feedback
             [self handleSupport:indexPath.row];
@@ -132,7 +133,22 @@
     }
 }
 
-- (void)handeStore
+- (void)handeStore:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+            [self showStoreNotificationChooser];
+            break;
+        case 1:
+            
+            break;
+        default:
+            break;
+    }
+    
+}
+
+- (void)showStoreNotificationChooser
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
@@ -144,9 +160,9 @@
         [actionSheet addButtonWithTitle:store];
     }
     [actionSheet addButtonWithTitle:@"Cancel"];
-    
+
     actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
-    
+
     [actionSheet showInView:self.view];
 }
 
