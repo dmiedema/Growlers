@@ -148,7 +148,7 @@
         if([parameters.allKeys containsObject:@"name"] && [parameters.allKeys containsObject:@"brewer"]) {
             DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedObjectContext];
             if (parameters[@"store"] == [NSNull null]) {
-                [parameters setValue:[DMDefaultsInterfaceConstants lastStore] forKey:@"store"];
+                [parameters setValue:[DMDefaultsInterfaceConstants preferredStore] forKey:@"store"];
                 NSLog(@"Store param set");
             }
             
