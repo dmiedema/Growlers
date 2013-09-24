@@ -384,12 +384,10 @@ BOOL _performSegmentChange;
     
     NSString *token = [DMDefaultsInterfaceConstants pushID];
     
-    NSString *preferredSTore = [[DMDefaultsInterfaceConstants preferredStore] lowercaseString];
-    
-    NSLog(@"pref'd = %@", preferredSTore);
-    
+    NSString *preferredStore = [[DMDefaultsInterfaceConstants preferredStore] lowercaseString];
+
     if ([_coreData isBeerFavorited:beer]) {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [[DMDefaultsInterfaceConstants preferredStore] lowercaseString], @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": preferredStore, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
             // CoreData Save
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = self.selectedStore;
@@ -402,7 +400,7 @@ BOOL _performSegmentChange;
         }];
     }
     else {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [[DMDefaultsInterfaceConstants preferredStore] lowercaseString], @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": preferredStore, @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
             // CoreData save
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = self.selectedStore;
