@@ -30,6 +30,7 @@
 + (void)setGeneratedUDID:(NSString *)generatedUDID;
 + (void)setLastStore:(NSString *)lastStore;
 + (void)setPreferredStore:(NSString *)preferredStore;
++ (void)setDefaultPreferredStore;
 + (void)batchUpdate:(NSArray *)updateValues;
 
 @end

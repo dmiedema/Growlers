@@ -109,15 +109,19 @@ static NSString *anonymousUsage = @"anonymous_usage";
     [[NSUserDefaults standardUserDefaults] setValue:preferred forKey:preferredStore];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
-// Push/UDID
-+ (void)setPushID:(NSString *)pushID
++ (void)setDefaultPreferredStore
 {
-    [[NSUserDefaults standardUserDefaults] setValue:pushID forKey:pushID];
+    [DMDefaultsInterfaceConstants setPreferredStore:@"All"];
+}
+// Push/UDID
++ (void)setPushID:(NSString *)push
+{
+    [[NSUserDefaults standardUserDefaults] setValue:push forKey:pushID];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
-+ (void)setGeneratedUDID:(NSString *)generatedUDID
++ (void)setGeneratedUDID:(NSString *)generated
 {
-    [[NSUserDefaults standardUserDefaults] setValue:generatedUDID forKey:generatedUDID];
+    [[NSUserDefaults standardUserDefaults] setValue:generated forKey:generatedUDID];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
