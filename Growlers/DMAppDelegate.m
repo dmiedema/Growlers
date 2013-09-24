@@ -15,6 +15,8 @@
 // CoreDataMethods for URL handling
 #import "DMCoreDataMethods.h"
 #import "DMGrowlerAPI.h"
+#import "DDTTYLogger.h"
+#import "DDFileLogger.h"
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
@@ -54,6 +56,12 @@
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"c4e28d986734b9f0c8b5716244112805" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
     
+    /* Logging */
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
+    fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+    fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
+    [DDLog addLogger:fileLogger];
     
     /* Push Notifications */
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];

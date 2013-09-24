@@ -2,7 +2,7 @@ platform :ios, '7.0'
 pod 'AFNetworking', '~> 1'
 #pod 'DerpKit'
 pod 'HockeySDK'
-
+pod 'CocoaLumberjack'
 #pod 'SparkInspector'
 #pod 'NewRelicAgent'
 pod 'Tapstream'
