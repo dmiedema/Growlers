@@ -134,7 +134,7 @@ BOOL _performSegmentChange;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.topItem.title = @"Growl Movement";
+
     [self setNavigationBarTint];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(orientationChanged:)
@@ -145,7 +145,7 @@ BOOL _performSegmentChange;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+    self.navigationController.navigationBar.topItem.title = @"Growl Movement";    
     UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
     UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
     leftSwipeGesture.direction = (UISwipeGestureRecognizerDirectionLeft);
