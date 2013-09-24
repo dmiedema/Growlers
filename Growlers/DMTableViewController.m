@@ -437,6 +437,7 @@ BOOL _performSegmentChange;
     
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Push_ID];
     if ([beer[@"name"] isEqualToString:@"No Favorites!"] && [beer[@"brewer"] isEqualToString:@"Go Favorite some Beers!"]) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
     
