@@ -58,7 +58,7 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>Growlers can send anonymous usage reports to help us improve the app. Those reports are not shared with any third parties.</string>
+			<string>Growlers can send anonymous usage reports to help us improve the app.</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
