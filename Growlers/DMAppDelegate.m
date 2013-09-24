@@ -47,6 +47,9 @@
 //        [[GAI sharedInstance] setOptOut:YES];
     }
     
+    if(![DMDefaultsInterfaceConstants preferredStore])
+        [DMDefaultsInterfaceConstants setDefaultPreferredStore];
+    
     /* Hockey Testing */
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"c4e28d986734b9f0c8b5716244112805" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
