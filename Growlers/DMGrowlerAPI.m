@@ -8,8 +8,8 @@
 
 #import "DMGrowlerAPI.h"
 #import "TSTapstream.h"
-#import "GAI.h"
-#import "GAIDictionaryBuilder.h"
+//#import "GAI.h"
+//#import "GAIDictionaryBuilder.h"
 
 //static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
 //static NSString *DMGrowlerAPIURLString  = @"http://shittie.st:8000";
@@ -82,28 +82,29 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     [AFNetworkActivityIndicatorManager sharedManager];
     [operation start];
     
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+
     
     // What am i doing with this?
     if (([[NSUserDefaults standardUserDefaults] boolForKey:kGrowler_Anonymous_Usage])) {
+//    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
         if (action == FAVORITE) {
             NSLog(@"Favorite Beer");
             NSLog(@"%@", beer);
             TSEvent *e = [TSEvent eventWithName:@"FavoriteBeer" oneTimeOnly:NO];
             [[TSTapstream instance] fireEvent:e];
-            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Beer Action"
-                                                                  action:@"favorite"
-                                                                   label:@""
-                                                                   value:nil] build]];
+//            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Beer Action"
+//                                                                  action:@"favorite"
+//                                                                   label:@""
+//                                                                   value:nil] build]];
         } else {
             NSLog(@"Unfavorite Beer");
             NSLog(@"%@", beer);
             TSEvent *e = [TSEvent eventWithName:@"UnfavoriteBeer" oneTimeOnly:NO];
             [[TSTapstream instance] fireEvent:e];
-            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Beer Action"
-                                                                  action:@"unfavorite"
-                                                                   label:@""
-                                                                   value:nil] build]];
+//            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Beer Action"
+//                                                                  action:@"unfavorite"
+//                                                                   label:@""
+//                                                                   value:nil] build]];
         }
     }
 }
