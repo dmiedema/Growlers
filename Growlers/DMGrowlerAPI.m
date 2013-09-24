@@ -66,7 +66,8 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
 }
 
 - (void)favoriteBeer:(NSDictionary *)beer withAction:(BEER_ACTION)action withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
-{  
+{
+    NSLog(@"GrowlersAPI Model --  Favorite beer - %@", beer);
     NSError *error = nil;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
     request.HTTPMethod = @"POST";
