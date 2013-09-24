@@ -9,28 +9,43 @@
 #import <Foundation/Foundation.h>
 
 @interface DMDefaultsInterfaceConstants : NSObject
-// Getters
-+ (BOOL)anonymousUsage;
+//** Getters
+// Social
 + (BOOL)shareWithFacebookOnFavorite;
 + (BOOL)shareWithTwitterOnFavorite;
 + (BOOL)askedAboutSharing;
++ (NSString *)facebookOAuthKey;
++ (NSString *)twitterOAuthKey;
+// UDID
++ (NSString *)generatedUDID;
++ (NSString *)pushID;
+// Store
 + (BOOL)multipleStoresEnabled;
 + (NSString *)lastStore;
 + (NSString *)preferredStore;
 + (NSArray *)stores;
-+ (NSString *)pushID;
-+ (NSString *)generatedUDID;
+// Anonymouse
++ (BOOL)anonymousUsage;
+// Other
 
-// Setters
+
+//** Setters
+// Social
 + (void)shareWithFacebookOnFavorite:(BOOL)imSocial;
 + (void)shareWithTwitterOnFavorite:(BOOL)imSocial;
 + (void)askedAboutSharing:(BOOL)imSocial;
-+ (void)setMultipleStoresEnabled:(BOOL)weBallin;
++ (void)setFacebookOAuthKey:(NSString *)facebookKey;
++ (void)setTwitterOAuthKey:(NSString *)twitterKey;
+// UDID
 + (void)setPushID:(NSString *)pushID;
 + (void)setGeneratedUDID:(NSString *)generatedUDID;
-+ (void)setLastStore:(NSString *)lastStore;
-+ (void)setPreferredStore:(NSString *)preferredStore;
+// Store
 + (void)setDefaultPreferredStore;
++ (void)setLastStore:(NSString *)lastStore;
++ (void)setMultipleStoresEnabled:(BOOL)weBallin;
++ (void)setPreferredStore:(NSString *)preferredStore;
+// Anonymouse
+// Other
 + (void)batchUpdate:(NSArray *)updateValues;
 
 @end

@@ -18,6 +18,8 @@
 static NSString *shareWithFacebook = @"Growlers_Share_With_Facebook";
 static NSString *shareWithTwitter = @"Growlers_Share_With_Twitter";
 static NSString *askedAboutSharing = @"Growlers_Asked_About_Sharing";
+static NSString *facebookOAuthDefaultsKey = @"Growlers-Facebook-OAuth-Key";
+static NSString *twitterOAuthDefaultsKey = @"Growlers-Twitter-OAuth-Key";
 // UDID
 static NSString *generatedUDID = @"Growler-UUID";
 static NSString *pushID = @"Growlers-Push-ID";
@@ -46,6 +48,14 @@ static NSString *anonymousUsage = @"anonymous_usage";
 + (BOOL)askedAboutSharing
 {
     return [[NSUserDefaults standardUserDefaults] boolForKey:askedAboutSharing];
+}
++ (NSString *)facebookOAuthKey
+{
+    return [[NSUserDefaults standardUserDefaults] stringForKey:facebookOAuthDefaultsKey];
+}
++ (NSString *)twitterOAuthKey
+{
+    return [[NSUserDefaults standardUserDefaults] stringForKey:twitterOAuthDefaultsKey];
 }
 // Store
 + (BOOL)multipleStoresEnabled
@@ -91,6 +101,16 @@ static NSString *anonymousUsage = @"anonymous_usage";
 + (void)askedAboutSharing:(BOOL)imSocial
 {
     [[NSUserDefaults standardUserDefaults] setBool:imSocial forKey:askedAboutSharing];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
++ (void)setFacebookOAuthKey:(NSString *)facebookKey
+{
+    [[NSUserDefaults standardUserDefaults] setValue:facebookKey forKey:facebookOAuthDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
++ (void)setTwitterOAuthKey:(NSString *)twitterKey
+{
+    [[NSUserDefaults standardUserDefaults] setValue:twitterKey forKey:twitterOAuthDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 // Store
