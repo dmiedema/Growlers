@@ -109,4 +109,10 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     }
 }
 
+- (void)testPushNotifictaionsWithSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
+{
+    #warning Not Implemented
+    
+}
+
 @end

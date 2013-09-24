@@ -8,6 +8,7 @@
 
 #import "DMSettingsTableViewController.h"
 #import "DMAboutViewController.h"
+#import "DMGrowlerAPI.h"
 #import <MessageUI/MessageUI.h>
 #import <MapKit/MapKit.h>
 
@@ -140,7 +141,11 @@
             [self showStoreNotificationChooser];
             break;
         case 1:
-            
+            [[DMGrowlerAPI sharedInstance] testPushNotifictaionsWithSuccess:^(id JSON) {
+                NSLog(@"Test successful");
+            } andFailure:^(id JSON) {
+                NSLog(@"Test failed");
+            }];
             break;
         default:
             break;
