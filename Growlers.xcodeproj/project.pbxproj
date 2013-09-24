@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		35BE3632AF8B44CF8E0D4122 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A2C661DB9B47E4BEFFE41C /* libPods.a */; };
+		C3015A3F17F02124002F7E18 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3015A3E17F02124002F7E18 /* Social.framework */; };
+		C3015A4117F0212D002F7E18 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3015A4017F0212D002F7E18 /* Twitter.framework */; };
+		C3015A4517F0E957002F7E18 /* DMHelperMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = C3015A4417F0E957002F7E18 /* DMHelperMethods.m */; };
 		C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC83179C5FD400F208AB /* QuartzCore.framework */; };
 		C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */; };
 		C33DAC8E179C8FF200F208AB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC8D179C8FF200F208AB /* CoreData.framework */; };
@@ -15,6 +18,8 @@
 		C33DACA617A2619700F208AB /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DACA517A2619700F208AB /* CoreText.framework */; };
 		C3477C0E17A56E6F008900B5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3477C0D17A56E6F008900B5 /* Default-568h@2x.png */; };
 		C349589D17A79FEA00E45B3D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C349589C17A79FEA00E45B3D /* Settings.bundle */; };
+		C356CBEB17ED053A006CF711 /* DMDefaultsInterfaceConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = C356CBEA17ED053A006CF711 /* DMDefaultsInterfaceConstants.m */; };
+		C356CBEE17EF9300006CF711 /* DMSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C356CBED17EF9300006CF711 /* DMSettingsTableViewController.m */; };
 		C35C28BC17BF5A4700202121 /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C28BB17BF5A4700202121 /* Beer.m */; };
 		C35C28BF17BF5A4800202121 /* Favorites.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C28BE17BF5A4800202121 /* Favorites.m */; };
 		C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DD34C17A3AD6300EAC24A /* MapKit.framework */; };
@@ -58,6 +63,10 @@
 /* Begin PBXFileReference section */
 		3066D4AF570043AE81036398 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		B6A2C661DB9B47E4BEFFE41C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3015A3E17F02124002F7E18 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		C3015A4017F0212D002F7E18 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		C3015A4317F0E957002F7E18 /* DMHelperMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMHelperMethods.h; sourceTree = "<group>"; };
+		C3015A4417F0E957002F7E18 /* DMHelperMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMHelperMethods.m; sourceTree = "<group>"; };
 		C33DAC83179C5FD400F208AB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C33DAC8B179C8FCB00F208AB /* GrowlerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GrowlerModel.xcdatamodel; sourceTree = "<group>"; };
 		C33DAC8D179C8FF200F208AB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -67,6 +76,10 @@
 		C3477C0D17A56E6F008900B5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C349589917A774F500E45B3D /* Growlers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Growlers.entitlements; sourceTree = "<group>"; };
 		C349589C17A79FEA00E45B3D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Growlers/Settings.bundle; sourceTree = "<group>"; };
+		C356CBE917ED053A006CF711 /* DMDefaultsInterfaceConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMDefaultsInterfaceConstants.h; sourceTree = "<group>"; };
+		C356CBEA17ED053A006CF711 /* DMDefaultsInterfaceConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMDefaultsInterfaceConstants.m; sourceTree = "<group>"; };
+		C356CBEC17EF9300006CF711 /* DMSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMSettingsTableViewController.h; sourceTree = "<group>"; };
+		C356CBED17EF9300006CF711 /* DMSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMSettingsTableViewController.m; sourceTree = "<group>"; };
 		C35C28BA17BF5A4700202121 /* Beer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beer.h; sourceTree = "<group>"; };
 		C35C28BB17BF5A4700202121 /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
 		C35C28BD17BF5A4800202121 /* Favorites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Favorites.h; sourceTree = "<group>"; };
@@ -112,6 +125,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3015A4117F0212D002F7E18 /* Twitter.framework in Frameworks */,
+				C3015A3F17F02124002F7E18 /* Social.framework in Frameworks */,
 				C3E5DE1917BC6A03006DE900 /* CoreImage.framework in Frameworks */,
 				C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */,
 				C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */,
@@ -141,6 +156,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C3015A4217F0E922002F7E18 /* Delegate/Helper Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C3DD53E017967D470086A7E2 /* DMAppDelegate.h */,
+				C3DD53E117967D470086A7E2 /* DMAppDelegate.m */,
+				C356CBE917ED053A006CF711 /* DMDefaultsInterfaceConstants.h */,
+				C356CBEA17ED053A006CF711 /* DMDefaultsInterfaceConstants.m */,
+				C3015A4317F0E957002F7E18 /* DMHelperMethods.h */,
+				C3015A4417F0E957002F7E18 /* DMHelperMethods.m */,
+			);
+			name = "Delegate/Helper Classes";
+			sourceTree = "<group>";
+		};
 		C33DAC92179C91AD00F208AB /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +209,8 @@
 				C3DD540717967DAC0086A7E2 /* DMTableViewController.m */,
 				C3DD54131797B7EB0086A7E2 /* DMAboutViewController.h */,
 				C3DD54141797B7EB0086A7E2 /* DMAboutViewController.m */,
+				C356CBEC17EF9300006CF711 /* DMSettingsTableViewController.h */,
+				C356CBED17EF9300006CF711 /* DMSettingsTableViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -210,6 +240,8 @@
 		C3DD53D017967D470086A7E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C3015A4017F0212D002F7E18 /* Twitter.framework */,
+				C3015A3E17F02124002F7E18 /* Social.framework */,
 				C3E5DE1817BC6A03006DE900 /* CoreImage.framework */,
 				C38285C817A4D0930058D304 /* CoreLocation.framework */,
 				C38285C617A4D0700058D304 /* MessageUI.framework */,
@@ -232,8 +264,7 @@
 			isa = PBXGroup;
 			children = (
 				C349589917A774F500E45B3D /* Growlers.entitlements */,
-				C3DD53E017967D470086A7E2 /* DMAppDelegate.h */,
-				C3DD53E117967D470086A7E2 /* DMAppDelegate.m */,
+				C3015A4217F0E922002F7E18 /* Delegate/Helper Classes */,
 				C3DD53E317967D470086A7E2 /* Main.storyboard */,
 				C33DAC9B179F7D7000F208AB /* View Controllers */,
 				C33DAC92179C91AD00F208AB /* CoreData */,
@@ -428,9 +459,12 @@
 				C3DD540817967DAC0086A7E2 /* DMTableViewController.m in Sources */,
 				C35C28BC17BF5A4700202121 /* Beer.m in Sources */,
 				C3E5DE0B17B75CB4006DE900 /* DMCoreDataMethods.m in Sources */,
+				C356CBEB17ED053A006CF711 /* DMDefaultsInterfaceConstants.m in Sources */,
+				C356CBEE17EF9300006CF711 /* DMSettingsTableViewController.m in Sources */,
 				C3DD53E217967D470086A7E2 /* DMAppDelegate.m in Sources */,
 				C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */,
 				C3DD54151797B7EB0086A7E2 /* DMAboutViewController.m in Sources */,
+				C3015A4517F0E957002F7E18 /* DMHelperMethods.m in Sources */,
 				C33DAC98179F7D5C00F208AB /* DMGrowlerAPI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -559,7 +593,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3066D4AF570043AE81036398 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Growlers/Growlers.entitlements;
@@ -569,9 +603,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Growlers/Growlers-Prefix.pch";
 				INFOPLIST_FILE = "Growlers/Growlers-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "EF99F5DE-E3D1-4EBF-9477-6AD4EDAD234D";
+				PROVISIONING_PROFILE = "0325DE54-3634-4337-9A6A-6C15EB3F5C2C";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -580,7 +614,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3066D4AF570043AE81036398 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Growlers/Growlers.entitlements;
@@ -589,7 +623,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Growlers/Growlers-Prefix.pch";
 				INFOPLIST_FILE = "Growlers/Growlers-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "EF99F5DE-E3D1-4EBF-9477-6AD4EDAD234D";
 				WRAPPER_EXTENSION = app;
