@@ -109,7 +109,7 @@
 - (void)unFavoriteBeer:(NSDictionary *)beerToUnfavorite
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
-    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@ and store = %@", beerToUnfavorite[@"name"], beerToUnfavorite[@"brewer"], beerToUnfavorite[@"store"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beerToUnfavorite[@"name"], beerToUnfavorite[@"brewer"]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
     request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     
@@ -126,7 +126,7 @@
 {
     NSLog(@"checking for favorite -- %@", beer);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
-    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@ and store = %@", beer[@"name"], beer[@"brewer"], beer[@"store"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beer[@"name"], beer[@"brewer"]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
     request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     
