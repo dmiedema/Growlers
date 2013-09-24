@@ -36,7 +36,7 @@
 - (BOOL)checkIfOpen;
 - (void)setNavigationBarTint;
 
-- (int)getToday;
+- (NSInteger)getToday;
 - (BOOL)checkToday:(id)tapID;
 - (BOOL)checkLastDateOfMonth;
 
@@ -201,14 +201,14 @@ BOOL _performSegmentChange;
     }
 }
 
-- (int)getToday
+- (NSInteger)getToday
 {
     NSDate *today = [NSDate date];
     NSCalendar *calendar = [NSCalendar currentCalendar];
     
     NSDateComponents *todaysDate = [calendar components:(NSDayCalendarUnit) fromDate:today];
     
-    return [todaysDate day];
+    return todaysDate.day;
 }
 
 - (BOOL)checkToday:(id)tap_id
@@ -436,6 +436,9 @@ BOOL _performSegmentChange;
     }
     
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kGrowler_Push_ID];
+    if ([beer[@"name"] isEqualToString:@"No Favorites!"] && [beer[@"brewer"] isEqualToString:@"Go Favorite some Beers!"]) {
+        return;
+    }
     
     if ([_coreData isBeerFavorited:beer]) {
         [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": [self.selectedStore lowercaseString], @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
