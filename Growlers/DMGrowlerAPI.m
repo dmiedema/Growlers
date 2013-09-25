@@ -115,4 +115,33 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     
 }
 
+- (void)setPreferredStores:(NSArray *)stores forUser:(NSString *)pushID withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
+{
+    NSLog(@"Setting preferred stores for user");
+    NSError *error = nil;
+    NSDictionary *data = @{@"stores": stores, @"udid": pushID};
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
+    request.HTTPMethod = @"POST";
+    [request setValue:@"application/json" forKey:@"Content-Type"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:data options:kNilOptions error:&error];
+    
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        
+    }];
+    [operation start];
+    
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
+        NSLog(@"Reset stores");
+        NSLog(@"%@", stores);
+        TSEvent *e = [TSEvent eventWithName:@"Reset Store Notifications" oneTimeOnly:NO];
+        [[TSTapstream instance] fireEvent:e];
+        //            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Notifications"
+        //                                                                  action:@"Store Set"
+        //                                                                   label:@""
+        //                                                                   value:nil] build]];
+    }
+}
+
 @end
