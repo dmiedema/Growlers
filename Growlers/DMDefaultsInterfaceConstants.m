@@ -28,6 +28,7 @@ static NSString *lastSelectedStore = @"Growlers-Last-Selected-Location";
 static NSString *preferredStore = @"Growlers_Preferred_Store";
 static NSString *preferredStores = @"Growlers_Preferred_Stores";
 static NSString *multipleStoresKey = @"Growlers_Multiple_Stores";
+static NSString *availableStores = @"Growlers_Available_Stores";
 // Anonymouse
 static NSString *anonymousUsage = @"anonymous_usage";
 
@@ -77,8 +78,7 @@ static NSString *anonymousUsage = @"anonymous_usage";
 }
 + (NSArray *)stores
 {
-    NSArray *stores = [NSArray arrayWithObjects:@"Keizer", @"Derpington", @"South Derper", nil];
-    return stores;
+    return [[NSUserDefaults standardUserDefaults] objectForKey:availableStores];
 }
 // Push/UDID
 + (NSString *)pushID

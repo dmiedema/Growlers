@@ -96,7 +96,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.multipleStores && indexPath.section == 2) {
+    if (!self.multipleStores && indexPath.section == 1) {
         return 0.0f;
     }
     return 44.0f;

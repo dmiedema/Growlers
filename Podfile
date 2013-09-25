@@ -1,5 +1,6 @@
 platform :ios, '7.0'
 pod 'AFNetworking', '~> 1'
+pod 'GroundControl'
 #pod 'DerpKit'
 pod 'HockeySDK'
 pod 'CocoaLumberjack'

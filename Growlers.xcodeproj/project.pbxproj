@@ -84,6 +84,7 @@
 		C35C28BE17BF5A4800202121 /* Favorites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Favorites.m; sourceTree = "<group>"; };
 		C3642F6F17F28C5F00096EED /* Tutorial-3_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial-3_5.png"; sourceTree = "<group>"; };
 		C3642F7017F28C5F00096EED /* Tutorial-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial-4.png"; sourceTree = "<group>"; };
+		C3642F7F17F3544500096EED /* Stores.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Stores.plist; path = ../../../../Desktop/Stores.plist; sourceTree = "<group>"; };
 		C37DD34C17A3AD6300EAC24A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C38285C617A4D0700058D304 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		C38285C817A4D0930058D304 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -159,6 +160,7 @@
 				C3DD53E117967D470086A7E2 /* DMAppDelegate.m */,
 				C356CBE917ED053A006CF711 /* DMDefaultsInterfaceConstants.h */,
 				C356CBEA17ED053A006CF711 /* DMDefaultsInterfaceConstants.m */,
+				C3642F7F17F3544500096EED /* Stores.plist */,
 				C3015A4317F0E957002F7E18 /* DMHelperMethods.h */,
 				C3015A4417F0E957002F7E18 /* DMHelperMethods.m */,
 			);

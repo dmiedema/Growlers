@@ -8,6 +8,8 @@
 
 #import "DMAppDelegate.h"
 #import "DMTableViewController.h"
+// Remote config
+#import "NSUserDefaults+GroundControl.h"
 //#import <NewRelicAgent/NewRelicAgent.h>
 #import "TSTapstream.h"
 // google analytics
@@ -88,7 +90,7 @@
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
     /* Multiple Stores */
-    [DMDefaultsInterfaceConstants setMultipleStoresEnabled:YES];
+//    [DMDefaultsInterfaceConstants setMultipleStoresEnabled:NO];
     
     /* Launch */
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
@@ -214,12 +216,25 @@
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    [self initializeGroundControl];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [self saveContext];
+}
+
+#pragma mark GroundControl
+- (void)initializeGroundControl
+{
+    NSURL *url = [NSURL URLWithString:@"http://www.growlmovement.com/_app/GrowlersStoreList.php"];
+    [[NSUserDefaults standardUserDefaults] registerDefaultsWithURL:url success:^(NSDictionary *defaults) {
+        NSLog(@"Success - %@", defaults);
+        
+    } failure:^(NSError *error) {
+        NSLog(@"Error - %@ -- message -  %@", error, error.userInfo);
+    }];
 }
 
 #pragma mark CoreData
