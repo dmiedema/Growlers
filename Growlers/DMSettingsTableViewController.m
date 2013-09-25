@@ -14,8 +14,12 @@
 
 @interface DMSettingsTableViewController () <UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 @property (nonatomic) BOOL multipleStores;
+@property (nonatomic, strong) NSArray *preferredStores;
+@property (nonatomic, strong) NSArray *content;
+@property (nonatomic, strong) NSString *selectedStoreName;
+
 - (void)handeStore:(NSInteger)index;
-- (void)showStoreNotificationChooser;
+- (void)showStoreNotificationChooser:(BOOL)showDestructiveOption;
 // About
 - (void)handleAbout:(NSInteger)index;
 // Social
@@ -39,13 +43,23 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
+    self.content = @[@[@"About Growl Movement", @"Operating Hours", @"Take me there!", @"What does everything mean?!"], @[@"Notification Preferrences"], @[@"Suggestion", @"Support"]];
     
     self.facebookSharing.on = [DMDefaultsInterfaceConstants shareWithFacebookOnFavorite];
     self.twitterSharing.on  = [DMDefaultsInterfaceConstants shareWithTwitterOnFavorite];
     
+    // Setup .xibs
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"DMSettingsTableViewCell"];
+    
     self.preferredStore.text = [DMDefaultsInterfaceConstants preferredStore];
+    self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
     
     self.multipleStores = [DMDefaultsInterfaceConstants multipleStoresEnabled];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -88,6 +102,79 @@
     return 44.0f;
 }
 
+#pragma mark TableView Datasource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return 4;
+            break;
+        case 1:
+            return self.preferredStores.count + 1;
+            break;
+        case 2:
+            return 2;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 3;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return @"About";
+            break;
+        case 1:
+            return @"Notifications";
+            break;
+        case 2:
+            return @"Support";
+            break;
+        default:
+            break;
+    }
+    return @"";
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section != 1) {
+        NSString *cellIdentifier = @"DMSettingsTableViewCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DMSettingsTableViewCell"];
+        }
+
+        cell.textLabel.text = self.content[indexPath.section][indexPath.row];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        return cell;
+    }
+    else {
+        NSString *cellIdentifier = @"DMSettingsNotificationStoreTableViewCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"DMSettingsNotificationStoreTableViewCell"];
+        }
+        
+        if (indexPath.row < self.preferredStores.count) {
+            cell.textLabel.text = @"Preferred Store";
+            cell.detailTextLabel.text = self.preferredStores[indexPath.row];
+        } else {
+            cell.textLabel.text = @"Add Store";
+            cell.detailTextLabel.text = @"";
+        }
+        return cell;
+    }
+    return nil;
+}
+
 #pragma mark Implementation
 - (void)handleAbout:(NSInteger)index
 {
@@ -127,24 +214,30 @@
 
 - (void)handeStore:(NSInteger)index
 {
-    switch (index) {
-        case 0:
-            [self showStoreNotificationChooser];
-            break;
-        case 1:
-            [[DMGrowlerAPI sharedInstance] testPushNotifictaionsWithSuccess:^(id JSON) {
-                NSLog(@"Test successful");
-            } andFailure:^(id JSON) {
-                NSLog(@"Test failed");
-            }];
-            break;
-        default:
-            break;
+//    switch (index) {
+//        case 0:
+//            [self showStoreNotificationChooser];
+//            break;
+//        case 1:
+//            [[DMGrowlerAPI sharedInstance] testPushNotifictaionsWithSuccess:^(id JSON) {
+//                NSLog(@"Test successful");
+//            } andFailure:^(id JSON) {
+//                NSLog(@"Test failed");
+//            }];
+//            break;
+//        default:
+//            break;
+//    }
+    if (index > self.preferredStores.count - 1 || (self.preferredStores.count == 1)) {
+        [self showStoreNotificationChooser:NO];
+    } else {
+        self.selectedStoreName = self.preferredStores[index];
+        NSLog(@"selected Store name - %@", self.selectedStoreName);
+        [self showStoreNotificationChooser:YES];
     }
-    
 }
 
-- (void)showStoreNotificationChooser
+- (void)showStoreNotificationChooser:(BOOL)showRemoveOption
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
@@ -155,7 +248,13 @@
     for (NSString *store in [DMDefaultsInterfaceConstants stores]) {
         [actionSheet addButtonWithTitle:store];
     }
+    if (showRemoveOption) {
+        [actionSheet addButtonWithTitle:@"Remove Store"];
+    }
     [actionSheet addButtonWithTitle:@"Cancel"];
+    if (showRemoveOption) {
+        actionSheet.destructiveButtonIndex = actionSheet.numberOfButtons - 2;
+    }
 
     actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 
@@ -268,14 +367,37 @@
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
     }
-    if (buttonIndex == 0)
+    if (buttonIndex == actionSheet.destructiveButtonIndex) {
+        NSLog(@"DESTRUCTIVE!!!");
+        [DMDefaultsInterfaceConstants removePreferredStore:self.selectedStoreName];
+        self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
+        [self.tableView reloadData];
+        return;
+    }
+    
+    if (buttonIndex == 0) {
         store = @"All";
-    else
+        [DMDefaultsInterfaceConstants setPreferredStores:[NSArray arrayWithObject:store]];
+    }
+    else {
         store = [actionSheet buttonTitleAtIndex:buttonIndex];
-    [DMDefaultsInterfaceConstants setPreferredStore:store];
+        if ([self.preferredStores containsObject:store]) {
+            return;
+        }
+        else {
+            [DMDefaultsInterfaceConstants removePreferredStore:@"All"];
+            [DMDefaultsInterfaceConstants removePreferredStore:self.selectedStoreName];
+            [DMDefaultsInterfaceConstants addPreferredStore:store];
+        }
+
+    }
+    self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
+    NSLog(@"preferred - %@", self.preferredStores);
+    [self.tableView reloadData];
+//    [DMDefaultsInterfaceConstants setPreferredStore:store];
     //TODO: tell server my notification settings have changed
 //    [DMGrowlerAPI sharedInstance] ;
-    self.preferredStore.text = store;
+    
 }
 
 
