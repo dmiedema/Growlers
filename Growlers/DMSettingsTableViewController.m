@@ -26,9 +26,6 @@
 - (NSString *)suggestionEmailBody;
 - (NSString *)supportEmailSubject;
 - (NSString *)supportEmailBody;
-
-
-- (void)handleFeedback:(id)sender;
 //**
 @end
 
@@ -42,9 +39,6 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
-    self.navigationController.navigationBar.topItem.title = @"Settings";
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Beta Feedback" style:UIBarButtonItemStylePlain target:self action:@selector(handleFeedback:)];
     
     self.facebookSharing.on = [DMDefaultsInterfaceConstants shareWithFacebookOnFavorite];
     self.twitterSharing.on  = [DMDefaultsInterfaceConstants shareWithTwitterOnFavorite];
@@ -205,12 +199,6 @@
         [alert show];
     }
     
-}
-
-- (void)handleFeedback:(id)sender
-{
-    BITFeedbackListViewController *feedBackView = [[BITFeedbackListViewController alloc] init];
-    [self.navigationController pushViewController:feedBackView animated:YES];
 }
 
 - (void)showAbout
