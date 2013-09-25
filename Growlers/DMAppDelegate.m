@@ -18,6 +18,8 @@
 #import "DDTTYLogger.h"
 #import "DDFileLogger.h"
 
+//#import <SparkInspector/SparkInspector.h>
+
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
 
