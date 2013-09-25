@@ -88,6 +88,7 @@ BOOL _performSegmentChange;
     // Setup Navigation Bar button Items
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings:)];
     UIBarButtonItem *storeButton = [[UIBarButtonItem alloc] initWithTitle:@"Store" style:UIBarButtonItemStyleBordered target:self action:@selector(showActionSheet:)];
+    
     self.navigationItem.leftBarButtonItem = info;
     // If multiple stores -- show store button
     if([DMDefaultsInterfaceConstants multipleStoresEnabled])
@@ -461,6 +462,7 @@ BOOL _performSegmentChange;
     if (actionSheet.cancelButtonIndex != buttonIndex) {
         self.selectedStore = [actionSheet buttonTitleAtIndex:buttonIndex];
         [DMDefaultsInterfaceConstants setLastStore:self.selectedStore];
+        [self loadBeers];
     }
 }
 #pragma mark UIAlertView Delegate
