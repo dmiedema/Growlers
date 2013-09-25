@@ -7,7 +7,6 @@
 //
 
 #import "DMDefaultsInterfaceConstants.h"
-#import "DMGrowlerAPI.h"
 
 @interface DMDefaultsInterfaceConstants()
 
