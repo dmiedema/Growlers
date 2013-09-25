@@ -394,9 +394,13 @@
     self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
     NSLog(@"preferred - %@", self.preferredStores);
     [self.tableView reloadData];
-//    [DMDefaultsInterfaceConstants setPreferredStore:store];
+    
     //TODO: tell server my notification settings have changed
-//    [DMGrowlerAPI sharedInstance] ;
+    //    [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
+    //        NSLog(@"%@", JSON);
+    //    } andFailure:^(id JSON) {
+    //        NSLog(@"%@", JSON);
+    //    }];
     
 }
 

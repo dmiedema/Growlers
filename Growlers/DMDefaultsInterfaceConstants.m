@@ -138,11 +138,6 @@ static NSString *anonymousUsage = @"anonymous_usage";
 + (void)setPreferredStores:(NSArray *)stores
 {
     [[NSUserDefaults standardUserDefaults] setObject:stores forKey:preferredStores];
-//    [[DMGrowlerAPI sharedInstance] setPreferredStores:stores forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
-//        NSLog(@"%@", JSON);
-//    } andFailure:^(id JSON) {
-//        NSLog(@"%@", JSON);
-//    }];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 + (void)addPreferredStore:(NSString *)store
