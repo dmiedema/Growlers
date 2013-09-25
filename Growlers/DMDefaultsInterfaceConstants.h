@@ -23,6 +23,7 @@
 + (BOOL)multipleStoresEnabled;
 + (NSString *)lastStore;
 + (NSString *)preferredStore;
++ (NSArray *)preferredStores;
 + (NSArray *)stores;
 // Anonymouse
 + (BOOL)anonymousUsage;
@@ -44,6 +45,9 @@
 + (void)setLastStore:(NSString *)lastStore;
 + (void)setMultipleStoresEnabled:(BOOL)weBallin;
 + (void)setPreferredStore:(NSString *)preferredStore;
++ (void)setPreferredStores:(NSArray *)preferredStores;
++ (void)addPreferredStore:(NSString *)store;
++ (void)removePreferredStore:(NSString *)store;
 // Anonymouse
 // Other
 + (void)batchUpdate:(NSArray *)updateValues;

@@ -7,6 +7,7 @@
 //
 
 #import "DMDefaultsInterfaceConstants.h"
+#import "DMGrowlerAPI.h"
 
 @interface DMDefaultsInterfaceConstants()
 
@@ -26,7 +27,8 @@ static NSString *pushID = @"Growlers-Push-ID";
 // Store
 static NSString *lastSelectedStore = @"Growlers-Last-Selected-Location";
 static NSString *preferredStore = @"Growlers_Preferred_Store";
-static NSString *multipleStoresKey =@"Growlers_Multiple_Stores";
+static NSString *preferredStores = @"Growlers_Preferred_Stores";
+static NSString *multipleStoresKey = @"Growlers_Multiple_Stores";
 // Anonymouse
 static NSString *anonymousUsage = @"anonymous_usage";
 
@@ -70,9 +72,13 @@ static NSString *anonymousUsage = @"anonymous_usage";
 {
     return [[NSUserDefaults standardUserDefaults] stringForKey:preferredStore];
 }
++ (NSArray *)preferredStores
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:preferredStores];
+}
 + (NSArray *)stores
 {
-    NSArray *stores = [NSArray arrayWithObjects:@"Keizer", nil];
+    NSArray *stores = [NSArray arrayWithObjects:@"Keizer", @"Derpington", @"South Derper", nil];
     return stores;
 }
 // Push/UDID
@@ -128,6 +134,28 @@ static NSString *anonymousUsage = @"anonymous_usage";
 {
     [[NSUserDefaults standardUserDefaults] setValue:preferred forKey:preferredStore];
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
++ (void)setPreferredStores:(NSArray *)stores
+{
+    [[NSUserDefaults standardUserDefaults] setObject:stores forKey:preferredStores];
+//    [[DMGrowlerAPI sharedInstance] setPreferredStores:stores forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
+//        NSLog(@"%@", JSON);
+//    } andFailure:^(id JSON) {
+//        NSLog(@"%@", JSON);
+//    }];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
++ (void)addPreferredStore:(NSString *)store
+{
+    NSMutableArray *array = [[DMDefaultsInterfaceConstants preferredStores] mutableCopy];
+    [array addObject:store];
+    [DMDefaultsInterfaceConstants setPreferredStores:array];
+}
++ (void)removePreferredStore:(NSString *)store
+{
+    NSMutableArray *array = [[DMDefaultsInterfaceConstants preferredStores] mutableCopy];
+    [array removeObject:store];
+    [DMDefaultsInterfaceConstants setPreferredStores:array];
 }
 + (void)setDefaultPreferredStore
 {
