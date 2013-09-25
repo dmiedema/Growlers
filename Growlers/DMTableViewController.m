@@ -183,6 +183,7 @@ BOOL _performSegmentChange;
 {
     // if we're spinnin' and refreshin'
     // ... stop it.
+    NSLog(@"Selected Store - %@", self.selectedStore);
     if (self.refreshControl.bounds.size.height >= 65 && self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) {
         [self resetHighlightedBeers];
     }
