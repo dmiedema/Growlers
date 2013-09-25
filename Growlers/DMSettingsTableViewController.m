@@ -52,6 +52,10 @@
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"DMSettingsTableViewCell"];
     
     self.preferredStore.text = [DMDefaultsInterfaceConstants preferredStore];
+    
+    if ([DMDefaultsInterfaceConstants preferredStores].count < 1)
+        [DMDefaultsInterfaceConstants setPreferredStores:[NSArray arrayWithObject:@"All"]];
+    
     self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
     
     self.multipleStores = [DMDefaultsInterfaceConstants multipleStoresEnabled];
