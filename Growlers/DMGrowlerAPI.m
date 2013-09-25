@@ -44,8 +44,10 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
         requestUrlString = [NSString stringWithFormat:@"%@?store=all", DMGrowlerAPIURLString];
     }
     else {
-        requestUrlString = [NSString stringWithFormat:@"%@?store=%@", DMGrowlerAPIURLString, [store lowercaseString]];
+        requestUrlString = [NSString stringWithFormat:@"%@?store=%@", DMGrowlerAPIURLString, [[store lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSStringEncodingConversionAllowLossy]];
     }
+    
+    NSLog(@"request url = %@", requestUrlString);
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestUrlString]];
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
