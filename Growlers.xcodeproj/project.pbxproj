@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		35BE3632AF8B44CF8E0D4122 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A2C661DB9B47E4BEFFE41C /* libPods.a */; };
-		C3015A3F17F02124002F7E18 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3015A3E17F02124002F7E18 /* Social.framework */; };
-		C3015A4117F0212D002F7E18 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3015A4017F0212D002F7E18 /* Twitter.framework */; };
 		C3015A4517F0E957002F7E18 /* DMHelperMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = C3015A4417F0E957002F7E18 /* DMHelperMethods.m */; };
 		C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC83179C5FD400F208AB /* QuartzCore.framework */; };
 		C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */; };
@@ -125,8 +123,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3015A4117F0212D002F7E18 /* Twitter.framework in Frameworks */,
-				C3015A3F17F02124002F7E18 /* Social.framework in Frameworks */,
 				C3E5DE1917BC6A03006DE900 /* CoreImage.framework in Frameworks */,
 				C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */,
 				C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */,
@@ -360,6 +356,9 @@
 					C3DD53CD17967D470086A7E2 = {
 						DevelopmentTeam = SFNXE634D9;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.iCloud = {
 								enabled = 0;
 							};

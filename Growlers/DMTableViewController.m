@@ -13,8 +13,6 @@
 #import "Beer.h"
 #import "Favorites.h"
 #import "DMCoreDataMethods.h"
-// Social
-#import <Social/Social.h>
 
 @interface DMTableViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate, UIAlertViewDelegate>
 @property (nonatomic, strong) NSArray *beers;
@@ -36,17 +34,7 @@
 - (void)showActionSheet:(id)sender;
 
 - (void)resetHighlightedBeers;
-//- (BOOL)checkIfOpen;
 - (void)setNavigationBarTint;
-
-//- (NSInteger)getToday;
-//- (BOOL)checkToday:(id)tapID;
-//- (BOOL)checkLastDateOfMonth;
-
-//** Social
-- (void)letsBeSocial:(NSDictionary *)beer;
-- (void)shareWithFacebook:(NSDictionary *)beer;
-- (void)shareWithTwitter:(NSDictionary *)beer;
 
 @property (nonatomic, strong) UIGestureRecognizer *swipeGesture;
 
@@ -405,7 +393,6 @@ BOOL _performSegmentChange;
             [_coreData favoriteBeer:favBeer];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
-            [self letsBeSocial:beer];
         } andFailure:^(id JSON) {
             // Handle failure
             NSLog(@"Favoriting failed: %@", JSON);
@@ -576,77 +563,4 @@ BOOL _performSegmentChange;
 }
 */
 
-#pragma mark Social Crap
-
-- (void)letsBeSocial:(NSDictionary *)beer
-{
-    if (![DMDefaultsInterfaceConstants askedAboutSharing]) {
-        UIAlertView *socialWarning = [[UIAlertView alloc] initWithTitle:@"Want to be Social?" message:@"Do you want to tell your friends on Facebook and/or twitter what beer you just favorited?\nYou know you do..." delegate:self cancelButtonTitle:@"Nope" otherButtonTitles:@"Yes!", nil];
-        [socialWarning show];
-    }
-    if ([DMDefaultsInterfaceConstants shareWithFacebookOnFavorite]) {
-        [self shareWithFacebook:beer];
-    }
-    if ([DMDefaultsInterfaceConstants shareWithTwitterOnFavorite]) {
-        [self shareWithTwitter:beer];
-    }
-}
-
-- (void)shareWithFacebook:(NSDictionary *)beer
-{
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
-        SLComposeViewController *composer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        [composer setInitialText:@""];
-        [composer addURL:[NSURL URLWithString:@""]];
-        
-        composer.completionHandler = ^(SLComposeViewControllerResult result){
-            if (result == SLComposeViewControllerResultCancelled) {
-                NSLog(@"User has cancled composing the post, and tapped the cancle button");
-            }
-            
-            if (result == SLComposeViewControllerResultDone) {
-                NSLog(@"User has finished composing the post, and tapped the send button");
-            }
-        };
-        
-        [self presentViewController:composer animated:YES completion:nil];
-    } else {
-        UIAlertView *alertView = [[UIAlertView alloc]
-                                  initWithTitle:@"Facebook Error :("
-                                  message:@"You may not have set up facebook service on your device or\nYou may not connected to internent.\nPlease check Settings..."
-                                  delegate:self
-                                  cancelButtonTitle:@"OK"
-                                  otherButtonTitles: nil];
-        [alertView show];
-    }
-}
-
-- (void)shareWithTwitter:(NSDictionary *)beer
-{
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
-        SLComposeViewController *composer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        [composer setInitialText:@""];
-        [composer addURL:[NSURL URLWithString:@""]];
-        
-        composer.completionHandler = ^(SLComposeViewControllerResult result){
-            if (result == SLComposeViewControllerResultCancelled) {
-                NSLog(@"User has cancled composing the post, and tapped the cancle button");
-            }
-            
-            if (result == SLComposeViewControllerResultDone) {
-                NSLog(@"User has finished composing the post, and tapped the send button");
-            }
-        };
-        
-        [self presentViewController:composer animated:YES completion:nil];
-    } else {
-        UIAlertView *alertView = [[UIAlertView alloc]
-                                  initWithTitle:@"twitter Error :("
-                                  message:@"You may not have set up twitter service on your device or\nYou may not connected to internent.\nPlease check Settings..."
-                                  delegate:self
-                                  cancelButtonTitle:@"OK"
-                                  otherButtonTitles: nil];
-        [alertView show];
-    }
-}
 @end

@@ -66,13 +66,10 @@
         case 0: // About
             [self handleAbout:indexPath.row];
             break;
-        case 1: // Social
-            [self handleSocial:indexPath.row];
-            break;
-        case 2: // Notifications
+        case 1: // Notifications
             [self handeStore:indexPath.row];
             break;
-        case 3: // Feedback
+        case 2: // Feedback
             [self handleSupport:indexPath.row];
             break;
         default:
@@ -276,6 +273,8 @@
     else
         store = [actionSheet buttonTitleAtIndex:buttonIndex];
     [DMDefaultsInterfaceConstants setPreferredStore:store];
+    //TODO: tell server my notification settings have changed
+//    [DMGrowlerAPI sharedInstance] ;
     self.preferredStore.text = store;
 }
 
@@ -304,7 +303,6 @@
 #pragma mark Email Body/Subjet
 - (NSString *)supportEmailSubject
 {
-    
     return @"[Growlers] Support";
 }
 

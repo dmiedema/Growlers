@@ -69,6 +69,9 @@
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
+    /* Background stuff */
+//    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    
     /* Settings App Bundle */
     NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     [[NSUserDefaults standardUserDefaults] setObject:build forKey:@"build_preferences"];
@@ -159,6 +162,14 @@
                 [parameters setValue:[DMDefaultsInterfaceConstants preferredStore] forKey:@"store"];
                 NSLog(@"Store param set");
             }
+            if (parameters[@"ibu"] == [NSNull null]) {
+                [parameters setValue:@"-" forKey:@"ibu"];
+                NSLog(@"ibu param set");
+            }
+            if (parameters[@"abv"] == [NSNull null]) {
+                [parameters setValue:@"-" forKey:@"abv"];
+                NSLog(@"abv param set");
+            }
             
             NSLog(@"%@", parameters);
             if(![coreData isBeerFavorited:parameters]) {
@@ -179,6 +190,23 @@
     return NO;
 }
 
+#pragma mark Background Fetch
+
+//- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+//{
+//    NSLog(@"Running background fetch");
+//    
+//    [[DMGrowlerAPI sharedInstance] getBeersWithFlag:ON_TAP forStore:[DMDefaultsInterfaceConstants lastStore] andSuccess:^(id JSON) {
+//        NSLog(@"%@", JSON);
+//    } andFailure:^(id JSON) {
+//        NSLog(@"%@", JSON);
+//    }];
+//    
+//
+//}
+
+#pragma mark Application Life cycle
+
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -192,7 +220,7 @@
     [self saveContext];
 }
 
-
+#pragma mark CoreData
 - (void)saveContext
 {
     NSError *error = nil;
@@ -213,7 +241,7 @@
     }
 }
 
-#pragma mark - Core Data stack
+#pragma mark - CoreData stack
 
 // Returns the managed object context for the application.
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
