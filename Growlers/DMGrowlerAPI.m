@@ -121,16 +121,23 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
 {
     NSLog(@"Setting preferred stores for user");
     NSError *error = nil;
+    if (!pushID) {
+        pushID = [DMDefaultsInterfaceConstants generatedUDID];
+    }
     NSDictionary *data = @{@"stores": stores, @"udid": pushID};
+    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
     request.HTTPMethod = @"POST";
-    [request setValue:@"application/json" forKey:@"Content-Type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:data options:kNilOptions error:&error];
     
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        
+        success(JSON);
+        NSLog(@"reponse - %@", response);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        
+        failure(JSON);
+        NSLog(@"reponse - %@", response);
+        NSLog(@"error %@ -- message: %@", error, error.userInfo);
     }];
     [operation start];
     
