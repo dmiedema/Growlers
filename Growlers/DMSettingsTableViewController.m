@@ -7,17 +7,21 @@
 //
 
 #import "DMSettingsTableViewController.h"
+#import "DMTakeMeActionSheetDelegate.h"
 #import "DMAboutViewController.h"
 #import "DMGrowlerAPI.h"
 #import <MessageUI/MessageUI.h>
 #import <MapKit/MapKit.h>
 
 @interface DMSettingsTableViewController () <UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
+
 @property (nonatomic) BOOL multipleStores;
 @property (nonatomic, strong) NSArray *preferredStores;
 @property (nonatomic, strong) NSArray *content;
 @property (nonatomic, strong) NSString *selectedStoreName;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+
+@property (nonatomic) DMTakeMeActionSheetDelegate *takeMeActionSheetDelegate;
 
 - (void)handeStore:(NSInteger)index;
 - (void)showStoreNotificationChooser:(BOOL)showDestructiveOption;
@@ -36,6 +40,12 @@
 
 @implementation DMSettingsTableViewController
 
+typedef enum {
+    ABOUT = 0,
+    NOTIFICATIONS = 1,
+    SUPPORT = 2
+} SETTINGS_TABLE_VIEW_SECTIONS;
+
 #pragma mark View Life Cycle
 - (void)viewDidLoad
 {
@@ -45,9 +55,8 @@
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
     self.content = @[@[@"About Growl Movement", @"Operating Hours", @"Take me there!", @"What does everything mean?!"], @[@"Notification Preferrences"], @[@"Suggestion", @"Support"]];
-    
-    self.facebookSharing.on = [DMDefaultsInterfaceConstants shareWithFacebookOnFavorite];
-    self.twitterSharing.on  = [DMDefaultsInterfaceConstants shareWithTwitterOnFavorite];
+
+    self.takeMeActionSheetDelegate = [[DMTakeMeActionSheetDelegate alloc] init];
     
     // Setup .xibs
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"DMSettingsTableViewCell"];
@@ -91,17 +100,16 @@
 {
     //** Sections
     // 0 - About
-    // 1 - Social
-    // 2 - Notifications
-    // 3 - Feedback
+    // 1 - Notifications
+    // 2 - Feedback
     switch (indexPath.section) {
-        case 0: // About
+        case ABOUT: // About
             [self handleAbout:indexPath.row];
             break;
-        case 1: // Notifications
+        case NOTIFICATIONS: // Notifications
             [self handeStore:indexPath.row];
             break;
-        case 2: // Feedback
+        case SUPPORT: // Feedback
             [self handleSupport:indexPath.row];
             break;
         default:
@@ -124,13 +132,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
-        case 0:
+        case ABOUT:
             return 4;
             break;
-        case 1:
+        case NOTIFICATIONS:
             return self.preferredStores.count + 1;
             break;
-        case 2:
+        case SUPPORT:
             return 2;
             break;
         default:
@@ -146,13 +154,13 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section) {
-        case 0:
+        case ABOUT:
             return @"About";
             break;
-        case 1:
+        case NOTIFICATIONS:
             return @"Notifications";
             break;
-        case 2:
+        case SUPPORT:
             return @"Support";
             break;
         default:
@@ -163,7 +171,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section != 1) {
+    if (indexPath.section != NOTIFICATIONS) {
         NSString *cellIdentifier = @"DMSettingsTableViewCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (cell == nil) {
@@ -340,35 +348,22 @@
 
 - (void)takeMe
 {
-    Class mapItemClass = [MKMapItem class];
-    if (mapItemClass && [mapItemClass respondsToSelector:@selector(openMapsWithItems:launchOptions:)])
-    {
-        // Create an MKMapItem to pass to the Maps app
-        CLLocationCoordinate2D coordinate =
-        CLLocationCoordinate2DMake(44.9995136, -123.026656);
-        MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:coordinate
-                                                       addressDictionary:nil];
-        MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
-        [mapItem setName:@"Growl Movement"];
-        
-        // Set the directions mode to "Walking"
-        // Can use MKLaunchOptionsDirectionsModeDriving instead
-        NSDictionary *launchOptions = @{MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeWalking};
-        // Get the "Current User Location" MKMapItem
-        MKMapItem *currentLocationMapItem = [MKMapItem mapItemForCurrentLocation];
-        // Pass the current location and destination map items to the Maps app
-        // Set the direction mode in the launchOptions dictionary
-        [MKMapItem openMapsWithItems:@[currentLocationMapItem, mapItem]
-                       launchOptions:launchOptions];
-    } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoa! Something went wrong"
-                                                            message:@"Looks like I wasn't able to open maps for you. I'm sorry!"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Okay"
-                                                  otherButtonTitles: nil];
-        [alertView show];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self.takeMeActionSheetDelegate
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:nil];
+
+    for (NSString *store in [DMDefaultsInterfaceConstants stores]) {
+        [actionSheet addButtonWithTitle:store];
     }
+    [actionSheet addButtonWithTitle:@"Cancel"];
+
+    actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
+    
+    [actionSheet showInView:self.view];
 }
+
 - (void)showTutorial
 {
     UIViewController *viewController = [[UIViewController alloc] init];
@@ -406,8 +401,6 @@
     }
     else {
         store = [actionSheet buttonTitleAtIndex:buttonIndex];
-        NSLog(@"Selected IndexPath - %@", self.selectedIndexPath);
-        NSLog(@"Selected Storesname - %@", self.selectedStoreName);
         if ([self.preferredStores containsObject:store]) {
             return;
         }
@@ -419,8 +412,6 @@
             [self.tableView reloadData];
         }
         else if (!self.selectedStoreName) {
-            NSLog(@"No Store! - %@", self.selectedStoreName);
-            NSLog(@"indexPath - %@", self.selectedIndexPath);
             [DMDefaultsInterfaceConstants addPreferredStore:store];
             self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
             NSUInteger previousCount = self.preferredStores.count;
@@ -440,12 +431,7 @@
         }
 
     }
-//    self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
-//    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    NSLog(@"preferred - %@", self.preferredStores);
-//    [self.tableView reloadData];
     [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
-    //TODO: tell server my notification settings have changed
 }
 
 

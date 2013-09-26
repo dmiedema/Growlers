@@ -30,6 +30,7 @@ static NSString *preferredStores = @"Growlers_Preferred_Stores";
 static NSString *multipleStoresKey = @"Growlers_Multiple_Stores";
 static NSString *availableStores = @"Growlers_Available_Stores";
 static NSString *syncedStores = @"Growlers_Preferred_Stores_Synced";
+static NSString *mapsOfStores = @"Growlers_Dictionary_Of_Store_Locations";
 // Anonymouse
 static NSString *anonymousUsage = @"anonymous_usage";
 
@@ -88,6 +89,10 @@ static NSString *anonymousUsage = @"anonymous_usage";
 + (NSArray *)stores
 {
     return [[NSUserDefaults standardUserDefaults] objectForKey:availableStores];
+}
++ (NSDictionary *)storeMapLocations
+{
+    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:mapsOfStores];
 }
 // Push/UDID
 + (NSString *)pushID

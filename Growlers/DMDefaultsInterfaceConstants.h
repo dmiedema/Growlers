@@ -26,6 +26,7 @@
 + (NSArray *)preferredStores;
 + (NSArray *)stores;
 + (BOOL)preferredStoresSynced;
++ (NSDictionary *)storeMapLocations;
 // Anonymouse
 + (BOOL)anonymousUsage;
 // Other
