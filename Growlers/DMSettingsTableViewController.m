@@ -374,15 +374,14 @@
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
     }
-    if (buttonIndex == actionSheet.destructiveButtonIndex) {
+    else if (buttonIndex == actionSheet.destructiveButtonIndex) {
         NSLog(@"DESTRUCTIVE!!!");
         [DMDefaultsInterfaceConstants removePreferredStore:self.selectedStoreName];
         self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        return;
     }
     
-    if (buttonIndex == 0) {
+    else if (buttonIndex == 0) {
         store = @"All";
         [DMDefaultsInterfaceConstants setPreferredStores:[NSArray arrayWithObject:store]];
         self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
@@ -430,11 +429,11 @@
 //    [self.tableView reloadData];
     
     //TODO: tell server my notification settings have changed
-    //    [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
-    //        NSLog(@"%@", JSON);
-    //    } andFailure:^(id JSON) {
-    //        NSLog(@"%@", JSON);
-    //    }];
+    [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
+        NSLog(@"%@", JSON);
+    } andFailure:^(id JSON) {
+        NSLog(@"%@", JSON);
+    }];
     
 }
 
