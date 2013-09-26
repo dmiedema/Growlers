@@ -219,6 +219,17 @@
     [self initializeGroundControl];
 }
 
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    if (![DMDefaultsInterfaceConstants preferredStoresSynced]) {
+        [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
+            [DMDefaultsInterfaceConstants setPreferredStoresSynced:YES];
+        } andFailure:^(id JSON) {
+            [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
+        }];
+    }
+}
+
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

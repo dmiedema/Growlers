@@ -73,6 +73,19 @@
     self.navigationController.navigationBar.topItem.title = @"Settings";
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    NSLog(@"View disappearing");
+    [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
+        NSLog(@"%@", JSON);
+        [DMDefaultsInterfaceConstants setPreferredStoresSynced:YES];
+    } andFailure:^(id JSON) {
+        [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
+        NSLog(@"%@", JSON);
+    }];
+    [super viewWillDisappear:animated];
+}
+
 #pragma mark TableView Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -385,7 +398,6 @@
         self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
-    
     else if (buttonIndex == 0) {
         store = @"All";
         [DMDefaultsInterfaceConstants setPreferredStores:[NSArray arrayWithObject:store]];
@@ -432,14 +444,8 @@
 //    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     NSLog(@"preferred - %@", self.preferredStores);
 //    [self.tableView reloadData];
-    
+    [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
     //TODO: tell server my notification settings have changed
-    [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
-        NSLog(@"%@", JSON);
-    } andFailure:^(id JSON) {
-        NSLog(@"%@", JSON);
-    }];
-    
 }
 
 

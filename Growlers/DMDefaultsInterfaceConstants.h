@@ -25,6 +25,7 @@
 + (NSString *)preferredStore;
 + (NSArray *)preferredStores;
 + (NSArray *)stores;
++ (BOOL)preferredStoresSynced;
 // Anonymouse
 + (BOOL)anonymousUsage;
 // Other
@@ -48,6 +49,7 @@
 + (void)setPreferredStores:(NSArray *)preferredStores;
 + (void)addPreferredStore:(NSString *)store;
 + (void)removePreferredStore:(NSString *)store;
++ (void)setPreferredStoresSynced:(BOOL)synced;
 // Anonymouse
 // Other
 + (void)batchUpdate:(NSArray *)updateValues;

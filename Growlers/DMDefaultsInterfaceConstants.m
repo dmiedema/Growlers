@@ -29,6 +29,7 @@ static NSString *preferredStore = @"Growlers_Preferred_Store";
 static NSString *preferredStores = @"Growlers_Preferred_Stores";
 static NSString *multipleStoresKey = @"Growlers_Multiple_Stores";
 static NSString *availableStores = @"Growlers_Available_Stores";
+static NSString *syncedStores = @"Growlers_Preferred_Stores_Synced";
 // Anonymouse
 static NSString *anonymousUsage = @"anonymous_usage";
 
@@ -97,7 +98,10 @@ static NSString *anonymousUsage = @"anonymous_usage";
 {
     return [[NSUserDefaults standardUserDefaults] stringForKey:generatedUDID];
 }
-
++ (BOOL)preferredStoresSynced
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:syncedStores];
+}
 #pragma mark Setters
 // Anonymouse Usage
 // Social stuff
@@ -162,6 +166,11 @@ static NSString *anonymousUsage = @"anonymous_usage";
 + (void)setDefaultPreferredStore
 {
     [DMDefaultsInterfaceConstants setPreferredStore:@"All"];
+}
++ (void)setPreferredStoresSynced:(BOOL)synced
+{
+    [[NSUserDefaults standardUserDefaults] setBool:synced forKey:syncedStores];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 // Push/UDID
 + (void)setPushID:(NSString *)push
