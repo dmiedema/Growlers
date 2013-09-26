@@ -234,12 +234,12 @@
 //            break;
 //    }
     self.selectedStoreName = nil;
-    if (index > self.preferredStores.count - 1 || (self.preferredStores.count == 1)) {
+//    if (index > self.preferredStores.count - 1 || (self.preferredStores.count == 1)) {
+    if (index > self.preferredStores.count - 1) {
         [self showStoreNotificationChooser:NO];
     } else {
         self.selectedStoreName = self.preferredStores[index];
         self.selectedIndexPath = self.tableView.indexPathForSelectedRow;
-        NSLog(@"selected Store name - %@", self.selectedStoreName);
         [self showStoreNotificationChooser:YES];
     }
 }
@@ -379,29 +379,55 @@
         [DMDefaultsInterfaceConstants removePreferredStore:self.selectedStoreName];
         self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//        [self.tableView reloadData];
         return;
     }
     
     if (buttonIndex == 0) {
         store = @"All";
         [DMDefaultsInterfaceConstants setPreferredStores:[NSArray arrayWithObject:store]];
+        self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
+        [self.tableView reloadData];
     }
     else {
         store = [actionSheet buttonTitleAtIndex:buttonIndex];
+        NSLog(@"Selected IndexPath - %@", self.selectedIndexPath);
+        NSLog(@"Selected Storesname - %@", self.selectedStoreName);
         if ([self.preferredStores containsObject:store]) {
             return;
         }
-        else {
+        else if (self.selectedIndexPath && self.selectedStoreName) {
             [DMDefaultsInterfaceConstants removePreferredStore:@"All"];
             [DMDefaultsInterfaceConstants removePreferredStore:self.selectedStoreName];
             [DMDefaultsInterfaceConstants addPreferredStore:store];
+            self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
+            [self.tableView reloadData];
+        }
+        else if (!self.selectedStoreName) {
+            NSLog(@"No Store! - %@", self.selectedStoreName);
+            NSLog(@"indexPath - %@", self.selectedIndexPath);
+            [DMDefaultsInterfaceConstants addPreferredStore:store];
+            self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
+            NSUInteger previousCount = self.preferredStores.count;
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.preferredStores.count - 1 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
+            
+            [DMDefaultsInterfaceConstants removePreferredStore:@"All"];
+            self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
+            if (previousCount > self.preferredStores.count) {
+                [self.tableView reloadData];
+            }
+        }
+        else {
+            [DMDefaultsInterfaceConstants removePreferredStore:@"All"];
+            [DMDefaultsInterfaceConstants addPreferredStore:store];
+            self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.preferredStores.count - 1 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
 
     }
-    self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
+//    self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
+//    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     NSLog(@"preferred - %@", self.preferredStores);
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     
     //TODO: tell server my notification settings have changed
     //    [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
