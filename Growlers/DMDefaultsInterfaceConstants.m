@@ -66,7 +66,11 @@ static NSString *anonymousUsage = @"anonymous_usage";
 }
 + (NSString *)lastStore
 {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:lastSelectedStore];
+    NSString *lastStore = [[NSUserDefaults standardUserDefaults] stringForKey:lastSelectedStore];
+    if (lastStore)
+        return lastStore;
+    else
+        return @"Keizer";
 }
 + (NSString *)preferredStore
 {
@@ -74,7 +78,11 @@ static NSString *anonymousUsage = @"anonymous_usage";
 }
 + (NSArray *)preferredStores
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:preferredStores];
+    NSArray *preferred = [[NSUserDefaults standardUserDefaults] objectForKey:preferredStores];
+    if (preferred)
+        return preferred;
+    else
+        return [NSArray arrayWithObject:@"All"];
 }
 + (NSArray *)stores
 {
