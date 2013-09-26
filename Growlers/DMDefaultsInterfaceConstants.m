@@ -88,7 +88,11 @@ static NSString *anonymousUsage = @"anonymous_usage";
 }
 + (NSArray *)stores
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:availableStores];
+    NSArray *stores = [[NSUserDefaults standardUserDefaults] objectForKey:availableStores];
+    if (stores)
+        return stores;
+    else
+        return [NSArray arrayWithObject:@"Keizer"];
 }
 + (NSDictionary *)storeMapLocations
 {
