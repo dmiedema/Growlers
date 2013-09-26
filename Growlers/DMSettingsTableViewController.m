@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSArray *preferredStores;
 @property (nonatomic, strong) NSArray *content;
 @property (nonatomic, strong) NSString *selectedStoreName;
+@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
 - (void)handeStore:(NSInteger)index;
 - (void)showStoreNotificationChooser:(BOOL)showDestructiveOption;
@@ -232,10 +233,12 @@
 //        default:
 //            break;
 //    }
+    self.selectedStoreName = nil;
     if (index > self.preferredStores.count - 1 || (self.preferredStores.count == 1)) {
         [self showStoreNotificationChooser:NO];
     } else {
         self.selectedStoreName = self.preferredStores[index];
+        self.selectedIndexPath = self.tableView.indexPathForSelectedRow;
         NSLog(@"selected Store name - %@", self.selectedStoreName);
         [self showStoreNotificationChooser:YES];
     }
@@ -375,7 +378,8 @@
         NSLog(@"DESTRUCTIVE!!!");
         [DMDefaultsInterfaceConstants removePreferredStore:self.selectedStoreName];
         self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
-        [self.tableView reloadData];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//        [self.tableView reloadData];
         return;
     }
     
