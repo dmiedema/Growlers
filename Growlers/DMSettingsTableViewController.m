@@ -235,7 +235,12 @@
 //    }
     self.selectedStoreName = nil;
 //    if (index > self.preferredStores.count - 1 || (self.preferredStores.count == 1)) {
-    if (index > self.preferredStores.count - 1) {
+    NSLog(@"index - %i & count %i", index, self.preferredStores.count);
+    if (index > self.preferredStores.count - 1 || self.preferredStores.count == 1) {
+        self.selectedIndexPath = self.tableView.indexPathForSelectedRow;
+        if (self.selectedIndexPath.row == 0) {
+            self.selectedStoreName = self.preferredStores[index];
+        }
         [self showStoreNotificationChooser:NO];
     } else {
         self.selectedStoreName = self.preferredStores[index];
