@@ -82,9 +82,6 @@ BOOL _performSegmentChange;
     // Setup filtered beers
     self.filteredBeers = [NSMutableArray arrayWithCapacity:32]; // max number of beers on tap at any given time
     
-    // Load up the beers
-    [self loadBeers];
-    
     // Setup Navigation Bar button Items
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings:)];
     UIBarButtonItem *storeButton = [[UIBarButtonItem alloc] initWithTitle:@"Store" style:UIBarButtonItemStyleBordered target:self action:@selector(showActionSheet:)];
@@ -127,6 +124,9 @@ BOOL _performSegmentChange;
                                              selector:@selector(orientationChanged:)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
+    
+    // Load up the beers
+    [self loadBeers];
 }
 
 - (void)viewDidAppear:(BOOL)animated

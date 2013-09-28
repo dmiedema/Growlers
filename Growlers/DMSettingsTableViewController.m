@@ -256,7 +256,6 @@ typedef enum {
 //    }
     self.selectedStoreName = nil;
 //    if (index > self.preferredStores.count - 1 || (self.preferredStores.count == 1)) {
-    NSLog(@"index - %i & count %i", index, self.preferredStores.count);
     if (index > self.preferredStores.count - 1 || self.preferredStores.count == 1) {
         self.selectedIndexPath = self.tableView.indexPathForSelectedRow;
         if (self.selectedIndexPath.row == 0) {
