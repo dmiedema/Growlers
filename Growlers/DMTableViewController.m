@@ -127,6 +127,7 @@ BOOL _performSegmentChange;
     
     // Load up the beers
     [self loadBeers];
+    self.navigationItem.prompt = self.selectedStore;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -184,9 +185,14 @@ BOOL _performSegmentChange;
 {
     // if we're spinnin' and refreshin'
     // ... stop it.
+
+    self.navigationItem.prompt = nil;
+    
     NSLog(@"Selected Store - %@", self.selectedStore);
-    if (self.refreshControl.bounds.size.height >= 65 && self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) {
+//    if (self.refreshControl.bounds.size.height >= 65 && self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) {
+    if (self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) {
         [self resetHighlightedBeers];
+        self.navigationItem.prompt = nil;
     }
     
     if (self.refreshControl.refreshing) {
@@ -463,6 +469,7 @@ BOOL _performSegmentChange;
         self.selectedStore = [actionSheet buttonTitleAtIndex:buttonIndex];
         [DMDefaultsInterfaceConstants setLastStore:self.selectedStore];
         [self loadBeers];
+        self.navigationItem.prompt = self.selectedStore;
     }
 }
 #pragma mark UIAlertView Delegate
