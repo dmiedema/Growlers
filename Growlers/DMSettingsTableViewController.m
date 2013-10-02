@@ -300,12 +300,12 @@ typedef enum {
     NSArray *recipients;
     switch (index) {
         case 0:    // 0 suggestion
-            subject = self.supportEmailSubject;
+            subject = self.suggestionEmailSubject;
             message = self.suggestionEmailBody;
             recipients = [NSArray arrayWithObject:@"fill@growlmovement.com"];
             break;
         case 1:    // 1 support
-            subject = self.suggestionEmailSubject;
+            subject = self.supportEmailSubject;
             message = self.supportEmailBody;
             recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
             break;
