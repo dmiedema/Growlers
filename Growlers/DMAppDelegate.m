@@ -11,6 +11,7 @@
 // Remote config
 #import "NSUserDefaults+GroundControl.h"
 //#import <NewRelicAgent/NewRelicAgent.h>
+#import "AFNetworkActivityIndicatorManager.h"
 #import "TSTapstream.h"
 // google analytics
 //#import "GAI.h"
