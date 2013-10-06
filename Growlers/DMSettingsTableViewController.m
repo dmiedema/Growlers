@@ -63,7 +63,7 @@ typedef enum {
           @[@"About Growl Movement", @"Operating Hours", @"Take me there!", @"What does everything mean?!"],
           @[@"Notification Preferrences"],
           @[@"Suggestion", @"Support"],
-          @[@"Reconcile Favorite", @"Test Push Notifications", @"Fix Favorites Names/Duplicates"]
+          @[@"Reconcile Favorites", @"Test Push Notifications", @"Fix Favorites Names/Duplicates"]
       ];
 
     self.takeMeActionSheetDelegate = [[DMTakeMeActionSheetDelegate alloc] init];
@@ -257,7 +257,11 @@ typedef enum {
 - (void)handleOther:(NSInteger)index
 {
     switch (index) {
-        case 0:
+        case 0: // 0:  @"Reconcile Favorites",
+            break;
+        case 1: // 1:  @"Test Push Notifications",
+            break;
+        case 2: // 2:  @"Fix Favorites Names/Duplicates"
             break;
         default:
             break;
