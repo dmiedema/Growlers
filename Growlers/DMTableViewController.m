@@ -39,6 +39,14 @@
 - (void)clearNavigationBarPrompt;
 - (void)setNavigationBarPrompt;
 
+
+typedef enum {
+    ALPHA_NEW_BEER,
+    ALPHA_BEER_FAVORITES
+} GROWLERS_YELLOW_ALPHA;
+
+- (UIColor *)growlersYellowColor:(GROWLERS_YELLOW_ALPHA)alpha;
+
 @property (nonatomic, strong) UIGestureRecognizer *swipeGesture;
 
 @end
@@ -130,7 +138,7 @@ BOOL _performSegmentChange;
     
     // Load up the beers
     [self loadBeers];
-    self.navigationItem.prompt = self.selectedStore;
+    [self setNavigationBarPrompt];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -162,13 +170,11 @@ BOOL _performSegmentChange;
 - (void)setNavigationBarTint
 {
     if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-        //        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
         self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
         self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
         self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
     } else {
         if ([DMHelperMethods checkIfOpen]) {
-            //            UIColor *growlYellow = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:1];
             UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
             self.navigationController.navigationBar.tintColor = growlYellow;
             self.refreshControl.tintColor = growlYellow;
@@ -261,6 +267,15 @@ BOOL _performSegmentChange;
     [_coreData resetBeerDatabase:self.beers];
 }
 
+- (UIColor *)growlersYellowColor:(GROWLERS_YELLOW_ALPHA)alpha
+{
+    if (alpha == ALPHA_NEW_BEER) {
+        return [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
+    } else {
+        return [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
+    }
+}
+
 #pragma mark Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -318,7 +333,7 @@ BOOL _performSegmentChange;
         cell.brewery.textColor = [UIColor whiteColor];
         cell.beerInfo.textColor = [UIColor lightTextColor];
     } else if ([_highlightedBeers containsObject:beer]) {
-        cell.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
+        cell.backgroundColor = [self growlersYellowColor:ALPHA_NEW_BEER];
         cell.beerName.textColor = [UIColor blackColor];
         cell.brewery.textColor = [UIColor blackColor];
         cell.beerInfo.textColor = [UIColor darkGrayColor];
@@ -331,7 +346,7 @@ BOOL _performSegmentChange;
     
     // check if beer is favorite
     if ([_coreData isBeerFavorited:beer]) {
-        cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
+        cell.favoriteMarker.backgroundColor = [self growlersYellowColor:ALPHA_BEER_FAVORITES];
     } else {
         cell.favoriteMarker.backgroundColor = [UIColor clearColor];
     }
@@ -400,7 +415,7 @@ BOOL _performSegmentChange;
             favBeer[@"store"] = preferredStore;
             [_coreData favoriteBeer:favBeer];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-            cell.favoriteMarker.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
+            cell.favoriteMarker.backgroundColor = [self growlersYellowColor:ALPHA_BEER_FAVORITES];
         } andFailure:^(id JSON) {
             // Handle failure
             NSLog(@"Favoriting failed: %@", JSON);
@@ -469,7 +484,7 @@ BOOL _performSegmentChange;
         self.selectedStore = [actionSheet buttonTitleAtIndex:buttonIndex];
         [DMDefaultsInterfaceConstants setLastStore:self.selectedStore];
         [self loadBeers];
-        self.navigationItem.prompt = self.selectedStore;
+        [self setNavigationBarPrompt];
     }
 }
 #pragma mark UIAlertView Delegate
@@ -529,8 +544,6 @@ BOOL _performSegmentChange;
 /* Handle Segmented Control change */
 - (void)segmentedControlChanged:(UISegmentedControl *)sender
 {
-//    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//    [self.tableView setContentOffset:CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height) animated:YES];
     [self clearNavigationBarPrompt];
     switch (sender.selectedSegmentIndex) {
         case SHOW_ON_TAP: // on tap
@@ -577,14 +590,8 @@ BOOL _performSegmentChange;
             [self setNavigationBarPrompt];
         else
             [self clearNavigationBarPrompt];
-//        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y + self.searchDisplayController.searchBar.frame.size.height+22, 0, 0, 0);
-//        self.navigationController.navigationBar.topItem.title = @"Growl Movement";
-//        UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
-//        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
-    } else if (scrollView.contentOffset.y >= sectionHeaderHeight){
+    } else if (scrollView.contentOffset.y >= sectionHeaderHeight) {
         [self clearNavigationBarPrompt];
-//        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
-//        self.navigationController.navigationBar.topItem.title = [self.headerSegmentControl titleForSegmentAtIndex:self.headerSegmentControl.selectedSegmentIndex];
     }
 }
 

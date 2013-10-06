@@ -58,6 +58,7 @@ typedef enum {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
+    
     self.content = @[
           @[@"About Growl Movement", @"Operating Hours", @"Take me there!", @"What does everything mean?!"],
           @[@"Notification Preferrences"],
@@ -69,8 +70,6 @@ typedef enum {
     
     // Setup .xibs
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"DMSettingsTableViewCell"];
-    
-
     
     if ([DMDefaultsInterfaceConstants preferredStores].count < 1)
         [DMDefaultsInterfaceConstants setPreferredStores:[NSArray arrayWithObject:@"All"]];
@@ -112,6 +111,7 @@ typedef enum {
     // 1 - Notifications
     // 2 - Feedback
     // 3 - Other
+    // Also that enum...
     switch (indexPath.section) {
         case ABOUT: // About
             [self handleAbout:indexPath.row];
@@ -135,7 +135,7 @@ typedef enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.multipleStores && indexPath.section == 1) {
+    if (!self.multipleStores && indexPath.section == NOTIFICATIONS) {
         return 0.0f;
     }
     return 44.0f;
