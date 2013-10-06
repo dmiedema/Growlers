@@ -31,6 +31,9 @@
 - (void)handleSocial:(NSInteger)index;
 // Feedback Email
 - (void)handleSupport:(NSInteger)index;
+// Other
+- (void)handleOther:(NSInteger)index;
+
 - (NSString *)suggestionEmailSubject;
 - (NSString *)suggestionEmailBody;
 - (NSString *)supportEmailSubject;
@@ -43,7 +46,8 @@
 typedef enum {
     ABOUT = 0,
     NOTIFICATIONS = 1,
-    SUPPORT = 2
+    SUPPORT = 2,
+    OTHER = 3
 } SETTINGS_TABLE_VIEW_SECTIONS;
 
 #pragma mark View Life Cycle
@@ -54,14 +58,19 @@ typedef enum {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
-    self.content = @[@[@"About Growl Movement", @"Operating Hours", @"Take me there!", @"What does everything mean?!"], @[@"Notification Preferrences"], @[@"Suggestion", @"Support"]];
+    self.content = @[
+          @[@"About Growl Movement", @"Operating Hours", @"Take me there!", @"What does everything mean?!"],
+          @[@"Notification Preferrences"],
+          @[@"Suggestion", @"Support"],
+          @[@"Reconcile Favorite", @"Test Push Notifications", @"Fix Favorites Names/Duplicates"]
+      ];
 
     self.takeMeActionSheetDelegate = [[DMTakeMeActionSheetDelegate alloc] init];
     
     // Setup .xibs
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"DMSettingsTableViewCell"];
     
-    self.preferredStore.text = [DMDefaultsInterfaceConstants preferredStore];
+
     
     if ([DMDefaultsInterfaceConstants preferredStores].count < 1)
         [DMDefaultsInterfaceConstants setPreferredStores:[NSArray arrayWithObject:@"All"]];
@@ -102,6 +111,7 @@ typedef enum {
     // 0 - About
     // 1 - Notifications
     // 2 - Feedback
+    // 3 - Other
     switch (indexPath.section) {
         case ABOUT: // About
             [self handleAbout:indexPath.row];
@@ -111,6 +121,9 @@ typedef enum {
             break;
         case SUPPORT: // Feedback
             [self handleSupport:indexPath.row];
+            break;
+        case OTHER:
+            [self handleOther:indexPath.row];
             break;
         default:
             // derp
@@ -131,24 +144,12 @@ typedef enum {
 #pragma mark TableView Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (section) {
-        case ABOUT:
-            return 4;
-            break;
-        case NOTIFICATIONS:
-            return self.preferredStores.count + 1;
-            break;
-        case SUPPORT:
-            return 2;
-            break;
-        default:
-            break;
-    }
-    return 0;
+    return [(NSArray *)[self.content objectAtIndex:section] count];
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return self.content.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -162,6 +163,9 @@ typedef enum {
             break;
         case SUPPORT:
             return @"Support";
+            break;
+        case OTHER:
+            return @"Other";
             break;
         default:
             break;
@@ -226,12 +230,8 @@ typedef enum {
 {
     switch (index) {
         case 0:
-            [DMDefaultsInterfaceConstants shareWithFacebookOnFavorite:!self.facebookSharing.on];
-            [self.facebookSharing setOn:!self.facebookSharing.on animated:YES];
             break;
         case 1:
-            [DMDefaultsInterfaceConstants shareWithTwitterOnFavorite:!self.twitterSharing.on];
-            [self.twitterSharing setOn:!self.twitterSharing.on animated:YES];
             break;
         default:
             break;
@@ -240,22 +240,7 @@ typedef enum {
 
 - (void)handeStore:(NSInteger)index
 {
-//    switch (index) {
-//        case 0:
-//            [self showStoreNotificationChooser];
-//            break;
-//        case 1:
-//            [[DMGrowlerAPI sharedInstance] testPushNotifictaionsWithSuccess:^(id JSON) {
-//                NSLog(@"Test successful");
-//            } andFailure:^(id JSON) {
-//                NSLog(@"Test failed");
-//            }];
-//            break;
-//        default:
-//            break;
-//    }
     self.selectedStoreName = nil;
-//    if (index > self.preferredStores.count - 1 || (self.preferredStores.count == 1)) {
     if (index > self.preferredStores.count - 1 || self.preferredStores.count == 1) {
         self.selectedIndexPath = self.tableView.indexPathForSelectedRow;
         if (self.selectedIndexPath.row == 0) {
@@ -266,6 +251,16 @@ typedef enum {
         self.selectedStoreName = self.preferredStores[index];
         self.selectedIndexPath = self.tableView.indexPathForSelectedRow;
         [self showStoreNotificationChooser:YES];
+    }
+}
+
+- (void)handleOther:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+            break;
+        default:
+            break;
     }
 }
 
