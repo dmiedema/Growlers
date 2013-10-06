@@ -36,6 +36,9 @@
 - (void)resetHighlightedBeers;
 - (void)setNavigationBarTint;
 
+- (void)clearNavigationBarPrompt;
+- (void)setNavigationBarPrompt;
+
 @property (nonatomic, strong) UIGestureRecognizer *swipeGesture;
 
 @end
@@ -185,14 +188,11 @@ BOOL _performSegmentChange;
 {
     // if we're spinnin' and refreshin'
     // ... stop it.
-
-    self.navigationItem.prompt = nil;
     
     NSLog(@"Selected Store - %@", self.selectedStore);
 //    if (self.refreshControl.bounds.size.height >= 65 && self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) {
     if (self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) {
         [self resetHighlightedBeers];
-        self.navigationItem.prompt = nil;
     }
     
     if (self.refreshControl.refreshing) {
@@ -495,6 +495,15 @@ BOOL _performSegmentChange;
     [self.navigationController pushViewController:settingsView animated:YES];
 }
 
+- (void)clearNavigationBarPrompt
+{
+    self.navigationItem.prompt = nil;
+}
+- (void)setNavigationBarPrompt
+{
+    self.navigationItem.prompt = [DMDefaultsInterfaceConstants lastStore];
+}
+
 - (void)showActionSheet:(id)sender
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -522,8 +531,10 @@ BOOL _performSegmentChange;
 {
 //    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 //    [self.tableView setContentOffset:CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height) animated:YES];
+    [self clearNavigationBarPrompt];
     switch (sender.selectedSegmentIndex) {
         case SHOW_ON_TAP: // on tap
+            [self setNavigationBarPrompt];
             [self loadBeers];
             break;
         case SHOW_FAVORITES: // favorites
@@ -556,21 +567,26 @@ BOOL _performSegmentChange;
 }
 
 # pragma mark UIScrollViewDelegate
-/*
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat sectionHeaderHeight = self.tableView.sectionHeaderHeight;
 
     if (scrollView.contentOffset.y <= sectionHeaderHeight && scrollView.contentOffset.y >= 0) {
-        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y + self.searchDisplayController.searchBar.frame.size.height+22, 0, 0, 0);
-        self.navigationController.navigationBar.topItem.title = @"Growl Movement";
+        if (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP)
+            [self setNavigationBarPrompt];
+        else
+            [self clearNavigationBarPrompt];
+//        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y + self.searchDisplayController.searchBar.frame.size.height+22, 0, 0, 0);
+//        self.navigationController.navigationBar.topItem.title = @"Growl Movement";
 //        UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
 //        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
     } else if (scrollView.contentOffset.y >= sectionHeaderHeight){
-        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
-        self.navigationController.navigationBar.topItem.title = [self.headerSegmentControl titleForSegmentAtIndex:self.headerSegmentControl.selectedSegmentIndex];
+        [self clearNavigationBarPrompt];
+//        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+//        self.navigationController.navigationBar.topItem.title = [self.headerSegmentControl titleForSegmentAtIndex:self.headerSegmentControl.selectedSegmentIndex];
     }
 }
-*/
+
 
 @end
