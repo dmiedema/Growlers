@@ -63,7 +63,7 @@ typedef enum {
           @[@"About Growl Movement", @"Operating Hours", @"Take me there!", @"What does everything mean?!"],
           @[@"Notification Preferrences"],
           @[@"Suggestion", @"Support"],
-          @[@"Reconcile Favorites", @"Test Push Notifications", @"Fix Favorites Names/Duplicates"]
+          @[@"Test Push Notifications", @"Fix Favorites Names/Duplicates"]
       ];
 
     self.takeMeActionSheetDelegate = [[DMTakeMeActionSheetDelegate alloc] init];
@@ -144,6 +144,8 @@ typedef enum {
 #pragma mark TableView Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    // Make sure notifications section gets right number of rows.
+    if (section == NOTIFICATIONS) return self.preferredStores.count + 1;
     return [(NSArray *)[self.content objectAtIndex:section] count];
 }
 
