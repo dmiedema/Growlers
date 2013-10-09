@@ -145,6 +145,19 @@
 	NSLog(@"Failed to get token, error: %@", error);
 }
 
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"Remote Notification Received");
+    NSLog(@"User Info - %@", userInfo);
+    if (application.applicationState == UIApplicationStateActive ) {
+        if ([userInfo[@"alert"] isEqualToString:@"Test Notification"]) {
+            NSLog(@"alert is 'Test Notification'");
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push Test" message:@"Was successful!" delegate:nil cancelButtonTitle:@"Awesome!" otherButtonTitles: nil];
+            [alertView show];
+        }
+    }
+}
+
 #pragma mark - Handling URL Request
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
