@@ -16,6 +16,11 @@
 static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/GrowlersAppPage.php";
 //static NSString *DMGrowlerAPIURLString  = @"http://192.168.1.107:8000";
 //static NSString *DMGrowlerAPIURLString = @"http://localhost:8000";
+
+static NSString *contentTypeValue = @"application/json";
+static NSString *contentTypeHeaderPOST = @"Content-Type";
+static NSString *contentTypeHeaderGET = @"Accept";
+
 @implementation DMGrowlerAPI
 
 + (DMGrowlerAPI *)sharedInstance {
@@ -32,7 +37,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     if (self) {
         [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
         [self setParameterEncoding:AFJSONParameterEncoding];
-        [self setDefaultHeader:@"application/json" value:@"Accept"];
+        [self setDefaultHeader:contentTypeValue value:contentTypeHeaderGET];
     }
     return self;
 }
@@ -73,7 +78,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     NSError *error = nil;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
     request.HTTPMethod = @"POST";
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:contentTypeValue forHTTPHeaderField:contentTypeHeaderPOST];
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:beer options:kNilOptions error:&error];
 
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -113,8 +118,30 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
 
 - (void)testPushNotifictaionsWithSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
 {
-    #warning Not Implemented
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
     
+    NSDictionary *data = @{@"message": @"Test Notification", @"udid": [DMDefaultsInterfaceConstants pushID]};
+    NSError *error = nil;
+    
+    request.HTTPMethod = @"POST";
+    [request setValue:contentTypeValue forHTTPHeaderField:contentTypeHeaderPOST];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:data options:kNilOptions error:&error];
+    
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        success(JSON);
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        failure(JSON);
+    }];
+    [operation start];
+    
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
+        TSEvent *e = [TSEvent eventWithName:@"Test Push" oneTimeOnly:NO];
+        [[TSTapstream instance] fireEvent:e];
+        //            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Notifications"
+        //                                                                  action:@"Store Set"
+        //                                                                   label:@""
+        //                                                                   value:nil] build]];
+    }
 }
 
 - (void)setPreferredStores:(NSArray *)stores forUser:(NSString *)pushID withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
@@ -128,7 +155,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
     request.HTTPMethod = @"POST";
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:contentTypeValue forHTTPHeaderField:contentTypeHeaderPOST];
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:data options:kNilOptions error:&error];
     
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {

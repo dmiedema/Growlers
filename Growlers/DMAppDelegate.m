@@ -150,11 +150,23 @@
     NSLog(@"Remote Notification Received");
     NSLog(@"User Info - %@", userInfo);
     if (application.applicationState == UIApplicationStateActive ) {
+        NSLog(@"Yep, Active");
+        userInfo = userInfo[@"aps"];
         if ([userInfo[@"alert"] isEqualToString:@"Test Notification"]) {
             NSLog(@"alert is 'Test Notification'");
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push Test" message:@"Was successful!" delegate:nil cancelButtonTitle:@"Awesome!" otherButtonTitles: nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push Test"
+                                                                message:@"Was successful!"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"Awesome!"
+                                                      otherButtonTitles: nil];
             [alertView show];
         }
+    }
+    else {
+        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+        localNotification.alertBody = @"GM Taplist Push Notifications are working!";
+        localNotification.applicationIconBadgeNumber = 1;
+        [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
     }
 }
 

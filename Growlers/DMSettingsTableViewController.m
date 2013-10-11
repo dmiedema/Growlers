@@ -259,11 +259,14 @@ typedef enum {
 - (void)handleOther:(NSInteger)index
 {
     switch (index) {
-        case 0: // 0:  @"Reconcile Favorites",
+        case 0: // 1:  @"Test Push Notifications",
+            [[DMGrowlerAPI sharedInstance] testPushNotifictaionsWithSuccess:^(id JSON) {
+                NSLog(@"Success - %@", JSON);
+            } andFailure:^(id JSON) {
+                NSLog(@"Failure - %@", JSON);
+            }];
             break;
-        case 1: // 1:  @"Test Push Notifications",
-            break;
-        case 2: // 2:  @"Fix Favorites Names/Duplicates"
+        case 1: // 2:  @"Fix Favorites Names/Duplicates"
             break;
         default:
             break;
