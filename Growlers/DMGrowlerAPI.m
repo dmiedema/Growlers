@@ -8,14 +8,12 @@
 
 #import "DMGrowlerAPI.h"
 #import "TSTapstream.h"
+#import <AFNetworking/AFJSONRequestOperation.h>
+#import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 //#import "GAI.h"
 //#import "GAIDictionaryBuilder.h"
 
-//static NSString *DMGrowlerAPIURLString  = @"http://76.115.252.132:8000";
-//static NSString *DMGrowlerAPIURLString  = @"http://shittie.st:8000";
 static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/GrowlersAppPage.php";
-//static NSString *DMGrowlerAPIURLString  = @"http://192.168.1.107:8000";
-//static NSString *DMGrowlerAPIURLString = @"http://localhost:8000";
 
 static NSString *contentTypeValue = @"application/json";
 static NSString *contentTypeHeaderPOST = @"Content-Type";
@@ -27,19 +25,9 @@ static NSString *contentTypeHeaderGET = @"Accept";
     static DMGrowlerAPI *sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedClient = [[DMGrowlerAPI alloc] initWithBaseURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
+        sharedClient = [[DMGrowlerAPI alloc] init];
     });
     return sharedClient;
-}
-
-- (id)initWithBaseURL:(NSURL *)url {
-    self = [super initWithBaseURL:url];
-    if (self) {
-        [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
-        [self setParameterEncoding:AFJSONParameterEncoding];
-        [self setDefaultHeader:contentTypeValue value:contentTypeHeaderGET];
-    }
-    return self;
 }
 
 - (void)getBeersWithFlag:(SERVER_FLAG)serverAction forStore:(NSString *)store andSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure

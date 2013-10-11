@@ -6,9 +6,6 @@
 //  Copyright (c) 2013 Daniel Miedema. All rights reserved.
 //
 
-#import "AFHTTPClient.h"
-//#import "AFHTTPClient+Rocket.h"
-
 typedef void (^JSONResponseBlock)(id JSON);
 
 typedef enum {
@@ -21,7 +18,7 @@ typedef enum {
     ON_TAP
 } SERVER_FLAG;
 
-@interface DMGrowlerAPI : AFHTTPClient
+@interface DMGrowlerAPI : NSObject
 + (DMGrowlerAPI *)sharedInstance;
 - (void)getBeersWithFlag:(SERVER_FLAG)flag forStore:(NSString *)store andSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
 - (void)favoriteBeer:(NSDictionary *)beer withAction:(BEER_ACTION)action withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
