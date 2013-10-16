@@ -13,7 +13,7 @@
 #import <MessageUI/MessageUI.h>
 #import <MapKit/MapKit.h>
 
-@interface DMSettingsTableViewController () <UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
+@interface DMSettingsTableViewController () <UIActionSheetDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic) BOOL multipleStores;
 @property (nonatomic, strong) NSArray *preferredStores;
@@ -63,7 +63,7 @@ typedef enum {
           @[@"About Growl Movement", @"Operating Hours", @"Take me there!", @"What does everything mean?!"],
           @[@"Notification Preferrences"],
           @[@"Suggestion", @"Support"],
-          @[@"Test Push Notifications", @"Fix Favorites Names/Duplicates"]
+          @[@"Test Push Notifications", @"Fix Favorites Names/Duplicates", @"Review App"]
       ];
 
     self.takeMeActionSheetDelegate = [[DMTakeMeActionSheetDelegate alloc] init];
@@ -268,8 +268,30 @@ typedef enum {
             break;
         case 1: // 2:  @"Fix Favorites Names/Duplicates"
             break;
+        case 2:
+            [self reviewApp];
+            break;
         default:
             break;
+    }
+}
+
+- (void)reviewApp
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Review"
+                                                        message:@"Write an appstore view of GM Taplist?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"No Thanks"
+                                              otherButtonTitles: @"Yes!", nil];
+    [alertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.cancelButtonIndex == buttonIndex) return;
+    else {
+        NSString * theUrl = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=707321886&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software";
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:theUrl]];
     }
 }
 
