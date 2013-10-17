@@ -278,8 +278,8 @@ typedef enum {
 
 - (void)reviewApp
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Review"
-                                                        message:@"Write an appstore view of GM Taplist?"
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Review the app?"
+                                                        message:@"Would you like to write an appstore view of GM Taplist?"
                                                        delegate:self
                                               cancelButtonTitle:@"No Thanks"
                                               otherButtonTitles: @"Yes!", nil];
