@@ -266,7 +266,7 @@ typedef enum {
                 NSLog(@"Success - %@", JSON);
             } andFailure:^(id JSON) {
                 UIAlertView *failureAlertView = [[UIAlertView alloc] initWithTitle:@"Push Failed!"
-                                                                           message:@"Looks like the test failed. Please try again later\nFeel free to contact support about this."
+                                                                           message:@"Looks like the test failed. Please make sure you're connected to the internet and try again later\nFeel free to contact support about this."
                                                                           delegate:nil
                                                                  cancelButtonTitle:@"Okay"
                                                                  otherButtonTitles:nil];
