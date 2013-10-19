@@ -1,5 +1,5 @@
 platform :ios, '7.0'
-pod 'AFNetworking', '~> 1' # for ground control.
+pod 'AFNetworking', '~> 1' # for ground contorl.
 pod 'GroundControl'
 #pod 'DerpKit'
 pod 'HockeySDK'

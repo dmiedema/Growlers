@@ -8,7 +8,7 @@
 
 #import "DMGrowlerAPI.h"
 #import "TSTapstream.h"
-#import <AFNetworking/AFJSONRequestOperation.h>
+#import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 //#import "GAI.h"
 //#import "GAIDictionaryBuilder.h"
@@ -43,12 +43,14 @@ static NSString *contentTypeHeaderGET = @"Accept";
     NSLog(@"request url = %@", requestUrlString);
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestUrlString]];
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        success(JSON);
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        failure(JSON);
-    }];
     
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success(responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error - %@", error);
+    }];
     [AFNetworkActivityIndicatorManager sharedManager];
     [operation start];
     
@@ -69,11 +71,15 @@ static NSString *contentTypeHeaderGET = @"Accept";
     [request setValue:contentTypeValue forHTTPHeaderField:contentTypeHeaderPOST];
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:beer options:kNilOptions error:&error];
 
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        success(JSON);
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSLog(@"Error favoritng - %@", error);
-        failure(JSON);
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc]
+                                         initWithRequest:request];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success(responseObject);
+        NSLog(@"%@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error - %@", error);
     }];
     [AFNetworkActivityIndicatorManager sharedManager];
     [operation start];
@@ -115,10 +121,12 @@ static NSString *contentTypeHeaderGET = @"Accept";
     [request setValue:contentTypeValue forHTTPHeaderField:contentTypeHeaderPOST];
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:data options:kNilOptions error:&error];
     
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        success(JSON);
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        failure(JSON);
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success(responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error - %@", error);
     }];
     [operation start];
     
@@ -146,13 +154,12 @@ static NSString *contentTypeHeaderGET = @"Accept";
     [request setValue:contentTypeValue forHTTPHeaderField:contentTypeHeaderPOST];
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:data options:kNilOptions error:&error];
     
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        success(JSON);
-        NSLog(@"reponse - %@", response);
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        failure(JSON);
-        NSLog(@"reponse - %@", response);
-        NSLog(@"error %@ -- message: %@", error, error.userInfo);
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success(responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error - %@", error);
     }];
     [operation start];
     
