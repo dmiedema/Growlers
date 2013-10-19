@@ -185,7 +185,9 @@ typedef enum {
         }
 
         cell.textLabel.text = self.content[indexPath.section][indexPath.row];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
         return cell;
     }
     else {
