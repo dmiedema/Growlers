@@ -265,6 +265,12 @@ typedef enum {
             [[DMGrowlerAPI sharedInstance] testPushNotifictaionsWithSuccess:^(id JSON) {
                 NSLog(@"Success - %@", JSON);
             } andFailure:^(id JSON) {
+                UIAlertView *failureAlertView = [[UIAlertView alloc] initWithTitle:@"Push Failed!"
+                                                                           message:@"Looks like the test failed. Please try again later\nFeel free to contact support about this."
+                                                                          delegate:nil
+                                                                 cancelButtonTitle:@"Okay"
+                                                                 otherButtonTitles:nil];
+                [failureAlertView show];
                 NSLog(@"Failure - %@", JSON);
             }];
             break;
