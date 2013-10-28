@@ -188,6 +188,7 @@ typedef enum {
 //        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        cell.textLabel.textColor = [UIColor blueColor];
         return cell;
     }
     else {
@@ -202,6 +203,7 @@ typedef enum {
             cell.detailTextLabel.text = self.preferredStores[indexPath.row];
         } else {
             cell.textLabel.text = @"Add Store";
+            cell.textLabel.textColor = [UIColor blueColor];
             cell.detailTextLabel.text = @"";
         }
         return cell;
