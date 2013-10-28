@@ -10,16 +10,14 @@
 #import "DMGrowlerTableViewCell.h"
 #import "DMSettingsTableViewController.h"
 #import "DMHelperMethods.h"
-#import "Beer.h"
-#import "Favorites.h"
 #import "DMCoreDataMethods.h"
 
-@interface DMTableViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate, UIAlertViewDelegate>
+@interface DMTableViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
+// Private variables. Wow there are a lot.
 @property (nonatomic, strong) NSArray *beers;
 @property (nonatomic, strong) NSMutableArray *filteredBeers;
 @property (nonatomic, strong) NSDate *lastUpdated;
 @property (nonatomic, strong) NSMutableArray *highlightedBeers;
-@property (nonatomic, strong) NSString *udid;
 @property (nonatomic, strong) NSString *selectedStore;
 @property (nonatomic, strong) DMCoreDataMethods *coreData;
 
@@ -27,7 +25,9 @@
 @property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 
 @property (nonatomic, strong) UISegmentedControl *headerSegmentControl;
+@property (nonatomic, strong) UIGestureRecognizer *swipeGesture;
 
+// Private methods
 - (void)loadBeers;
 - (void)loadFavorites;
 - (void)settings:(id)sender;
@@ -39,25 +39,24 @@
 - (void)clearNavigationBarPrompt;
 - (void)setNavigationBarPrompt;
 
-
-typedef enum {
-    ALPHA_NEW_BEER,
-    ALPHA_BEER_FAVORITES
-} GROWLERS_YELLOW_ALPHA;
-
-- (UIColor *)growlersYellowColor:(GROWLERS_YELLOW_ALPHA)alpha;
-
-@property (nonatomic, strong) UIGestureRecognizer *swipeGesture;
-
-@end
-
-@implementation DMTableViewController
-
+// Private enums
 typedef enum {
     SHOW_ON_TAP = 0,
     SHOW_FAVORITES = 1,
     SHOW_FULL_HISTORY = 2
 } SEGMNET_CONTROL_INDEX;
+
+typedef enum {
+    ALPHA_NEW_BEER,
+    ALPHA_BEER_FAVORITES
+} GROWLERS_YELLOW_ALPHA;
+// Placed after typedef so no build errors.
+- (UIColor *)growlersYellowColor:(GROWLERS_YELLOW_ALPHA)alpha;
+@end
+
+@implementation DMTableViewController
+
+
 
 CGPoint _gestureBeginLocation;
 BOOL _performSegmentChange;
@@ -67,7 +66,6 @@ BOOL _performSegmentChange;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-//    [_coreData resetBeerDatabase:self.beers];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -75,13 +73,9 @@ BOOL _performSegmentChange;
 {
     [super viewDidLoad];
     
-    // get my udid for favoriting
-    _udid = [DMDefaultsInterfaceConstants generatedUDID];
-    
     // ActionSheet and Selected Store
-    _growlMovementStores = [DMDefaultsInterfaceConstants stores];
     NSString *lastSelectedStore = [DMDefaultsInterfaceConstants lastStore];
-    self.selectedStore = lastSelectedStore ? lastSelectedStore : _growlMovementStores[0];
+    self.selectedStore = lastSelectedStore ? lastSelectedStore : [DMDefaultsInterfaceConstants stores][0];
     
     // Load up my .xib 
     [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
@@ -90,8 +84,8 @@ BOOL _performSegmentChange;
     
     // Setup highlighted beers
     _highlightedBeers = [NSMutableArray new];
-    // Setup filtered beers
-    self.filteredBeers = [NSMutableArray arrayWithCapacity:32]; // max number of beers on tap at any given time
+    // Setup filtered beers, its just a mutable array
+    self.filteredBeers = [NSMutableArray new];
     
     // Setup Navigation Bar button Items
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings:)];
@@ -131,6 +125,7 @@ BOOL _performSegmentChange;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    // Signup for notification center.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(orientationChanged:)
                                                  name:UIDeviceOrientationDidChangeNotification
@@ -144,18 +139,29 @@ BOOL _performSegmentChange;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    // Set the tint color
     [self setNavigationBarTint];
+    // Set the title, because if user swipes back it can be wonky. Just make sure its right...
     self.navigationController.navigationBar.topItem.title = @"Growl Movement";
+    // Create them gesture recognizers.
     UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
     UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+    // Set them directions
     leftSwipeGesture.direction = (UISwipeGestureRecognizerDirectionLeft);
     rightSwipeGesture.direction = (UISwipeGestureRecognizerDirectionRight);
+    // Just one finger, I'm nice
     leftSwipeGesture.numberOfTouchesRequired = 1;
     rightSwipeGesture.numberOfTouchesRequired = 1;
+    // Add them gesture recognizers to the tableView.
     [self.tableView addGestureRecognizer:leftSwipeGesture];
     [self.tableView addGestureRecognizer:rightSwipeGesture];
 }
 
+
+#pragma mark NSNotificationCenter Notification selectors
+// Not sure *why* this is necessary, but the segement control
+// In the header would NOT resize correctly without reloading
+// the data, so, here we are. Listening to the orienation notification.
 - (void)orientationChanged:(NSNotification *)notification
 {
     if ([self.searchDisplayController isActive]) {
@@ -169,43 +175,37 @@ BOOL _performSegmentChange;
 
 - (void)setNavigationBarTint
 {
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-        self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
+    // If they're open, navigiation tint gets a different color than if they're closed.
+    if ([DMHelperMethods checkIfOpen]) {
+        UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
+        self.navigationController.navigationBar.tintColor = growlYellow;
+        self.refreshControl.tintColor = growlYellow;
+        self.headerSegmentControl.tintColor = growlYellow;
     } else {
-        if ([DMHelperMethods checkIfOpen]) {
-            UIColor *growlYellow = [UIColor colorWithHue:54.0/360.0 saturation:0.71 brightness:0.91 alpha:1];
-            self.navigationController.navigationBar.tintColor = growlYellow;
-            self.refreshControl.tintColor = growlYellow;
-            self.headerSegmentControl.tintColor = growlYellow;
-        } else {
-            self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
-            self.refreshControl.tintColor = [UIColor darkGrayColor];
-            self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
-        }
-        // This helps subliment removing the back text from a pushed view controller.
-        self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+        self.refreshControl.tintColor = [UIColor darkGrayColor];
+        self.headerSegmentControl.tintColor = [UIColor darkGrayColor];
     }
+    // This helps subliment removing the back text from a pushed view controller.
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void)loadBeers
 {
-    // if we're spinnin' and refreshin'
-    // ... stop it.
-    
-    NSLog(@"Selected Store - %@", self.selectedStore);
-//    if (self.refreshControl.bounds.size.height >= 65 && self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) {
+    // If we're refreshing and we're showing on tap.
+    // clear out the highlighted beers that have been marked as 'unseen' or 'new'
     if (self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) {
         [self resetHighlightedBeers];
     }
-    
+    // if we're spinnin' and refreshin'
+    // ... stop it.
     if (self.refreshControl.refreshing) {
         // Setup Title
         NSString *str = [NSString stringWithFormat:@"Last Updated at %@", [_dateFormatter stringFromDate:[NSDate date]]];
         NSAttributedString *attrStr;
         // if iOS7, font color matches tint color.
+        // not needed to check anymore, iOS 7 only.
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
              attrStr = [[NSAttributedString alloc] initWithString:str attributes:@{NSForegroundColorAttributeName: self.navigationController.navigationBar.tintColor}];
         } else {
@@ -225,11 +225,22 @@ BOOL _performSegmentChange;
     // check segment control to see what action I should perform
     SERVER_FLAG action = (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) ? ON_TAP : ALL;
     
+    /* I could probably abstract self.selected store out and use NSUserDefaults for all of it
+        But i don't know if thats bad reliability wise
+        And i also would have to implement a delegate methods for for the actionSheet delegate
+        to tell my TableViewController that the selected store changed.
+        Not sure which I feel is a more elegant solution.
+     */
+    // forStore is ignored when SERVER_FLAG is set to all, but if its not I need it.
     [[DMGrowlerAPI sharedInstance] getBeersWithFlag:action forStore:self.selectedStore andSuccess:^(id JSON) {
         self.beers = JSON;
         if (action == ON_TAP) {
+            // If we're looking at the current tap list, lets see if any are new since we last saw.
             [self checkForNewBeers];
         }
+        // Check if we're currently searching the list.
+        // Because if we are and I just reload the tableView.
+        // It goes boom.
         if ([self.searchDisplayController isActive]) {
             [self updateFilteredContentForSearchString:self.searchDisplayController.searchBar.text];
             [self.searchDisplayController.searchResultsTableView reloadData];
@@ -237,6 +248,8 @@ BOOL _performSegmentChange;
             [self.tableView reloadData];
         }
     } andFailure:^(id JSON) {
+        // Should probably do some real error handling like an alert or view to say
+        // no network or call failed but for now we'll just log it out.
         NSLog(@"Error - %@", JSON);
     }];
 }
@@ -247,7 +260,10 @@ BOOL _performSegmentChange;
     if (favorites.count > 0) {
         self.beers = favorites;
     } else {
-        self.beers = @[@{@"name": @"No Favorites!", @"brewer": @"Go Favorite some Beers!", @"ibu": @"", @"abv": @""}];
+        self.beers = @[@{@"name": @"No Favorites!", @"brewer": @"Go Favorite some Beers!",
+                         @"ibu": @"", @"abv": @"",
+                         @"city": @"", @"state": @""}
+                       ];
     }
     if ([self.searchDisplayController isActive]) {
         [self updateFilteredContentForSearchString:self.searchDisplayController.searchBar.text];
@@ -267,6 +283,13 @@ BOOL _performSegmentChange;
     [_coreData resetBeerDatabase:self.beers];
 }
 
+- (void)resetHighlightedBeers
+{
+    [_highlightedBeers removeAllObjects];
+    [_coreData resetBeerDatabase:self.beers];
+}
+
+// I'm lazy.
 - (UIColor *)growlersYellowColor:(GROWLERS_YELLOW_ALPHA)alpha
 {
     if (alpha == ALPHA_NEW_BEER) {
@@ -276,7 +299,7 @@ BOOL _performSegmentChange;
     }
 }
 
-#pragma mark Table view data source
+#pragma mark Table View Data Source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -299,14 +322,19 @@ BOOL _performSegmentChange;
     cell.brewery.adjustsFontSizeToFitWidth = YES;
     cell.beerInfo.adjustsFontSizeToFitWidth = YES;
     
+    // Get which beer I'm searching for.
     NSDictionary *beer;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         beer = self.filteredBeers[indexPath.row];
     } else {
         beer = self.beers[indexPath.row];
     }
+    
+    NSLog(@"beer ----- %@", beer);
+    
     // Configure the cell...
     switch (self.headerSegmentControl.selectedSegmentIndex) {
+            // If we're showing on tap, show prices.
         case SHOW_ON_TAP:
             cell.beerName.text = [NSString stringWithFormat:@"%@. %@", beer[@"tap_id"], beer[@"name"]];
             cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
@@ -318,10 +346,12 @@ BOOL _performSegmentChange;
             break;
     }
     
-    cell.brewery.text  = beer[@"brewer"];
+    cell.brewery.text  = [NSString stringWithFormat:@"%@ in %@, %@", beer[@"brewer"], beer[@"city"], beer[@"state"]];
 
     // Get ID and check for today == tap.id and highlight
-    // last day of month, ending ones go on sale
+    // OR if the last day of month, all tap_ids >= day number
+    // are on sale.
+    // And that gives us this horrible if statement.
     if (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP &&
         ([DMHelperMethods checkToday:beer[@"tap_id"]] ||
          ([DMHelperMethods checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= [DMHelperMethods getToday] )
@@ -333,11 +363,13 @@ BOOL _performSegmentChange;
         cell.brewery.textColor = [UIColor whiteColor];
         cell.beerInfo.textColor = [UIColor lightTextColor];
     } else if ([_highlightedBeers containsObject:beer]) {
+        // Beer is in our 'new beers' list so we should highlight it.
         cell.backgroundColor = [self growlersYellowColor:ALPHA_NEW_BEER];
         cell.beerName.textColor = [UIColor blackColor];
         cell.brewery.textColor = [UIColor blackColor];
         cell.beerInfo.textColor = [UIColor darkGrayColor];
     } else {
+        // If I don't set them back explicitly, after scrolling weird stuff happens.
         cell.backgroundColor = [UIColor whiteColor];
         cell.beerName.textColor = [UIColor blackColor];
         cell.brewery.textColor = [UIColor blackColor];
@@ -345,14 +377,17 @@ BOOL _performSegmentChange;
     }
     
     // check if beer is favorite
+    // If it is it gets a yellow dot.
     if ([_coreData isBeerFavorited:beer]) {
         cell.favoriteMarker.backgroundColor = [self growlersYellowColor:ALPHA_BEER_FAVORITES];
     } else {
         cell.favoriteMarker.backgroundColor = [UIColor clearColor];
     }
+    // square dots aren't dots... they're squares.
     cell.favoriteMarker.layer.masksToBounds = YES;
     cell.favoriteMarker.layer.cornerRadius = cell.favoriteMarker.bounds.size.width / 2.0;
 
+    // finally done.
     return cell;
 }
 
@@ -370,15 +405,19 @@ BOOL _performSegmentChange;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    // This was necessary apparently. Set it in the story board but it wouldn't actually stick
+    // until I set it here.
     return 34.0f;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Same reason as the heightForHeaderInSection
     return 64.0f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // again, get our beer from where ever the user is seeing it.
     NSDictionary *beer;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         beer = self.filteredBeers[indexPath.row];
@@ -386,6 +425,8 @@ BOOL _performSegmentChange;
         beer = self.beers[indexPath.row];
     }
     
+    // If we're trying to favorite my message to favorite beers
+    // No no.
     if ([beer[@"name"] isEqualToString:@"No Favorites!"] && [beer[@"brewer"] isEqualToString:@"Go Favorite some Beers!"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
@@ -394,9 +435,19 @@ BOOL _performSegmentChange;
     NSString *token = [DMDefaultsInterfaceConstants pushID];
     
     NSString *preferredStore = [[DMDefaultsInterfaceConstants preferredStore] lowercaseString];
+    
+    NSMutableDictionary *beerToFavorite = [@{@"name": beer[@"name"],
+                                            @"brewer": beer[@"brewer"],
+                                            @"udid": (token ? token : [DMDefaultsInterfaceConstants generatedUDID]),
+                                            @"store": preferredStore}
+                                           mutableCopy];
+    
 
     if ([_coreData isBeerFavorited:beer]) {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": preferredStore, @"fav": @NO} withAction:UNFAVORITE withSuccess:^(id JSON) {
+        // Selected beer is a favorite so we want to tell the server
+        // we want to unfavorite it. So lets put that in our dictionary we send
+        [beerToFavorite setValue:@NO forKey:@"fav"];
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:beerToFavorite withAction:UNFAVORITE withSuccess:^(id JSON) {
             // CoreData Save
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = preferredStore;
@@ -409,7 +460,10 @@ BOOL _performSegmentChange;
         }];
     }
     else {
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:@{@"name": beer[@"name"], @"brewer": beer[@"brewer"], @"udid": (token ? token : _udid), @"store": preferredStore, @"fav": @YES} withAction:FAVORITE withSuccess:^(id JSON) {
+        // Beer isn't a favorite so let's tell the server we would like to
+        // favorite it.
+        [beerToFavorite setValue:@YES forKey:@"fav"];
+        [[DMGrowlerAPI sharedInstance] favoriteBeer:beerToFavorite withAction:FAVORITE withSuccess:^(id JSON) {
             // CoreData save
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = preferredStore;
@@ -418,6 +472,7 @@ BOOL _performSegmentChange;
             cell.favoriteMarker.backgroundColor = [self growlersYellowColor:ALPHA_BEER_FAVORITES];
         } andFailure:^(id JSON) {
             // Handle failure
+            // But for now, just log.
             NSLog(@"Favoriting failed: %@", JSON);
         }];
     }
@@ -432,13 +487,15 @@ BOOL _performSegmentChange;
 
 - (void)updateFilteredContentForSearchString:(NSString *)searchString
 {
-    // Make a mutable copy
+    // Make a mutable copy of the beer list.
+    // I'll just use the one I have
     self.filteredBeers = [self.beers mutableCopy];
     // Trim off whitespace
     NSString *strippedSearch = [searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-
+    // See if beer name or beer brewer contains the search string via a case insensitive search.
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K contains[cd] %@ OR %K contains[cd] %@", @"name", strippedSearch, @"brewer", strippedSearch];
     
+    // Set my mutableArray to itself applying the filter.
     self.filteredBeers = [[self.filteredBeers filteredArrayUsingPredicate:predicate] mutableCopy];
 }
 
@@ -450,16 +507,13 @@ BOOL _performSegmentChange;
     return YES;
 }
 
+/*
+ These are only implemented because for whatever reason in iOS 7
+ the header segment control kept disappearing until I reloaded the tableView data
+ So this just forces that to happen upon searching or cancelling.
+ Only here to be a fix for a weird iOS7 bug.
+ */
 #pragma mark UISearchBarDelegate
-
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{
-    searchBar.showsScopeBar = NO;
-    [searchBar sizeToFit];
-    
-    return YES;
-}
-
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
     searchBar.showsScopeBar = NO;
@@ -487,36 +541,13 @@ BOOL _performSegmentChange;
         [self setNavigationBarPrompt];
     }
 }
-#pragma mark UIAlertView Delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    [DMDefaultsInterfaceConstants askedAboutSharing:YES];
-    if (alertView.cancelButtonIndex == buttonIndex) {
-        [DMDefaultsInterfaceConstants shareWithFacebookOnFavorite:NO];
-        [DMDefaultsInterfaceConstants shareWithTwitterOnFavorite:NO];
-        return;
-    }
-    else {
-        [DMDefaultsInterfaceConstants shareWithFacebookOnFavorite:YES];
-        [DMDefaultsInterfaceConstants shareWithTwitterOnFavorite:NO];
-    }
-}
 
-#pragma mark Navigation/BarButtonItems
+#pragma mark Bar Button Items
 
 - (void)settings:(id)sender
 {
     DMSettingsTableViewController *settingsView = [self.storyboard instantiateViewControllerWithIdentifier:@"DMSettingsTableViewController"];
     [self.navigationController pushViewController:settingsView animated:YES];
-}
-
-- (void)clearNavigationBarPrompt
-{
-    self.navigationItem.prompt = nil;
-}
-- (void)setNavigationBarPrompt
-{
-    self.navigationItem.prompt = [DMDefaultsInterfaceConstants lastStore];
 }
 
 - (void)showActionSheet:(id)sender
@@ -535,11 +566,21 @@ BOOL _performSegmentChange;
     [actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
-- (void)resetHighlightedBeers
+#pragma mark Navigation Bar Stuff
+// convenient way to remove the navigatinoBar prompt entirely.
+// Purely a convience method
+- (void)clearNavigationBarPrompt
 {
-    [_highlightedBeers removeAllObjects];
-    [_coreData resetBeerDatabase:self.beers];
+    self.navigationItem.prompt = nil;
 }
+// Set the prompt the last selected store.
+// Set to nil to remove.
+- (void)setNavigationBarPrompt
+{
+    self.navigationItem.prompt = [DMDefaultsInterfaceConstants lastStore];
+}
+
+#pragma mark Segment Control and Gestures Delegate
 
 /* Handle Segmented Control change */
 - (void)segmentedControlChanged:(UISegmentedControl *)sender
@@ -561,17 +602,19 @@ BOOL _performSegmentChange;
     }
 }
 
-#pragma mark Gestures
-
 - (void)handleSwipe:(UISwipeGestureRecognizer *)recognizer
 {
+    // Handle left swipe, move selected segement right
     if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
+        // Make sure we're not as far right as we can go.
         if (self.headerSegmentControl.selectedSegmentIndex < self.headerSegmentControl.numberOfSegments - 1) {
             self.headerSegmentControl.selectedSegmentIndex++;
             [self segmentedControlChanged:self.headerSegmentControl];
         } else return;
     }
+    // Do the opposite of above, move it to the left.
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
+        // Make sure we can even go to the left.
         if (self.headerSegmentControl.selectedSegmentIndex > 0) {
             self.headerSegmentControl.selectedSegmentIndex--;
             [self segmentedControlChanged:self.headerSegmentControl];
@@ -580,7 +623,8 @@ BOOL _performSegmentChange;
 }
 
 # pragma mark UIScrollViewDelegate
-
+// Only implementing this so I can dynamically hide stuff from the top of the
+// Table view when i scroll away/back to top.
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat sectionHeaderHeight = self.tableView.sectionHeaderHeight;
