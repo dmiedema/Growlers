@@ -39,6 +39,8 @@
 - (NSString *)supportEmailSubject;
 - (NSString *)supportEmailBody;
 //**
+
+- (UIColor *)systemBlueColor;
 @end
 
 @implementation DMSettingsTableViewController
@@ -188,7 +190,7 @@ typedef enum {
 //        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.textLabel.textColor = [UIColor blueColor];
+        cell.textLabel.textColor = self.systemBlueColor;
         return cell;
     }
     else {
@@ -200,10 +202,11 @@ typedef enum {
         
         if (indexPath.row < self.preferredStores.count) {
             cell.textLabel.text = @"Preferred Store";
+            cell.textLabel.textColor = [UIColor blackColor];
             cell.detailTextLabel.text = self.preferredStores[indexPath.row];
         } else {
             cell.textLabel.text = @"Add Store";
-            cell.textLabel.textColor = [UIColor blueColor];
+            cell.textLabel.textColor = self.systemBlueColor;
             cell.detailTextLabel.text = @"";
         }
         return cell;
@@ -415,6 +418,10 @@ typedef enum {
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+- (UIColor *)systemBlueColor
+{
+    return [UIColor colorWithRed:0/255.0 green:122/255.0 blue:255/255.0 alpha:1.0];
+}
 #pragma mark ActionSheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
