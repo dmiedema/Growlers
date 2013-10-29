@@ -329,9 +329,6 @@ BOOL _performSegmentChange;
     } else {
         beer = self.beers[indexPath.row];
     }
-    
-    NSLog(@"beer ----- %@", beer);
-    
     // Configure the cell...
     switch (self.headerSegmentControl.selectedSegmentIndex) {
             // If we're showing on tap, show prices.
@@ -345,8 +342,17 @@ BOOL _performSegmentChange;
             cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
             break;
     }
+    // Get city and state.
+    NSString *city = beer[@"city"];
+    NSString *state = beer[@"state"];
+    // Make sure they exist, if they don't
+    // Show different text.
+    if (city && state) {
+        cell.brewery.text  = [NSString stringWithFormat:@"%@ in %@, %@", beer[@"brewer"], beer[@"city"], beer[@"state"]];
+    } else {
+        cell.brewery.text  = [NSString stringWithFormat:@"%@", beer[@"brewer"]];
+    }
     
-    cell.brewery.text  = [NSString stringWithFormat:@"%@ in %@, %@", beer[@"brewer"], beer[@"city"], beer[@"state"]];
 
     // Get ID and check for today == tap.id and highlight
     // OR if the last day of month, all tap_ids >= day number
