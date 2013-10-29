@@ -273,6 +273,9 @@ BOOL _performSegmentChange;
     }
 }
 
+// This could just return an array of new beers
+// and I could just set _highlightedBeers to that.
+// But for now, I'll just do it this way.
 - (void)checkForNewBeers
 {
     for (NSDictionary *beer in self.beers) {
