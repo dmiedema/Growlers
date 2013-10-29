@@ -345,9 +345,9 @@ BOOL _performSegmentChange;
     // Get city and state.
     NSString *city = beer[@"city"];
     NSString *state = beer[@"state"];
-    // Make sure they exist, if they don't
+    // Make sure they exist (length > 0), if they don't
     // Show different text.
-    if (city && state) {
+    if (city.length > 0 && state.length > 0) {
         cell.brewery.text  = [NSString stringWithFormat:@"%@ in %@, %@", beer[@"brewer"], beer[@"city"], beer[@"state"]];
     } else {
         cell.brewery.text  = [NSString stringWithFormat:@"%@", beer[@"brewer"]];
