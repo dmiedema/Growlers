@@ -41,22 +41,20 @@
 
 // Private enums
 typedef enum {
-    SHOW_ON_TAP = 0,
-    SHOW_FAVORITES = 1,
-    SHOW_FULL_HISTORY = 2
-} SEGMNET_CONTROL_INDEX;
+    ShowOnTap = 0,
+    ShowFavorites = 1,
+    ShowFullHistory = 2
+} SegmentControlIndex;
 
 typedef enum {
-    ALPHA_NEW_BEER,
-    ALPHA_BEER_FAVORITES
-} GROWLERS_YELLOW_ALPHA;
+    AlphaNewBeer,
+    AlphaBeerFavorites
+} GrowlersYellowAlpha;
 // Placed after typedef so no build errors.
-- (UIColor *)growlersYellowColor:(GROWLERS_YELLOW_ALPHA)alpha;
+- (UIColor *)growlersYellowColor:(GrowlersYellowAlpha)alpha;
 @end
 
 @implementation DMTableViewController
-
-
 
 CGPoint _gestureBeginLocation;
 BOOL _performSegmentChange;
@@ -195,7 +193,7 @@ BOOL _performSegmentChange;
 {
     // If we're refreshing and we're showing on tap.
     // clear out the highlighted beers that have been marked as 'unseen' or 'new'
-    if (self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) {
+    if (self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) {
         [self resetHighlightedBeers];
     }
     // if we're spinnin' and refreshin'
@@ -218,12 +216,12 @@ BOOL _performSegmentChange;
     }
     
     // if we're on favorites, we shouldn't be here. Bail.
-    if (self.headerSegmentControl.selectedSegmentIndex == SHOW_FAVORITES) {
+    if (self.headerSegmentControl.selectedSegmentIndex == ShowFavorites) {
         return;
     }
     
     // check segment control to see what action I should perform
-    SERVER_FLAG action = (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP) ? ON_TAP : ALL;
+    SERVER_FLAG action = (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) ? ON_TAP : ALL;
     
     /* I could probably abstract self.selected store out and use NSUserDefaults for all of it
         But i don't know if thats bad reliability wise
@@ -294,10 +292,10 @@ BOOL _performSegmentChange;
     [_coreData resetBeerDatabase:self.beers];
 }
 
-// I'm lazy.
-- (UIColor *)growlersYellowColor:(GROWLERS_YELLOW_ALPHA)alpha
+// Centralize color-getting.
+- (UIColor *)growlersYellowColor:(GrowlersYellowAlpha)alpha
 {
-    if (alpha == ALPHA_NEW_BEER) {
+    if (alpha == AlphaNewBeer) {
         return [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
     } else {
         return [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
@@ -337,7 +335,7 @@ BOOL _performSegmentChange;
     // Configure the cell...
     switch (self.headerSegmentControl.selectedSegmentIndex) {
             // If we're showing on tap, show prices.
-        case SHOW_ON_TAP:
+        case ShowOnTap:
             cell.beerName.text = [NSString stringWithFormat:@"%@. %@", beer[@"tap_id"], beer[@"name"]];
             cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
                                   beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
@@ -363,7 +361,7 @@ BOOL _performSegmentChange;
     // OR if the last day of month, all tap_ids >= day number
     // are on sale.
     // And that gives us this horrible if statement.
-    if (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP &&
+    if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap &&
         ([DMHelperMethods checkToday:beer[@"tap_id"]] ||
          ([DMHelperMethods checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= [DMHelperMethods getToday] )
          )
@@ -375,7 +373,7 @@ BOOL _performSegmentChange;
         cell.beerInfo.textColor = [UIColor lightTextColor];
     } else if ([_highlightedBeers containsObject:beer]) {
         // Beer is in our 'new beers' list so we should highlight it.
-        cell.backgroundColor = [self growlersYellowColor:ALPHA_NEW_BEER];
+        cell.backgroundColor = [self growlersYellowColor:AlphaNewBeer];
         cell.beerName.textColor = [UIColor blackColor];
         cell.brewery.textColor = [UIColor blackColor];
         cell.beerInfo.textColor = [UIColor darkGrayColor];
@@ -390,7 +388,7 @@ BOOL _performSegmentChange;
     // check if beer is favorite
     // If it is it gets a yellow dot.
     if ([_coreData isBeerFavorited:beer]) {
-        cell.favoriteMarker.backgroundColor = [self growlersYellowColor:ALPHA_BEER_FAVORITES];
+        cell.favoriteMarker.backgroundColor = [self growlersYellowColor:AlphaBeerFavorites];
     } else {
         cell.favoriteMarker.backgroundColor = [UIColor clearColor];
     }
@@ -480,7 +478,7 @@ BOOL _performSegmentChange;
             favBeer[@"store"] = preferredStore;
             [_coreData favoriteBeer:favBeer];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-            cell.favoriteMarker.backgroundColor = [self growlersYellowColor:ALPHA_BEER_FAVORITES];
+            cell.favoriteMarker.backgroundColor = [self growlersYellowColor:AlphaBeerFavorites];
         } andFailure:^(id JSON) {
             // Handle failure
             // But for now, just log.
@@ -610,14 +608,14 @@ BOOL _performSegmentChange;
 {
     [self clearNavigationBarPrompt];
     switch (sender.selectedSegmentIndex) {
-        case SHOW_ON_TAP: // on tap
+        case ShowOnTap: // on tap
             [self setNavigationBarPrompt];
             [self loadBeers];
             break;
-        case SHOW_FAVORITES: // favorites
+        case ShowFavorites: // favorites
             [self loadFavorites];
             break;
-        case SHOW_FULL_HISTORY: // All
+        case ShowFullHistory: // All
             [self loadBeers];
             break;
         default: // Whoops
@@ -652,7 +650,7 @@ BOOL _performSegmentChange;
 {
     CGFloat sectionHeaderHeight = self.tableView.sectionHeaderHeight;
     if (scrollView.contentOffset.y <= sectionHeaderHeight && scrollView.contentOffset.y >= 0) {
-        if (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP)
+        if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap)
             [self setNavigationBarPrompt];
         else
             [self clearNavigationBarPrompt];
