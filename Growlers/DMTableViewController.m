@@ -260,6 +260,8 @@ BOOL _performSegmentChange;
     if (favorites.count > 0) {
         self.beers = favorites;
     } else {
+        // If favorites is empty, show a little message to let
+        // the user know to go favorite some beers.
         self.beers = @[@{@"name": @"No Favorites!", @"brewer": @"Go Favorite some Beers!",
                          @"ibu": @"", @"abv": @"",
                          @"city": @"", @"state": @""}
@@ -510,6 +512,7 @@ BOOL _performSegmentChange;
 
 #pragma mark UISearchDisplayDelegate
 
+// allows for live filtering list as user types.
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
     [self updateFilteredContentForSearchString:searchString];
@@ -540,7 +543,13 @@ BOOL _performSegmentChange;
 }
 
 #pragma mark UIActionSheet
-
+/*
+ This could be abstracted out and the delegate could
+ be put into a seperate class and it could send
+ out a message to a protocol to this ViewController
+ So that it knows to change stuff
+ When an index is pressed.
+ */
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (actionSheet.cancelButtonIndex != buttonIndex) {
@@ -555,6 +564,8 @@ BOOL _performSegmentChange;
 
 - (void)settings:(id)sender
 {
+    // When I tried to alloc, init this without instantiating from Storyboard
+    // it crashed. So I'll just do it this way I guess.
     DMSettingsTableViewController *settingsView = [self.storyboard instantiateViewControllerWithIdentifier:@"DMSettingsTableViewController"];
     [self.navigationController pushViewController:settingsView animated:YES];
 }
@@ -567,10 +578,13 @@ BOOL _performSegmentChange;
                                                destructiveButtonTitle:Nil
                                                     otherButtonTitles:nil];
     
+    // Dynamically build up my stores list
     for (NSString *store in [DMDefaultsInterfaceConstants stores]) {
         [actionSheet addButtonWithTitle:store];
     }
+    // Don't forget the cancel button
     [actionSheet addButtonWithTitle:@"Cancel"];
+    // Its like magic, gotta love 0 index
     actionSheet.cancelButtonIndex = [DMDefaultsInterfaceConstants stores].count;
     [actionSheet showFromBarButtonItem:sender animated:YES];
 }
@@ -637,7 +651,6 @@ BOOL _performSegmentChange;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat sectionHeaderHeight = self.tableView.sectionHeaderHeight;
-
     if (scrollView.contentOffset.y <= sectionHeaderHeight && scrollView.contentOffset.y >= 0) {
         if (self.headerSegmentControl.selectedSegmentIndex == SHOW_ON_TAP)
             [self setNavigationBarPrompt];
