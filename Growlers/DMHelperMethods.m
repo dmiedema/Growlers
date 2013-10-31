@@ -79,4 +79,14 @@
     
     return todaysDate.day;
 }
+
+// Centralize color-getting.
++ (UIColor *)growlersYellowColor:(GrowlersYellowAlpha)alpha
+{
+    if (alpha == AlphaNewBeer) {
+        return [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
+    } else {
+        return [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
+    }
+}
 @end

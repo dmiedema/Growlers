@@ -8,9 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    AlphaNewBeer,
+    AlphaBeerFavorites
+} GrowlersYellowAlpha;
+
 @interface DMHelperMethods : NSObject
 + (BOOL)checkIfOpen;
 + (BOOL)checkLastDateOfMonth;
 + (BOOL)checkToday:(id)tapID;
 + (NSInteger)getToday;
+
++ (UIColor *)growlersYellowColor:(GrowlersYellowAlpha)alpha;
 @end

@@ -46,12 +46,6 @@ typedef enum {
     ShowFullHistory = 2
 } SegmentControlIndex;
 
-typedef enum {
-    AlphaNewBeer,
-    AlphaBeerFavorites
-} GrowlersYellowAlpha;
-// Placed after typedef so no build errors.
-- (UIColor *)growlersYellowColor:(GrowlersYellowAlpha)alpha;
 @end
 
 @implementation DMTableViewController
@@ -292,16 +286,6 @@ BOOL _performSegmentChange;
     [_coreData resetBeerDatabase:self.beers];
 }
 
-// Centralize color-getting.
-- (UIColor *)growlersYellowColor:(GrowlersYellowAlpha)alpha
-{
-    if (alpha == AlphaNewBeer) {
-        return [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.125];
-    } else {
-        return [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
-    }
-}
-
 #pragma mark Table View Data Source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -350,7 +334,7 @@ BOOL _performSegmentChange;
     NSString *state = beer[@"state"];
     // Make sure they exist (length > 0), if they don't
     // Show different text.
-    if (city.length > 0 && state.length > 0) {
+    if (city.length > 1 && state.length > 1) {
         cell.brewery.text  = [NSString stringWithFormat:@"%@ in %@, %@", beer[@"brewer"], beer[@"city"], beer[@"state"]];
     } else {
         cell.brewery.text  = [NSString stringWithFormat:@"%@", beer[@"brewer"]];
@@ -373,7 +357,7 @@ BOOL _performSegmentChange;
         cell.beerInfo.textColor = [UIColor lightTextColor];
     } else if ([_highlightedBeers containsObject:beer]) {
         // Beer is in our 'new beers' list so we should highlight it.
-        cell.backgroundColor = [self growlersYellowColor:AlphaNewBeer];
+        cell.backgroundColor = [DMHelperMethods growlersYellowColor:AlphaNewBeer];
         cell.beerName.textColor = [UIColor blackColor];
         cell.brewery.textColor = [UIColor blackColor];
         cell.beerInfo.textColor = [UIColor darkGrayColor];
@@ -388,7 +372,7 @@ BOOL _performSegmentChange;
     // check if beer is favorite
     // If it is it gets a yellow dot.
     if ([_coreData isBeerFavorited:beer]) {
-        cell.favoriteMarker.backgroundColor = [self growlersYellowColor:AlphaBeerFavorites];
+        cell.favoriteMarker.backgroundColor = [DMHelperMethods growlersYellowColor:AlphaBeerFavorites];
     } else {
         cell.favoriteMarker.backgroundColor = [UIColor clearColor];
     }
@@ -478,7 +462,7 @@ BOOL _performSegmentChange;
             favBeer[@"store"] = preferredStore;
             [_coreData favoriteBeer:favBeer];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-            cell.favoriteMarker.backgroundColor = [self growlersYellowColor:AlphaBeerFavorites];
+            cell.favoriteMarker.backgroundColor = [DMHelperMethods growlersYellowColor:AlphaBeerFavorites];
         } andFailure:^(id JSON) {
             // Handle failure
             // But for now, just log.
