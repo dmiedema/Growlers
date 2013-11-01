@@ -16,3 +16,10 @@ profile
 *.moved-aside
 DerivedData
 .idea/
+*.p12
+*.pem
+*.ipa
+*.request
+*.mov
+*.certSigningRequest
+*.mobileprovision
