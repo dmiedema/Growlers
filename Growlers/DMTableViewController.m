@@ -339,7 +339,10 @@ BOOL _performSegmentChange;
         // Need it to be mutableAttributedString so I can append to it though
         NSMutableAttributedString *brewer = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ - ", beer[@"brewer"]]];
         // Create city & state string with italic font
-        NSMutableAttributedString *cityState = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, %@", city, state] attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Oblique" size:[UIFont systemFontSize]]}];
+        UIFontDescriptor *fontDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline];
+        fontDescriptor = [fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
+        
+        NSMutableAttributedString *cityState = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, %@", city, state] attributes:@{NSFontAttributeName: [UIFont fontWithDescriptor:fontDescriptor size:0.0]}];
         // put em together
         [brewer appendAttributedString:cityState];
         // set attribured text.
