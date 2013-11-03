@@ -4,10 +4,12 @@
         <attribute name="abv" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="brewer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="brewerURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="growlerPrice" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="growlettePrice" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ibu" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="store" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="style" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tap_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -16,8 +18,10 @@
         <attribute name="abv" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="brewer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="brewerURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ibu" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="store" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tap_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>

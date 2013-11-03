@@ -19,13 +19,13 @@
 		C349589D17A79FEA00E45B3D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C349589C17A79FEA00E45B3D /* Settings.bundle */; };
 		C356CBEB17ED053A006CF711 /* DMDefaultsInterfaceConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = C356CBEA17ED053A006CF711 /* DMDefaultsInterfaceConstants.m */; };
 		C356CBEE17EF9300006CF711 /* DMSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C356CBED17EF9300006CF711 /* DMSettingsTableViewController.m */; };
-		C35C28BC17BF5A4700202121 /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C28BB17BF5A4700202121 /* Beer.m */; };
-		C35C28BF17BF5A4800202121 /* Favorites.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C28BE17BF5A4800202121 /* Favorites.m */; };
 		C3642F8217F381EE00096EED /* Tutorial-3_5.png in Resources */ = {isa = PBXBuildFile; fileRef = C3642F8017F381EE00096EED /* Tutorial-3_5.png */; };
 		C3642F8317F381EE00096EED /* Tutorial-4.png in Resources */ = {isa = PBXBuildFile; fileRef = C3642F8117F381EE00096EED /* Tutorial-4.png */; };
 		C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DD34C17A3AD6300EAC24A /* MapKit.framework */; };
 		C38285C717A4D0700058D304 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C617A4D0700058D304 /* MessageUI.framework */; };
 		C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C817A4D0930058D304 /* CoreLocation.framework */; };
+		C3963FF1181F5ED700661F9B /* Favorites.m in Sources */ = {isa = PBXBuildFile; fileRef = C3963FF0181F5ED700661F9B /* Favorites.m */; };
+		C3963FF4181F5ED700661F9B /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3963FF3181F5ED700661F9B /* Beer.m */; };
 		C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D117967D470086A7E2 /* Foundation.framework */; };
 		C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D317967D470086A7E2 /* CoreGraphics.framework */; };
 		C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
@@ -69,7 +69,7 @@
 		C3229FDE17F4B74B00C818C5 /* DMTakeMeActionSheetDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMTakeMeActionSheetDelegate.h; sourceTree = "<group>"; };
 		C3229FDF17F4B74B00C818C5 /* DMTakeMeActionSheetDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMTakeMeActionSheetDelegate.m; sourceTree = "<group>"; };
 		C33DAC83179C5FD400F208AB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		C33DAC8B179C8FCB00F208AB /* GrowlerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GrowlerModel.xcdatamodel; sourceTree = "<group>"; };
+		C33DAC8B179C8FCB00F208AB /* GrowlerModel.xcdatamodel */ = {isa = PBXFileReference; explicitFileType = wrapper.xcdatamodeld; path = GrowlerModel.xcdatamodel; sourceTree = "<group>"; };
 		C33DAC8D179C8FF200F208AB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C33DAC96179F7D5C00F208AB /* DMGrowlerAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMGrowlerAPI.h; sourceTree = "<group>"; };
 		C33DAC97179F7D5C00F208AB /* DMGrowlerAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMGrowlerAPI.m; sourceTree = "<group>"; };
@@ -81,15 +81,16 @@
 		C356CBEA17ED053A006CF711 /* DMDefaultsInterfaceConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMDefaultsInterfaceConstants.m; sourceTree = "<group>"; };
 		C356CBEC17EF9300006CF711 /* DMSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMSettingsTableViewController.h; sourceTree = "<group>"; };
 		C356CBED17EF9300006CF711 /* DMSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMSettingsTableViewController.m; sourceTree = "<group>"; };
-		C35C28BA17BF5A4700202121 /* Beer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beer.h; sourceTree = "<group>"; };
-		C35C28BB17BF5A4700202121 /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
-		C35C28BD17BF5A4800202121 /* Favorites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Favorites.h; sourceTree = "<group>"; };
-		C35C28BE17BF5A4800202121 /* Favorites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Favorites.m; sourceTree = "<group>"; };
 		C3642F8017F381EE00096EED /* Tutorial-3_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial-3_5.png"; sourceTree = "<group>"; };
 		C3642F8117F381EE00096EED /* Tutorial-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial-4.png"; sourceTree = "<group>"; };
 		C37DD34C17A3AD6300EAC24A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C38285C617A4D0700058D304 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		C38285C817A4D0930058D304 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		C3963FEE181F5A3C00661F9B /* GrowlerModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GrowlerModel 2.xcdatamodel"; sourceTree = "<group>"; };
+		C3963FEF181F5ED700661F9B /* Favorites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Favorites.h; sourceTree = "<group>"; };
+		C3963FF0181F5ED700661F9B /* Favorites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Favorites.m; sourceTree = "<group>"; };
+		C3963FF2181F5ED700661F9B /* Beer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beer.h; sourceTree = "<group>"; };
+		C3963FF3181F5ED700661F9B /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
 		C3DD53CE17967D470086A7E2 /* Growlers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Growlers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DD53D117967D470086A7E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3DD53D317967D470086A7E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -173,11 +174,11 @@
 		C33DAC92179C91AD00F208AB /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				C35C28BD17BF5A4800202121 /* Favorites.h */,
-				C35C28BE17BF5A4800202121 /* Favorites.m */,
-				C35C28BA17BF5A4700202121 /* Beer.h */,
-				C35C28BB17BF5A4700202121 /* Beer.m */,
 				C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */,
+				C3963FEF181F5ED700661F9B /* Favorites.h */,
+				C3963FF0181F5ED700661F9B /* Favorites.m */,
+				C3963FF2181F5ED700661F9B /* Beer.h */,
+				C3963FF3181F5ED700661F9B /* Beer.m */,
 				C3E5DE0917B75CB4006DE900 /* DMCoreDataMethods.h */,
 				C3E5DE0A17B75CB4006DE900 /* DMCoreDataMethods.m */,
 			);
@@ -458,11 +459,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3DD54121797AEEB0086A7E2 /* DMGrowlerTableViewCell.m in Sources */,
-				C35C28BF17BF5A4800202121 /* Favorites.m in Sources */,
 				C3DD53DE17967D470086A7E2 /* main.m in Sources */,
 				C3DD540817967DAC0086A7E2 /* DMTableViewController.m in Sources */,
-				C35C28BC17BF5A4700202121 /* Beer.m in Sources */,
 				C3E5DE0B17B75CB4006DE900 /* DMCoreDataMethods.m in Sources */,
+				C3963FF1181F5ED700661F9B /* Favorites.m in Sources */,
 				C3229FE017F4B74B00C818C5 /* DMTakeMeActionSheetDelegate.m in Sources */,
 				C356CBEB17ED053A006CF711 /* DMDefaultsInterfaceConstants.m in Sources */,
 				C356CBEE17EF9300006CF711 /* DMSettingsTableViewController.m in Sources */,
@@ -471,6 +471,7 @@
 				C3DD54151797B7EB0086A7E2 /* DMAboutViewController.m in Sources */,
 				C3015A4517F0E957002F7E18 /* DMHelperMethods.m in Sources */,
 				C33DAC98179F7D5C00F208AB /* DMGrowlerAPI.m in Sources */,
+				C3963FF4181F5ED700661F9B /* Beer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -711,9 +712,10 @@
 		C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C3963FEE181F5A3C00661F9B /* GrowlerModel 2.xcdatamodel */,
 				C33DAC8B179C8FCB00F208AB /* GrowlerModel.xcdatamodel */,
 			);
-			currentVersion = C33DAC8B179C8FCB00F208AB /* GrowlerModel.xcdatamodel */;
+			currentVersion = C3963FEE181F5A3C00661F9B /* GrowlerModel 2.xcdatamodel */;
 			path = GrowlerModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

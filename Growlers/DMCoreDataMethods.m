@@ -79,6 +79,8 @@
         newBeer.name            = beer[@"name"];
         newBeer.style           = (beer[@"style"] == [NSNull null]) ? @"" : beer[@"style"];
         newBeer.store           = beer[@"store"];
+        newBeer.city            = (beer[@"city"] == [NSNull null]) ? @"" : beer[@"city"];
+        newBeer.state           = (beer[@"state"] == [NSNull null]) ? @"" : beer[@"state"];
     }
     if (![self.managedContext save:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -97,6 +99,8 @@
     favorite.ibu        = (newBeerToFavorite[@"ibu"] == [NSNull null]) ? @"" : newBeerToFavorite[@"ibu"];
     favorite.brewerURL  = (newBeerToFavorite[@"brew_url"]  == [NSNull null]) ? @"" : newBeerToFavorite[@"brew_url"];
     favorite.store      = newBeerToFavorite[@"store"];
+    favorite.city       = (newBeerToFavorite[@"city"] == [NSNull null]) ? @"" : newBeerToFavorite[@"city"];
+    favorite.state      = (newBeerToFavorite[@"state"] == [NSNull null]) ? @"" : newBeerToFavorite[@"state"];
     // store & brewer url
     
     NSError *coreDataErr = nil;
