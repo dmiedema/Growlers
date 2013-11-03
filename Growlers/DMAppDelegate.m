@@ -110,7 +110,6 @@
 #pragma mark Statistics
 - (void)setupTracking
 {
-    
     /* NewRelic */
 //    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
     
@@ -149,11 +148,8 @@
 {
     NSLog(@"Remote Notification Received");
     NSLog(@"User Info - %@", userInfo);
-    if (application.applicationState == UIApplicationStateActive ) {
-        NSLog(@"Yep, Active");
-        userInfo = userInfo[@"aps"];
-        if ([userInfo[@"alert"] isEqualToString:@"Test Notification"]) {
-            NSLog(@"alert is 'Test Notification'");
+    if ([userInfo[@"alert"] isEqualToString:@"Test Notification"]) {
+        if (application.applicationState == UIApplicationStateActive ) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push Test"
                                                                 message:@"Was successful!"
                                                                delegate:nil
@@ -161,13 +157,16 @@
                                                       otherButtonTitles: nil];
             [alertView show];
         }
-    }
-    else {
-        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-        localNotification.alertBody = @"GM Taplist Push Notifications are working!";
-        localNotification.applicationIconBadgeNumber = 1;
-        [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
-    }
+        else {
+            UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+            localNotification.alertBody = @"GM Taplist Push Notifications are working!";
+            localNotification.applicationIconBadgeNumber = [userInfo[@"badge"] integerValue];
+            [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+        }
+    } // not a test notification
+      // Get the current badge count and increment it so it doens't
+      // always just sit there and say 1
+    application.applicationIconBadgeNumber = [userInfo[@"badge"] integerValue];
 }
 
 #pragma mark - Handling URL Request
