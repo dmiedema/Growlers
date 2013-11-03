@@ -329,13 +329,21 @@ BOOL _performSegmentChange;
             cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
             break;
     }
-    // Get city and state.
+    // Get city and state as strings for string based operations
     NSString *city = beer[@"city"];
     NSString *state = beer[@"state"];
     // Make sure they exist (length > 0), if they don't
     // Show different text.
     if (city.length > 1 && state.length > 1) {
-        cell.brewery.text  = [NSString stringWithFormat:@"%@ in %@, %@", beer[@"brewer"], beer[@"city"], beer[@"state"]];
+        // Create inital string that will not be italicized.
+        // Need it to be mutableAttributedString so I can append to it though
+        NSMutableAttributedString *brewer = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ - ", beer[@"brewer"]]];
+        // Create city & state string with italic font
+        NSMutableAttributedString *cityState = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, %@", city, state] attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Oblique" size:[UIFont systemFontSize]]}];
+        // put em together
+        [brewer appendAttributedString:cityState];
+        // set attribured text.
+        cell.brewery.attributedText = brewer;
     } else {
         cell.brewery.text  = [NSString stringWithFormat:@"%@", beer[@"brewer"]];
     }
@@ -398,8 +406,8 @@ BOOL _performSegmentChange;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    // This was necessary apparently. Set it in the story board but it wouldn't actually stick
-    // until I set it here.
+    // This was necessary apparently. Set it in the story board but it wouldn't
+    // actually stick until I set it here.
     return 34.0f;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
