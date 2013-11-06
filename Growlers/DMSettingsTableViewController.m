@@ -187,10 +187,14 @@ typedef enum {
         }
 
         cell.textLabel.text = self.content[indexPath.section][indexPath.row];
-//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.textLabel.textColor = self.systemBlueColor;
+        
+        if (indexPath.section == ABOUT) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.textColor = [UIColor blackColor];
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.textLabel.textColor = self.systemBlueColor;
+        }
         return cell;
     }
     else {
