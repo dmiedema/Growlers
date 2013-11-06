@@ -329,6 +329,7 @@ BOOL _performSegmentChange;
             cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
             break;
     }
+    
     // Get city and state as strings for string based operations
     NSString *city = beer[@"city"];
     NSString *state = beer[@"state"];
@@ -351,7 +352,6 @@ BOOL _performSegmentChange;
         cell.brewery.text  = [NSString stringWithFormat:@"%@", beer[@"brewer"]];
     }
     
-
     // Get ID and check for today == tap.id and highlight
     // OR if the last day of month, all tap_ids >= day number
     // are on sale.
@@ -445,7 +445,6 @@ BOOL _performSegmentChange;
                                             @"udid": (token ? token : [DMDefaultsInterfaceConstants generatedUDID]),
                                             @"store": preferredStore}
                                            mutableCopy];
-    
 
     if ([_coreData isBeerFavorited:beer]) {
         // Selected beer is a favorite so we want to tell the server
