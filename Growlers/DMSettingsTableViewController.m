@@ -188,12 +188,12 @@ typedef enum {
 
         cell.textLabel.text = self.content[indexPath.section][indexPath.row];
         
-        if (indexPath.section == ABOUT) {
+        if (indexPath.section == ABOUT && (indexPath.row == 0 || indexPath.row == 3)) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.textColor = [UIColor blackColor];
         } else {
             cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.textLabel.textColor = self.systemBlueColor;
+//            cell.textLabel.textColor = self.systemBlueColor;
         }
         return cell;
     }
@@ -210,7 +210,7 @@ typedef enum {
             cell.detailTextLabel.text = self.preferredStores[indexPath.row];
         } else {
             cell.textLabel.text = @"Add Store";
-            cell.textLabel.textColor = self.systemBlueColor;
+//            cell.textLabel.textColor = self.systemBlueColor;
             cell.detailTextLabel.text = @"";
         }
         return cell;
