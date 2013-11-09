@@ -6,31 +6,45 @@
 //  Copyright (c) 2013 Daniel Miedema. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
+//#import <XCTest/XCTest.h>
 
-@interface GrowlersTests : XCTestCase
+//@interface GrowlersTests : XCTestCase
+//
+//@end
+//
+//@implementation GrowlersTests
+//
+//- (void)setUp
+//{
+//    [super setUp];
+//    
+//    // Set-up code here.
+//}
+//
+//- (void)tearDown
+//{
+//    // Tear-down code here.
+//    
+//    [super tearDown];
+//}
+//
+//- (void)testExample
+//{
+//    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+//}
 
-@end
+//@end
 
-@implementation GrowlersTests
+#import "Kiwi.h"
 
-- (void)setUp
-{
-    [super setUp];
-    
-    // Set-up code here.
-}
+SPEC_BEGIN(MathSpec)
 
-- (void)tearDown
-{
-    // Tear-down code here.
-    
-    [super tearDown];
-}
+describe(@"Math", ^{
+    it(@"is pretty cool", ^{
+        NSUInteger a = 16;
+        NSUInteger b = 26;
+        [[theValue(a + b) should] equal:theValue(42)];
+    });
+});
 
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
-
-@end
+SPEC_END
