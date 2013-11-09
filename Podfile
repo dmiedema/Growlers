@@ -13,6 +13,9 @@ pod 'Tapstream'
 # Testing
 pod 'SDScreenshotCapture'
 
+target :GrowlersTests, :exclusive => true do
+  pod 'Kiwi/XCTest'
+end
 
 post_install do | installer |
   require 'fileutils'
