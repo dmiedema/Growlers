@@ -194,17 +194,17 @@ BOOL _performSegmentChange;
     // ... stop it.
     if (self.refreshControl.refreshing) {
         // Setup Title
-        NSString *str = [NSString stringWithFormat:@"Last Updated at %@", [_dateFormatter stringFromDate:[NSDate date]]];
-        NSAttributedString *attrStr;
-        // if iOS7, font color matches tint color.
-        // not needed to check anymore, iOS 7 only.
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-             attrStr = [[NSAttributedString alloc] initWithString:str attributes:@{NSForegroundColorAttributeName: self.navigationController.navigationBar.tintColor}];
-        } else {
-            attrStr = [[NSAttributedString alloc] initWithString:str];
-        }
-        // Set the title with last updated text because its nice to have
-        self.refreshControl.attributedTitle = attrStr;
+//        NSString *str = [NSString stringWithFormat:@"Last Updated at %@", [_dateFormatter stringFromDate:[NSDate date]]];
+//        NSAttributedString *attrStr;
+//        // if iOS7, font color matches tint color.
+//        // not needed to check anymore, iOS 7 only.
+//        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+//             attrStr = [[NSAttributedString alloc] initWithString:str attributes:@{NSForegroundColorAttributeName: self.navigationController.navigationBar.tintColor}];
+//        } else {
+//            attrStr = [[NSAttributedString alloc] initWithString:str];
+//        }
+//        // Set the title with last updated text because its nice to have
+//        self.refreshControl.attributedTitle = attrStr;
         // Stop refreshing
         [self.refreshControl endRefreshing];
     }
@@ -348,6 +348,11 @@ BOOL _performSegmentChange;
         [brewer appendAttributedString:cityState];
         // set attribured text.
         cell.brewery.attributedText = brewer;
+        
+        brewer = nil;
+        cityState = nil;
+        fontDescriptor = nil;
+        cityState = nil;
     } else {
         cell.brewery.text  = [NSString stringWithFormat:@"%@", beer[@"brewer"]];
     }
@@ -392,6 +397,7 @@ BOOL _performSegmentChange;
     cell.favoriteMarker.layer.cornerRadius = cell.favoriteMarker.bounds.size.width / 2.0;
 
     // finally done.
+    beer = nil; city = nil; state = nil;
     return cell;
 }
 
@@ -402,7 +408,7 @@ BOOL _performSegmentChange;
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 34.0f)];
     headerView.backgroundColor = [UIColor clearColor];
     self.headerSegmentControl.frame = CGRectInset(headerView.frame, 12, 4);
-    self.headerSegmentControl.backgroundColor = [UIColor colorWithWhite:1 alpha:0.85];
+    headerView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.85];
     [headerView addSubview:self.headerSegmentControl];
     return headerView;
 }
@@ -531,7 +537,8 @@ BOOL _performSegmentChange;
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    [self.tableView reloadData];
+//    [self.filteredBeers removeAllObjects];
+    [self loadBeers];
 }
 
 #pragma mark UIActionSheet
