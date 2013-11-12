@@ -65,7 +65,7 @@ typedef enum {
           @[@"About Growl Movement", @"Operating Hours", @"Take me there!", @"What does everything mean?!"],
           @[@"Notification Preferrences"],
           @[@"Suggestion", @"Support"],
-          @[@"Test Push Notifications", @"Fix Favorites Names/Duplicates", @"Review App"]
+          @[@"Test Push Notifications", @"Show Store Name", @"Fix Favorites Names/Duplicates", @"Review App"]
       ];
 
     self.takeMeActionSheetDelegate = [[DMTakeMeActionSheetDelegate alloc] init];
@@ -238,7 +238,7 @@ typedef enum {
             break;
     }
 }
-
+/*
 - (void)handleSocial:(NSInteger)index
 {
     switch (index) {
@@ -250,7 +250,7 @@ typedef enum {
             break;
     }
 }
-
+*/
 - (void)handeStore:(NSInteger)index
 {
     self.selectedStoreName = nil;
@@ -283,9 +283,12 @@ typedef enum {
                 NSLog(@"Failure - %@", JSON);
             }];
             break;
-        case 1: // 2:  @"Fix Favorites Names/Duplicates"
+        case 1: // 2: Show store name
+            NSLog(@"Set NSUserDefaults to not show store name as prompt on navigation bar.");
             break;
-        case 2:
+        case 2: // 3:  @"Fix Favorites Names/Duplicates"
+            break;
+        case 3: // 4: Ask in prompt if user wants to review
             [self reviewApp];
             break;
         default:
