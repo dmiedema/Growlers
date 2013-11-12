@@ -31,6 +31,7 @@ static NSString *multipleStoresKey = @"Growlers_Multiple_Stores";
 static NSString *availableStores = @"Growlers_Available_Stores";
 static NSString *syncedStores = @"Growlers_Preferred_Stores_Synced";
 static NSString *mapsOfStores = @"Growlers_Dictionary_Of_Store_Locations";
+static NSString *showCurrentStore = @"Growlers_Show_Current_Store_As_Prompt";
 // Anonymouse
 static NSString *anonymousUsage = @"anonymous_usage";
 
@@ -97,6 +98,10 @@ static NSString *anonymousUsage = @"anonymous_usage";
 + (NSDictionary *)storeMapLocations
 {
     return [[NSUserDefaults standardUserDefaults] dictionaryForKey:mapsOfStores];
+}
++ (BOOL)showCurrentStoreOnTapList
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:showCurrentStore];
 }
 // Push/UDID
 + (NSString *)pushID
@@ -179,6 +184,11 @@ static NSString *anonymousUsage = @"anonymous_usage";
 + (void)setPreferredStoresSynced:(BOOL)synced
 {
     [[NSUserDefaults standardUserDefaults] setBool:synced forKey:syncedStores];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
++ (void)setShowCurrentStoreOnTapList:(BOOL)showStore
+{
+    [[NSUserDefaults standardUserDefaults] setBool:showStore forKey:showCurrentStore];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 // Push/UDID
