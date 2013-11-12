@@ -354,7 +354,7 @@ BOOL _performSegmentChange;
         fontDescriptor = nil;
         cityState = nil;
     } else {
-        cell.brewery.text  = [NSString stringWithFormat:@"%@", beer[@"brewer"]];
+        cell.brewery.text  = beer[@"brewer"];
     }
     
     // Get ID and check for today == tap.id and highlight
