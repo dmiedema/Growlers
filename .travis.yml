@@ -2,3 +2,7 @@ language: objective-c
 
 # before_install:
 #   - brew update && brew install xctool
+# script:
+#   - xctool --- blah blah blah args and things to build and do tests
+# after_success
+#   - post it to hockeyapp.net 
