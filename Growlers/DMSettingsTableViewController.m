@@ -505,12 +505,12 @@ typedef enum {
 #pragma mark Email Body/Subjet
 - (NSString *)supportEmailSubject
 {
-    return @"[Growlers] Support";
+    return [NSString stringWithFormat:@"[%@] Support", THE_APPS_NAME];
 }
 
 - (NSString *)suggestionEmailSubject
 {
-    return @"[Growlers] Suggestion";
+    return [NSString stringWithFormat:@"[%@] Suggestion", THE_APPS_NAME];
 }
 
 - (NSString *)supportEmailBody
