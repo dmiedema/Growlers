@@ -317,19 +317,29 @@ BOOL _performSegmentChange;
         beer = self.beers[indexPath.row];
     }
     // Configure the cell...
+    char *beerNameText;
+    char *beerInfoText;
     switch (self.headerSegmentControl.selectedSegmentIndex) {
             // If we're showing on tap, show prices.
         case ShowOnTap:
-            cell.beerName.text = [NSString stringWithFormat:@"%@. %@", beer[@"tap_id"], beer[@"name"]];
-            cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
-                                  beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
+            asprintf(&beerNameText, "%s. %s", [beer[@"tap_id"] UTF8String], [beer[@"name"] UTF8String]);
+            //cell.beerName.text = [NSString stringWithFormat:@"%@. %@", beer[@"tap_id"], beer[@"name"]];
+            asprintf(&beerInfoText, "IBU: %s  ABV: %s  Growler: $%s  Growlette: $%s", 
+                [beer[@"ibu"] UTF8String], [beer[@"abv"] UTF8String], [beer[@"growler"] UTF8String], [beer[@"growlette"] UTF8String]);
+            // cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
+                                //   beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
             break;
         default:
-            cell.beerName.text = beer[@"name"];
-            cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
+            asprintf(&beerNameText, "%s", [beer[@"name"] UTF8String]);
+            // cell.beerName.text = beer[@"name"];
+            asprintf(&beerInfoText, "IBU: %s  ABV: %s", [beer[@"ibu"] UTF8String], [beer[@"abv"] UTF8String]);
+            // cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
             break;
     }
-    
+    cell.beerName.text = [NSString stringWithCString:beerNameText encoding:NSUTF8StringEncoding];
+    cell.beerInfo.text = [NSString stringWithCString:beerInfoText encoding:NSUTF8StringEncoding];
+    free(beerNameText);
+    free(beerInfoText);
     // Get city and state as strings for string based operations
     NSString *city = beer[@"city"];
     NSString *state = beer[@"state"];
@@ -354,7 +364,7 @@ BOOL _performSegmentChange;
         fontDescriptor = nil;
         cityState = nil;
     } else {
-        cell.brewery.text  = [NSString stringWithFormat:@"%@", beer[@"brewer"]];
+        cell.brewery.text  = beer[@"brewer"];
     }
     
     // Get ID and check for today == tap.id and highlight

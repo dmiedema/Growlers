@@ -35,4 +35,6 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define IS_IPHONE_5 ( [ [ UIScreen mainScreen ] bounds ].size.height == 568 )
 
+#define THE_APPS_NAME @"Growlers"
+
 #endif

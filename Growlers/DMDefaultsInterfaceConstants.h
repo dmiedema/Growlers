@@ -27,6 +27,7 @@
 + (NSArray *)stores;
 + (BOOL)preferredStoresSynced;
 + (NSDictionary *)storeMapLocations;
++ (BOOL)showCurrentStoreOnTapList;
 // Anonymouse
 + (BOOL)anonymousUsage;
 // Other
@@ -51,6 +52,7 @@
 + (void)addPreferredStore:(NSString *)store;
 + (void)removePreferredStore:(NSString *)store;
 + (void)setPreferredStoresSynced:(BOOL)synced;
++ (void)setShowCurrentStoreOnTapList:(BOOL)showStore;
 // Anonymouse
 // Other
 + (void)batchUpdate:(NSArray *)updateValues;

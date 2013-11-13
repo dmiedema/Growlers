@@ -267,7 +267,6 @@
     NSURL *url = [NSURL URLWithString:@"http://www.growlmovement.com/_app/GrowlersStoreList.php"];
     [[NSUserDefaults standardUserDefaults] registerDefaultsWithURL:url success:^(NSDictionary *defaults) {
         NSLog(@"Success - %@", defaults);
-        
     } failure:^(NSError *error) {
         NSLog(@"Error - %@ -- message -  %@", error, error.userInfo);
     }];

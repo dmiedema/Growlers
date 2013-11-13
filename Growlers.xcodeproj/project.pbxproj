@@ -26,6 +26,9 @@
 		C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C817A4D0930058D304 /* CoreLocation.framework */; };
 		C3963FF1181F5ED700661F9B /* Favorites.m in Sources */ = {isa = PBXBuildFile; fileRef = C3963FF0181F5ED700661F9B /* Favorites.m */; };
 		C3963FF4181F5ED700661F9B /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3963FF3181F5ED700661F9B /* Beer.m */; };
+		C3B14773182EE1730058DD78 /* GrowlersCoreDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B14772182EE1730058DD78 /* GrowlersCoreDataTests.m */; };
+		C3B14775182EE1870058DD78 /* GrowlersNSUserDefaultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B14774182EE1870058DD78 /* GrowlersNSUserDefaultsTests.m */; };
+		C3B14779182F60700058DD78 /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B14778182F60700058DD78 /* Tests.m */; };
 		C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D117967D470086A7E2 /* Foundation.framework */; };
 		C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D317967D470086A7E2 /* CoreGraphics.framework */; };
 		C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
@@ -47,6 +50,7 @@
 		C3DD54191797BA620086A7E2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD54181797BA620086A7E2 /* SystemConfiguration.framework */; };
 		C3E5DE0B17B75CB4006DE900 /* DMCoreDataMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E5DE0A17B75CB4006DE900 /* DMCoreDataMethods.m */; };
 		C3E5DE1917BC6A03006DE900 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3E5DE1817BC6A03006DE900 /* CoreImage.framework */; };
+		C7B8D1CC76BE43CF9E87BD05 /* libPods-GrowlersTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E607E5B549904B919C171290 /* libPods-GrowlersTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +95,9 @@
 		C3963FF0181F5ED700661F9B /* Favorites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Favorites.m; sourceTree = "<group>"; };
 		C3963FF2181F5ED700661F9B /* Beer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beer.h; sourceTree = "<group>"; };
 		C3963FF3181F5ED700661F9B /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
+		C3B14772182EE1730058DD78 /* GrowlersCoreDataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowlersCoreDataTests.m; sourceTree = "<group>"; };
+		C3B14774182EE1870058DD78 /* GrowlersNSUserDefaultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowlersNSUserDefaultsTests.m; sourceTree = "<group>"; };
+		C3B14778182F60700058DD78 /* Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		C3DD53CE17967D470086A7E2 /* Growlers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Growlers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DD53D117967D470086A7E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3DD53D317967D470086A7E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -120,6 +127,8 @@
 		C3E5DE0917B75CB4006DE900 /* DMCoreDataMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMCoreDataMethods.h; sourceTree = "<group>"; };
 		C3E5DE0A17B75CB4006DE900 /* DMCoreDataMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMCoreDataMethods.m; sourceTree = "<group>"; };
 		C3E5DE1817BC6A03006DE900 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		D95DBBE007784969986BBE75 /* Pods-GrowlersTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GrowlersTests.xcconfig"; path = "Pods/Pods-GrowlersTests.xcconfig"; sourceTree = "<group>"; };
+		E607E5B549904B919C171290 /* libPods-GrowlersTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GrowlersTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +159,7 @@
 				C3DD53F117967D470086A7E2 /* XCTest.framework in Frameworks */,
 				C3DD53F317967D470086A7E2 /* UIKit.framework in Frameworks */,
 				C3DD53F217967D470086A7E2 /* Foundation.framework in Frameworks */,
+				C7B8D1CC76BE43CF9E87BD05 /* libPods-GrowlersTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +237,7 @@
 				C3DD53D017967D470086A7E2 /* Frameworks */,
 				C3DD53CF17967D470086A7E2 /* Products */,
 				3066D4AF570043AE81036398 /* Pods.xcconfig */,
+				D95DBBE007784969986BBE75 /* Pods-GrowlersTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -258,6 +269,7 @@
 				C3DD53D517967D470086A7E2 /* UIKit.framework */,
 				C3DD53F017967D470086A7E2 /* XCTest.framework */,
 				B6A2C661DB9B47E4BEFFE41C /* libPods.a */,
+				E607E5B549904B919C171290 /* libPods-GrowlersTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -295,6 +307,9 @@
 			isa = PBXGroup;
 			children = (
 				C3DD53FC17967D470086A7E2 /* GrowlersTests.m */,
+				C3B14772182EE1730058DD78 /* GrowlersCoreDataTests.m */,
+				C3B14774182EE1870058DD78 /* GrowlersNSUserDefaultsTests.m */,
+				C3B14778182F60700058DD78 /* Tests.m */,
 				C3DD53F717967D470086A7E2 /* Supporting Files */,
 			);
 			path = GrowlersTests;
@@ -335,9 +350,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C3DD540317967D470086A7E2 /* Build configuration list for PBXNativeTarget "GrowlersTests" */;
 			buildPhases = (
+				90C63052EC41496492C97213 /* Check Pods Manifest.lock */,
 				C3DD53EB17967D470086A7E2 /* Sources */,
 				C3DD53EC17967D470086A7E2 /* Frameworks */,
 				C3DD53ED17967D470086A7E2 /* Resources */,
+				2D30809B9FD94438AC90DF10 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -421,6 +438,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2D30809B9FD94438AC90DF10 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-GrowlersTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		37B8E0B7718D4278AFF3DFC6 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -449,6 +481,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		90C63052EC41496492C97213 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -480,6 +527,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3DD53FD17967D470086A7E2 /* GrowlersTests.m in Sources */,
+				C3B14779182F60700058DD78 /* Tests.m in Sources */,
+				C3B14773182EE1730058DD78 /* GrowlersCoreDataTests.m in Sources */,
+				C3B14775182EE1870058DD78 /* GrowlersNSUserDefaultsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -636,6 +686,7 @@
 		};
 		C3DD540417967D470086A7E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D95DBBE007784969986BBE75 /* Pods-GrowlersTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Growlers.app/Growlers";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -659,6 +710,7 @@
 		};
 		C3DD540517967D470086A7E2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D95DBBE007784969986BBE75 /* Pods-GrowlersTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Growlers.app/Growlers";
 				FRAMEWORK_SEARCH_PATHS = (
