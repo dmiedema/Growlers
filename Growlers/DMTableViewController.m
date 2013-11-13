@@ -609,7 +609,9 @@ BOOL _performSegmentChange;
 // Set to nil to remove.
 - (void)setNavigationBarPrompt
 {
-    self.navigationItem.prompt = [DMDefaultsInterfaceConstants lastStore];
+    self.navigationItem.prompt =
+    ([DMDefaultsInterfaceConstants showCurrentStoreOnTapList]) ?
+         [DMDefaultsInterfaceConstants lastStore] : nil;
 }
 
 #pragma mark Segment Control and Gestures Delegate

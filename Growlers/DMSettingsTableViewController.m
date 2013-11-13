@@ -21,14 +21,14 @@
 @property (nonatomic, strong) NSString *selectedStoreName;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
+@property (nonatomic, strong) UISwitch *showStoreSwitch;
+
 @property (nonatomic) DMTakeMeActionSheetDelegate *takeMeActionSheetDelegate;
 
 - (void)handeStore:(NSInteger)index;
 - (void)showStoreNotificationChooser:(BOOL)showDestructiveOption;
 // About
 - (void)handleAbout:(NSInteger)index;
-// Social
-- (void)handleSocial:(NSInteger)index;
 // Feedback Email
 - (void)handleSupport:(NSInteger)index;
 // Other
@@ -185,15 +185,21 @@ typedef enum {
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DMSettingsTableViewCell"];
         }
-
         cell.textLabel.text = self.content[indexPath.section][indexPath.row];
-        
+        // One off check to see if i should show store.
+        // There has to be a better way.
         if (indexPath.section == ABOUT && (indexPath.row == 0 || indexPath.row == 3)) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.textColor = [UIColor blackColor];
+        } else if (indexPath.section == OTHER && indexPath.row == 1) {
+            if(!_showStoreSwitch) {
+                _showStoreSwitch = [UISwitch new];
+                [_showStoreSwitch addTarget:self action:@selector(toggleShowStore) forControlEvents:UIControlEventValueChanged];
+            }
+            [_showStoreSwitch setOn:[DMDefaultsInterfaceConstants showCurrentStoreOnTapList]];
+            cell.accessoryView = _showStoreSwitch;
         } else {
             cell.accessoryType = UITableViewCellAccessoryNone;
-//            cell.textLabel.textColor = self.systemBlueColor;
         }
         return cell;
     }
@@ -210,7 +216,6 @@ typedef enum {
             cell.detailTextLabel.text = self.preferredStores[indexPath.row];
         } else {
             cell.textLabel.text = @"Add Store";
-//            cell.textLabel.textColor = self.systemBlueColor;
             cell.detailTextLabel.text = @"";
         }
         return cell;
@@ -238,19 +243,7 @@ typedef enum {
             break;
     }
 }
-/*
-- (void)handleSocial:(NSInteger)index
-{
-    switch (index) {
-        case 0:
-            break;
-        case 1:
-            break;
-        default:
-            break;
-    }
-}
-*/
+
 - (void)handeStore:(NSInteger)index
 {
     self.selectedStoreName = nil;
@@ -284,7 +277,8 @@ typedef enum {
             }];
             break;
         case 1: // 2: Show store name
-            NSLog(@"Set NSUserDefaults to not show store name as prompt on navigation bar.");
+            [_showStoreSwitch setOn:!_showStoreSwitch.on animated:YES];
+            [self toggleShowStore];
             break;
         case 2: // 3:  @"Fix Favorites Names/Duplicates"
             break;
@@ -294,6 +288,13 @@ typedef enum {
         default:
             break;
     }
+}
+
+- (void)toggleShowStore
+{
+    [DMDefaultsInterfaceConstants setShowCurrentStoreOnTapList:_showStoreSwitch.on];
+    NSLog(@"showCurrentStore - %hhd", [DMDefaultsInterfaceConstants showCurrentStoreOnTapList]);
+    [_showStoreSwitch setOn:[DMDefaultsInterfaceConstants showCurrentStoreOnTapList] animated:YES];
 }
 
 - (void)reviewApp
