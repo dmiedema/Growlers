@@ -293,7 +293,6 @@ typedef enum {
 - (void)toggleShowStore
 {
     [DMDefaultsInterfaceConstants setShowCurrentStoreOnTapList:_showStoreSwitch.on];
-    NSLog(@"showCurrentStore - %hhd", [DMDefaultsInterfaceConstants showCurrentStoreOnTapList]);
     [_showStoreSwitch setOn:[DMDefaultsInterfaceConstants showCurrentStoreOnTapList] animated:YES];
 }
 
