@@ -7,7 +7,7 @@ It is avaiable in the [App Store](https://itunes.apple.com/us/app/gm-taplist/id7
 
 # License
 
-See [License](https://github.com/dmiedema/Growlers/blob/dev/LICENSE)
+Licensed under MIT. See [License](https://github.com/dmiedema/Growlers/blob/dev/LICENSE) for full text.
 
 # Contributing
 
