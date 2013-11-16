@@ -10,6 +10,7 @@
 		35BE3632AF8B44CF8E0D4122 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A2C661DB9B47E4BEFFE41C /* libPods.a */; };
 		C3015A4517F0E957002F7E18 /* DMHelperMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = C3015A4417F0E957002F7E18 /* DMHelperMethods.m */; };
 		C3229FE017F4B74B00C818C5 /* DMTakeMeActionSheetDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C3229FDF17F4B74B00C818C5 /* DMTakeMeActionSheetDelegate.m */; };
+		C32FD3591836062100B41BED /* launch-Image.png in Resources */ = {isa = PBXBuildFile; fileRef = C32FD3581836062100B41BED /* launch-Image.png */; };
 		C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC83179C5FD400F208AB /* QuartzCore.framework */; };
 		C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C33DAC8A179C8FCB00F208AB /* GrowlerModel.xcdatamodeld */; };
 		C33DAC8E179C8FF200F208AB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC8D179C8FF200F208AB /* CoreData.framework */; };
@@ -72,6 +73,7 @@
 		C3015A4417F0E957002F7E18 /* DMHelperMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMHelperMethods.m; sourceTree = "<group>"; };
 		C3229FDE17F4B74B00C818C5 /* DMTakeMeActionSheetDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMTakeMeActionSheetDelegate.h; sourceTree = "<group>"; };
 		C3229FDF17F4B74B00C818C5 /* DMTakeMeActionSheetDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMTakeMeActionSheetDelegate.m; sourceTree = "<group>"; };
+		C32FD3581836062100B41BED /* launch-Image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launch-Image.png"; sourceTree = "<group>"; };
 		C33DAC83179C5FD400F208AB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C33DAC8B179C8FCB00F208AB /* GrowlerModel.xcdatamodel */ = {isa = PBXFileReference; explicitFileType = wrapper.xcdatamodeld; path = GrowlerModel.xcdatamodel; sourceTree = "<group>"; };
 		C33DAC8D179C8FF200F208AB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -136,11 +138,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */,
 				C3E5DE1917BC6A03006DE900 /* CoreImage.framework in Frameworks */,
 				C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */,
 				C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */,
 				C38285C717A4D0700058D304 /* MessageUI.framework in Frameworks */,
-				C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */,
 				C33DACA617A2619700F208AB /* CoreText.framework in Frameworks */,
 				C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */,
 				C33DAC8E179C8FF200F208AB /* CoreData.framework in Frameworks */,
@@ -284,6 +286,7 @@
 				C33DAC92179C91AD00F208AB /* CoreData */,
 				C3DD53E917967D470086A7E2 /* Images.xcassets */,
 				C3642F8017F381EE00096EED /* Tutorial-3_5.png */,
+				C32FD3581836062100B41BED /* launch-Image.png */,
 				C3642F8117F381EE00096EED /* Tutorial-4.png */,
 				C3DD53D817967D470086A7E2 /* Supporting Files */,
 				C33DAC9A179F7D6700F208AB /* Growler Cell */,
@@ -421,6 +424,7 @@
 				C3DD53DC17967D470086A7E2 /* InfoPlist.strings in Resources */,
 				C3642F8217F381EE00096EED /* Tutorial-3_5.png in Resources */,
 				C3DD53E517967D470086A7E2 /* Main.storyboard in Resources */,
+				C32FD3591836062100B41BED /* launch-Image.png in Resources */,
 				C349589D17A79FEA00E45B3D /* Settings.bundle in Resources */,
 				C3642F8317F381EE00096EED /* Tutorial-4.png in Resources */,
 				C3477C0E17A56E6F008900B5 /* Default-568h@2x.png in Resources */,
@@ -652,8 +656,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Growlers/Growlers.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Daniel Miedema (86S6946F3E)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Daniel Miedema (86S6946F3E)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Growlers/Growlers-Prefix.pch";
 				INFOPLIST_FILE = "Growlers/Growlers-Info.plist";
@@ -672,8 +676,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Growlers/Growlers.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Daniel Miedema (86S6946F3E)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Daniel Miedema (86S6946F3E)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Growlers/Growlers-Prefix.pch";
 				INFOPLIST_FILE = "Growlers/Growlers-Info.plist";
