@@ -21,6 +21,8 @@
 @property (nonatomic, strong) NSString *selectedStore;
 @property (nonatomic, strong) DMCoreDataMethods *coreData;
 
+@property (nonatomic, strong) UIImageView *logoImageView;
+
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 
@@ -73,6 +75,9 @@ BOOL _performSegmentChange;
     [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
     // Load up .xib for search results table view
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
+    
+    _logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"launch-Image"]];
+    self.tableView.backgroundView = _logoImageView;
     
     // Setup highlighted beers
     _highlightedBeers = [NSMutableArray new];
@@ -389,7 +394,7 @@ BOOL _performSegmentChange;
         cell.beerInfo.textColor = [UIColor darkGrayColor];
     } else {
         // If I don't set them back explicitly, after scrolling weird stuff happens.
-        cell.backgroundColor = [UIColor whiteColor];
+        cell.backgroundColor = [UIColor colorWithWhite:1 alpha:0.80];
         cell.beerName.textColor = [UIColor blackColor];
         cell.brewery.textColor = [UIColor blackColor];
         cell.beerInfo.textColor = [UIColor darkGrayColor];
@@ -416,7 +421,7 @@ BOOL _performSegmentChange;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 34.0f)];
-    headerView.backgroundColor = [UIColor clearColor];
+//    headerView.backgroundColor = [UIColor clearColor];
     self.headerSegmentControl.frame = CGRectInset(headerView.frame, 12, 4);
     headerView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.85];
     [headerView addSubview:self.headerSegmentControl];
