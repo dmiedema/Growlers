@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSArray *beers;
 @property (nonatomic, strong) NSMutableArray *filteredBeers;
 @property (nonatomic, strong) NSDate *lastUpdated;
-@property (nonatomic, strong) NSMutableArray *highlightedBeers;
+@property (nonatomic, strong) NSMutableSet *highlightedBeers;
 @property (nonatomic, strong) NSString *selectedStore;
 @property (nonatomic, strong) DMCoreDataMethods *coreData;
 
@@ -77,10 +77,10 @@ BOOL _performSegmentChange;
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
     
     _logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"launch-Image"]];
-    self.tableView.backgroundView = _logoImageView;
+//    self.tableView.backgroundView = _logoImageView;
     
     // Setup highlighted beers
-    _highlightedBeers = [NSMutableArray new];
+    _highlightedBeers = [NSMutableSet new];
     // Setup filtered beers, its just a mutable array
     self.filteredBeers = [NSMutableArray new];
     
