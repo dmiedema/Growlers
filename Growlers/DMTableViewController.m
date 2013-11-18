@@ -62,8 +62,8 @@ typedef enum {
     [super viewDidLoad];
     
     // ActionSheet and Selected Store
-    NSString *lastSelectedStore = [DMDefaultsInterfaceConstants lastStore];
-    self.selectedStore = lastSelectedStore ? lastSelectedStore : [DMDefaultsInterfaceConstants stores][0];
+    self.selectedStore = [DMDefaultsInterfaceConstants lastStore] ?
+        [DMDefaultsInterfaceConstants lastStore] : [DMDefaultsInterfaceConstants stores][0];
     
     // Load up my .xib 
     [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
@@ -195,26 +195,14 @@ typedef enum {
 {
     // If we're refreshing and we're showing on tap.
     // clear out the highlighted beers that have been marked as 'unseen' or 'new'
-    if (self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) {
-        [self resetHighlightedBeers];
-    }
+//    if (self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) {
+//        [self resetHighlightedBeers];
+//    }
     // if we're spinnin' and refreshin'
     // ... stop it.
     if (self.refreshControl.refreshing) {
-        // Setup Title
-//        NSString *str = [NSString stringWithFormat:@"Last Updated at %@", [_dateFormatter stringFromDate:[NSDate date]]];
-//        NSAttributedString *attrStr;
-//        // if iOS7, font color matches tint color.
-//        // not needed to check anymore, iOS 7 only.
-//        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-//             attrStr = [[NSAttributedString alloc] initWithString:str attributes:@{NSForegroundColorAttributeName: self.navigationController.navigationBar.tintColor}];
-//        } else {
-//            attrStr = [[NSAttributedString alloc] initWithString:str];
-//        }
-//        // Set the title with last updated text because its nice to have
-//        self.refreshControl.attributedTitle = attrStr;
-        // Stop refreshing
         [self.refreshControl endRefreshing];
+        if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) [self resetHighlightedBeers];
     }
     
     // if we're on favorites, we shouldn't be here. Bail.
@@ -460,13 +448,13 @@ typedef enum {
         return;
     }
     
-    NSString *token = [DMDefaultsInterfaceConstants pushID];
+    NSString *token = ([DMDefaultsInterfaceConstants pushID]) ? [DMDefaultsInterfaceConstants pushID] : [DMDefaultsInterfaceConstants generatedUDID];
     
     NSString *preferredStore = [[DMDefaultsInterfaceConstants preferredStore] lowercaseString];
     
     NSMutableDictionary *beerToFavorite = [@{@"name": beer[@"name"],
                                             @"brewer": beer[@"brewer"],
-                                            @"udid": (token ? token : [DMDefaultsInterfaceConstants generatedUDID]),
+                                            @"udid": token,
                                             @"store": preferredStore}
                                            mutableCopy];
 
