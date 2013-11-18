@@ -16,15 +16,11 @@
 // Private variables. Wow there are a lot.
 @property (nonatomic, strong) NSArray *beers;
 @property (nonatomic, strong) NSMutableArray *filteredBeers;
-@property (nonatomic, strong) NSDate *lastUpdated;
 @property (nonatomic, strong) NSMutableSet *highlightedBeers;
 @property (nonatomic, strong) NSString *selectedStore;
 @property (nonatomic, strong) DMCoreDataMethods *coreData;
 
 @property (nonatomic, strong) UIImageView *logoImageView;
-
-@property (nonatomic, strong) NSDateFormatter *dateFormatter;
-@property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 
 @property (nonatomic, strong) UISegmentedControl *headerSegmentControl;
 @property (nonatomic, strong) UIGestureRecognizer *swipeGesture;
@@ -32,6 +28,7 @@
 // Private methods
 - (void)loadBeers;
 - (void)loadFavorites;
+
 - (void)settings:(id)sender;
 - (void)showActionSheet:(id)sender;
 
@@ -51,9 +48,6 @@ typedef enum {
 @end
 
 @implementation DMTableViewController
-
-CGPoint _gestureBeginLocation;
-BOOL _performSegmentChange;
 
 #pragma mark View Life Cycle
 
@@ -76,13 +70,8 @@ BOOL _performSegmentChange;
     // Load up .xib for search results table view
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
     
-    _logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"launch-Image"]];
+//    _logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"launch-Image"]];
 //    self.tableView.backgroundView = _logoImageView;
-    
-    // Setup highlighted beers
-    _highlightedBeers = [NSMutableSet new];
-    // Setup filtered beers, its just a mutable array
-    self.filteredBeers = [NSMutableArray new];
     
     // Setup Navigation Bar button Items
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings:)];
@@ -108,11 +97,6 @@ BOOL _performSegmentChange;
     
     // Setup CoreData stuff
     _coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
-
-    // Setup DateFormatter
-    _dateFormatter = [[NSDateFormatter alloc] init];
-    _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"j:m" options:0 locale:[NSLocale currentLocale]];
-    _dateFormatter.defaultDate = [NSDate date];
     
     // Orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -154,7 +138,6 @@ BOOL _performSegmentChange;
     [self.tableView addGestureRecognizer:rightSwipeGesture];
 }
 
-
 #pragma mark NSNotificationCenter Notification selectors
 // Not sure *why* this is necessary, but the segement control
 // In the header would NOT resize correctly without reloading
@@ -165,6 +148,26 @@ BOOL _performSegmentChange;
         [self.searchDisplayController.searchResultsTableView reloadData];
     } else {
         [self.tableView reloadData];
+    }
+}
+
+#pragma mark Getter Overrides
+/* Lazy instantiation */
+- (NSMutableSet *)highlightedBeers
+{
+    if (_highlightedBeers) {
+        return _highlightedBeers;
+    } else {
+        return [NSMutableSet new];
+    }
+}
+
+- (NSMutableArray *)filteredBeers
+{
+    if (self.filteredBeers) {
+        return self.filteredBeers;
+    } else {
+        return [NSMutableArray new];
     }
 }
 
@@ -552,7 +555,6 @@ BOOL _performSegmentChange;
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-//    [self.filteredBeers removeAllObjects];
     [self loadBeers];
 }
 
