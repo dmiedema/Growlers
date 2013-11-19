@@ -119,9 +119,9 @@
     
     /* Tapstream */
     TSConfig *config = [TSConfig configWithDefaults];
-    [TSTapstream createWithAccountName:@"dmiedema" developerSecret:@"fjOF0VDGQ8iLcfFqnTyhlw" config:config];
     config.collectWifiMac = NO;
     config.idfa = _generatedUDID;
+    [TSTapstream createWithAccountName:@"dmiedema" developerSecret:@"fjOF0VDGQ8iLcfFqnTyhlw" config:config];
     
     /* Google Anayltics */
 //    [GAI sharedInstance].dispatchInterval = 20;
