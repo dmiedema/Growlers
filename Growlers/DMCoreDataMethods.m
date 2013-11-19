@@ -170,6 +170,8 @@
         entityObject = (Beer *)entityObject;
         entityObject.growlerPrice    = params[@"growler"];
         entityObject.growlettePrice  = params[@"growlette"];
+        // This will be added to favorites soon enough        
+        entityObject.style           = (params[@"style"] == [NSNull null]) ? @"" : params[@"style"];
     } else {
         entityObject = (Favorites *)entityObject;   
     }
