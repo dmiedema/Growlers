@@ -23,3 +23,5 @@ DerivedData
 *.mov
 *.certSigningRequest
 *.mobileprovision
+
+DMAPIKeys.h
