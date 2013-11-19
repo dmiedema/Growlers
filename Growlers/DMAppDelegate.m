@@ -70,9 +70,6 @@
     
     /* Push Notifications */
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
-    // Clear current notifications
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
     /* Background stuff */
 //    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
@@ -91,7 +88,7 @@
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
     /* Multiple Stores */
-//    [DMDefaultsInterfaceConstants setMultipleStoresEnabled:NO];
+    [DMDefaultsInterfaceConstants setMultipleStoresEnabled:YES];
     
     /* Launch */
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
