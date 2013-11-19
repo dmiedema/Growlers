@@ -8,6 +8,10 @@
 
 #import "DMCoreDataMethods.h"
 
+@interface DMCoreDataMethods ()
+- (id)applyDefaultValuesToEntityObject:(id)entityObject withParameters:(NSDictionary *)params;
+@end
+
 @implementation DMCoreDataMethods
 
 #pragma mark Custom Init
@@ -156,6 +160,31 @@
         return nil;
     }
     return allFavorites;
+}
+
+#pragma mark Private Methods
+
+- (id)applyDefaultValuesToEntityObject:(id)entityObject withParameters:(NSDictionary *)params
+{
+    if ([entityObject isKindOfClass:[Beer class]]) {
+        entityObject = (Beer *)entityObject;
+        entityObject.growlerPrice    = params[@"growler"];
+        entityObject.growlettePrice  = params[@"growlette"];
+    } else {
+        entityObject = (Favorites *)entityObject;   
+    }
+    
+    entityObject.tap_id     = (params[@"tap_id"] == [NSNull null]) ? 0 : [NSNumber numberWithInt:[params[@"tap_id"] intValue]];
+    entityObject.name       = params[@"name"];
+    entityObject.brewer     = params[@"brewer"];
+    entityObject.abv        = (params[@"abv"] == [NSNull null]) ? @"" : params[@"abv"];
+    entityObject.ibu        = (params[@"ibu"] == [NSNull null]) ? @"" : params[@"ibu"];
+    entityObject.brewerURL  = (params[@"brew_url"]  == [NSNull null]) ? @"" : params[@"brew_url"];
+    entityObject.store      = params[@"store"];
+    entityObject.city       = (params[@"city"] == [NSNull null]) ? @"" : params[@"city"];
+    entityObject.state      = (params[@"state"] == [NSNull null]) ? @"" : params[@"state"];
+    
+    return entityObject;
 }
 
 @end
