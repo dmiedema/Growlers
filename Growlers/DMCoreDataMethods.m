@@ -166,25 +166,29 @@
 
 - (id)applyDefaultValuesToEntityObject:(id)entityObject withParameters:(NSDictionary *)params
 {
-    if ([entityObject isKindOfClass:[Beer class]]) {
-        entityObject = (Beer *)entityObject;
-        entityObject.growlerPrice    = params[@"growler"];
-        entityObject.growlettePrice  = params[@"growlette"];
-        // This will be added to favorites soon enough        
-        entityObject.style           = (params[@"style"] == [NSNull null]) ? @"" : params[@"style"];
-    } else {
-        entityObject = (Favorites *)entityObject;   
-    }
+    NSNumber *tapID = (params[@"tap_id"] == [NSNull null]) ? 0 : [NSNumber numberWithInt:[params[@"tap_id"] intValue]];
+    NSString *abv = (params[@"abv"] == [NSNull null]) ? @"" : params[@"abv"];
+    NSString *ibu = (params[@"ibu"] == [NSNull null]) ? @"" : params[@"ibu"];
+    NSString *brewerURL = (params[@"brew_url"]  == [NSNull null]) ? @"" : params[@"brew_url"];
+    NSString *city = (params[@"city"] == [NSNull null]) ? @"" : params[@"city"];
+    NSString *state = (params[@"state"] == [NSNull null]) ? @"" : params[@"state"];
+    // not set right now.
+    // NSString *style = (params[@"style"] == [NSNull null]) ? @"" : params[@"style"];
     
-    entityObject.tap_id     = (params[@"tap_id"] == [NSNull null]) ? 0 : [NSNumber numberWithInt:[params[@"tap_id"] intValue]];
-    entityObject.name       = params[@"name"];
-    entityObject.brewer     = params[@"brewer"];
-    entityObject.abv        = (params[@"abv"] == [NSNull null]) ? @"" : params[@"abv"];
-    entityObject.ibu        = (params[@"ibu"] == [NSNull null]) ? @"" : params[@"ibu"];
-    entityObject.brewerURL  = (params[@"brew_url"]  == [NSNull null]) ? @"" : params[@"brew_url"];
-    entityObject.store      = params[@"store"];
-    entityObject.city       = (params[@"city"] == [NSNull null]) ? @"" : params[@"city"];
-    entityObject.state      = (params[@"state"] == [NSNull null]) ? @"" : params[@"state"];
+    [entityObject setTap_id:tapID];
+    [entityObject setName:params[@"name"]];
+    [entityObject setBrewer:params[@"brewer"]];
+    [entityObject setAbv:abv];
+    [entityObject setIbu:ibu];
+    [entityObject setBrewerURL:brewerURL];
+    [entityObject setStore:params[@"store"]];
+    [entityObject setCity:city];
+    [entityObject setState:state];
+ 
+    if ([entityObject isKindOfClass:[Beer class]]) {
+        [entityObject setGrowlerPrice:params[@"growler"]];
+        [entityObject setGrowlettePrice:params[@"growlette"]];
+    }
     
     return entityObject;
 }
