@@ -315,17 +315,12 @@ typedef enum {
             // If we're showing on tap, show prices.
         case ShowOnTap:
             asprintf(&beerNameText, "%s. %s", [beer[@"tap_id"] UTF8String], [beer[@"name"] UTF8String]);
-            //cell.beerName.text = [NSString stringWithFormat:@"%@. %@", beer[@"tap_id"], beer[@"name"]];
             asprintf(&beerInfoText, "IBU: %s  ABV: %s  Growler: $%s  Growlette: $%s", 
                 [beer[@"ibu"] UTF8String], [beer[@"abv"] UTF8String], [beer[@"growler"] UTF8String], [beer[@"growlette"] UTF8String]);
-            // cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@  Growler: $%@  Growlette: $%@",
-                                //   beer[@"ibu"], beer[@"abv"], beer[@"growler"], beer[@"growlette"]];
             break;
         default:
             asprintf(&beerNameText, "%s", [beer[@"name"] UTF8String]);
-            // cell.beerName.text = beer[@"name"];
             asprintf(&beerInfoText, "IBU: %s  ABV: %s  Style: %s", [beer[@"ibu"] UTF8String], [beer[@"abv"] UTF8String], [beer[@"beer_style"] UTF8String]);
-            // cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
             break;
     }
     cell.beerName.text = [NSString stringWithCString:beerNameText encoding:NSUTF8StringEncoding];
