@@ -248,7 +248,7 @@ typedef enum {
         // the user know to go favorite some beers.
         self.beers = @[@{@"name": @"No Favorites!", @"brewer": @"Go Favorite some Beers!",
                          @"ibu": @"", @"abv": @"",
-                         @"city": @"", @"state": @""}
+                         @"city": @"", @"state": @"", @"beer_style": @""}
                        ];
     }
     if ([self.searchDisplayController isActive]) {
@@ -324,7 +324,7 @@ typedef enum {
         default:
             asprintf(&beerNameText, "%s", [beer[@"name"] UTF8String]);
             // cell.beerName.text = beer[@"name"];
-            asprintf(&beerInfoText, "IBU: %s  ABV: %s  Style: %s", [beer[@"ibu"] UTF8String], [beer[@"abv"] UTF8String], [beer[@"style"] UTF8String]);
+            asprintf(&beerInfoText, "IBU: %s  ABV: %s  Style: %s", [beer[@"ibu"] UTF8String], [beer[@"abv"] UTF8String], [beer[@"beer_style"] UTF8String]);
             // cell.beerInfo.text = [NSString stringWithFormat:@"IBU: %@  ABV: %@", beer[@"ibu"], beer[@"abv"]];
             break;
     }
@@ -447,11 +447,15 @@ typedef enum {
     NSString *token = ([DMDefaultsInterfaceConstants pushID]) ? [DMDefaultsInterfaceConstants pushID] : [DMDefaultsInterfaceConstants generatedUDID];
     
     NSString *preferredStore = [[DMDefaultsInterfaceConstants preferredStore] lowercaseString];
+    NSString *style =(beer[@"beer_style"] == [NSNull null]) ? @"" : beer[@"beer_style"];
+    
+    NSLog(@"Beer  - %@", beer);
     
     NSMutableDictionary *beerToFavorite = [@{@"name": beer[@"name"],
                                             @"brewer": beer[@"brewer"],
                                             @"udid": token,
-                                            @"store": preferredStore}
+                                            @"store": preferredStore,
+                                            @"beer_style": style}
                                            mutableCopy];
 
     if ([_coreData isBeerFavorited:beer]) {
@@ -504,7 +508,7 @@ typedef enum {
     // Trim off whitespace
     NSString *strippedSearch = [searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     // See if beer name or beer brewer contains the search string via a case insensitive search.
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K contains[cd] %@ OR %K contains[cd] %@ OR %K contains[cd] %@", @"name", strippedSearch, @"brewer", strippedSearch, @"style", strippedSearch];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K contains[cd] %@ OR %K contains[cd] %@ OR %K contains[cd] %@", @"name", strippedSearch, @"brewer", strippedSearch, @"beer_style", strippedSearch];
     
     // Set my mutableArray to itself applying the filter.
     self.filteredBeers = [[self.filteredBeers filteredArrayUsingPredicate:predicate] mutableCopy];
