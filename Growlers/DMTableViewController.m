@@ -553,6 +553,7 @@ typedef enum {
     // When I tried to alloc, init this without instantiating from Storyboard
     // it crashed. So I'll just do it this way I guess.
     DMSettingsTableViewController *settingsView = [self.storyboard instantiateViewControllerWithIdentifier:@"DMSettingsTableViewController"];
+    settingsView.managedContext = self.managedContext;
     [self.navigationController pushViewController:settingsView animated:YES];
 }
 
