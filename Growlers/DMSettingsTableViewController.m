@@ -41,6 +41,8 @@
 //**
 
 - (UIColor *)systemBlueColor;
+
+- (void)dismissAlertView:(UIAlertView *)alertView;
 @end
 
 @implementation DMSettingsTableViewController
@@ -263,7 +265,14 @@ typedef enum {
 - (void)handleOther:(NSInteger)index
 {
     switch (index) {
-        case 0: // 1:  @"Test Push Notifications",
+        case 0: {// 1:  @"Test Push Notifications",
+            UIAlertView *pushTestAlert = [[UIAlertView alloc] initWithTitle:@"Testing Push!"
+                                                                    message:@"You should get a notification here really soon if push was successful or not\nJust sit tight!."
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"Alright"
+                                                          otherButtonTitles:nil];
+            [pushTestAlert show];
+            [self performSelector:@selector(dismissAlertView:) withObject:pushTestAlert afterDelay:5.0];
             [[DMGrowlerAPI sharedInstance] testPushNotifictaionsWithSuccess:^(id JSON) {
                 NSLog(@"Success - %@", JSON);
             } andFailure:^(id JSON) {
@@ -276,6 +285,7 @@ typedef enum {
                 NSLog(@"Failure - %@", JSON);
             }];
             break;
+        }
         case 1: // 2: Show store name
             [_showStoreSwitch setOn:!_showStoreSwitch.on animated:YES];
             [self toggleShowStore];
@@ -423,6 +433,11 @@ typedef enum {
 
     viewController.view = tutorialImage;
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)dismissAlertView:(UIAlertView *)alertView
+{
+    [alertView dismissWithClickedButtonIndex:alertView.cancelButtonIndex animated:YES];
 }
 
 - (UIColor *)systemBlueColor
