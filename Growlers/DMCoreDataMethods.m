@@ -143,6 +143,27 @@
     return allFavorites;
 }
 
+- (void)reconcileFavoritesWithServer:(NSArray *)allBeers
+{
+    NSLog(@"Reconsiling...");
+    NSArray *allFavorites = [self getAllFavorites];
+    NSLog(@"All favorites - %@", allFavorites);
+    for (NSDictionary *beer in allFavorites) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@ and brewer contains[cd] %@", beer[@"name"], beer[@"brewer"]];
+        NSArray *filteredAllBeers = [allBeers filteredArrayUsingPredicate:predicate];
+        NSLog(@"Results after predicate search\n%@", filteredAllBeers);
+        if (filteredAllBeers.count == 1) {
+            NSLog(@"Count of results was 1\nUnfavoriting & Favoriting");
+            [self unFavoriteBeer:beer];
+            [self favoriteBeer:[filteredAllBeers lastObject]];
+        } else {
+            NSLog(@"Count was not == 1");
+            NSLog(@"Results -\n%@", filteredAllBeers);
+        }
+        //[self unFavoriteBeer:beer];
+    } // end for
+}
+
 #pragma mark Private Methods
 
 - (id)applyDefaultValuesToEntityObject:(id)entityObject withParameters:(NSDictionary *)params
