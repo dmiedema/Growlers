@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface DMSettingsTableViewController : UITableViewController
-
+@property (nonatomic, strong) NSManagedObjectContext *managedContext;
 @end

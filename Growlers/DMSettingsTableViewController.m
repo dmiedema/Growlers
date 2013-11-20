@@ -9,6 +9,7 @@
 #import "DMSettingsTableViewController.h"
 #import "DMTakeMeActionSheetDelegate.h"
 #import "DMAboutViewController.h"
+#import "DMCoreDataMethods.h"
 #import "DMGrowlerAPI.h"
 #import <MessageUI/MessageUI.h>
 #import <MapKit/MapKit.h>
@@ -290,8 +291,17 @@ typedef enum {
             [_showStoreSwitch setOn:!_showStoreSwitch.on animated:YES];
             [self toggleShowStore];
             break;
-        case 2: // 3:  @"Fix Favorites Names/Duplicates"
+        case 2: {// 3:  @"Fix Favorites Names/Duplicates"
+            [[DMGrowlerAPI sharedInstance] getBeersWithFlag:ALL forStore:@"all" andSuccess:^(id JSON) {
+                DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
+                [coreData reconcileFavoritesWithServer:JSON];
+            } andFailure:^(id JSON) {
+                NSLog(@"Failure Getting all beers");
+            }];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fixing..." message:@"Reconciling favorites, please give me just a moment." delegate:nil cancelButtonTitle:@"okay" otherButtonTitles: nil];
+            [alert show];
             break;
+        }
         case 3: // 4: Ask in prompt if user wants to review
             [self reviewApp];
             break;
