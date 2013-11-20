@@ -8,6 +8,10 @@
 
 #import "DMHelperMethods.h"
 
+@interface DMHelperMethods()
+
+@end
+
 @implementation DMHelperMethods
 
 +(BOOL)checkIfOpen
@@ -89,4 +93,5 @@
         return [UIColor colorWithRed:238.0/255.0 green:221.0/255.0 blue:68.0/255.0 alpha:0.85];
     }
 }
+
 @end
