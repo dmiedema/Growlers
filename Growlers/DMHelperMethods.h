@@ -20,4 +20,5 @@ typedef enum {
 + (NSInteger)getToday;
 
 + (UIColor *)growlersYellowColor:(GrowlersYellowAlpha)alpha;
++ (UIColor *)systemBlueColor;
 @end

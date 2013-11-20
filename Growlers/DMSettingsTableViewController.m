@@ -41,8 +41,6 @@
 - (NSString *)supportEmailBody;
 //**
 
-- (UIColor *)systemBlueColor;
-
 - (void)dismissAlertView:(UIAlertView *)alertView;
 @end
 
@@ -98,13 +96,16 @@ typedef enum {
 - (void)viewWillDisappear:(BOOL)animated
 {
     NSLog(@"View disappearing");
-    [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
-        NSLog(@"%@", JSON);
-        [DMDefaultsInterfaceConstants setPreferredStoresSynced:YES];
-    } andFailure:^(id JSON) {
-        [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
-        NSLog(@"%@", JSON);
-    }];
+    // if we're out of sync -- sync
+    if (![DMDefaultsInterfaceConstants preferredStoresSynced]) {
+        [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
+            NSLog(@"%@", JSON);
+            [DMDefaultsInterfaceConstants setPreferredStoresSynced:YES];
+        } andFailure:^(id JSON) {
+            [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
+            NSLog(@"%@", JSON);
+        }];
+    }
     [super viewWillDisappear:animated];
 }
 
@@ -223,10 +224,11 @@ typedef enum {
         }
         return cell;
     }
+    // Shouldn't get here -- if we do, BOOM
     return nil;
 }
 
-#pragma mark Implementation
+#pragma mark Section handlers
 - (void)handleAbout:(NSInteger)index
 {
     switch (index) {
@@ -310,6 +312,44 @@ typedef enum {
     }
 }
 
+- (void)handleSupport:(NSInteger)index
+{
+    NSString *subject;
+    NSString *message;
+    NSArray *recipients;
+    switch (index) {
+        case 0:    // 0 suggestion
+            subject = self.suggestionEmailSubject;
+            message = self.suggestionEmailBody;
+            recipients = [NSArray arrayWithObject:@"fill@growlmovement.com"];
+            break;
+        case 1:    // 1 support
+            subject = self.supportEmailSubject;
+            message = self.supportEmailBody;
+            recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
+            break;
+        default:
+            message = @"";
+            recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
+            break;
+    }
+    
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+        [mailer setMailComposeDelegate:self];
+        [mailer setToRecipients:recipients];
+        [mailer setSubject:subject];
+        [mailer setMessageBody:message isHTML:YES];
+        [self presentViewController:mailer animated:YES completion:nil];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops" message:@"Looks like you can't send an email this way." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+    }
+    
+}
+
+#pragma mark Implementation
+
 - (void)toggleShowStore
 {
     [DMDefaultsInterfaceConstants setShowCurrentStoreOnTapList:_showStoreSwitch.on];
@@ -357,42 +397,6 @@ typedef enum {
     actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 
     [actionSheet showInView:self.view];
-}
-
-- (void)handleSupport:(NSInteger)index
-{
-    NSString *subject;
-    NSString *message;
-    NSArray *recipients;
-    switch (index) {
-        case 0:    // 0 suggestion
-            subject = self.suggestionEmailSubject;
-            message = self.suggestionEmailBody;
-            recipients = [NSArray arrayWithObject:@"fill@growlmovement.com"];
-            break;
-        case 1:    // 1 support
-            subject = self.supportEmailSubject;
-            message = self.supportEmailBody;
-            recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
-            break;
-        default:
-            message = @"";
-            recipients = [NSArray arrayWithObject:@"appsupport@growlmovement.com"];
-            break;
-    }
-    
-    if ([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
-        [mailer setMailComposeDelegate:self];
-        [mailer setToRecipients:recipients];
-        [mailer setSubject:subject];
-        [mailer setMessageBody:message isHTML:YES];
-        [self presentViewController:mailer animated:YES completion:nil];
-    } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops" message:@"Looks like you can't send an email this way." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
-    }
-    
 }
 
 - (void)showAbout
@@ -450,10 +454,6 @@ typedef enum {
     [alertView dismissWithClickedButtonIndex:alertView.cancelButtonIndex animated:YES];
 }
 
-- (UIColor *)systemBlueColor
-{
-    return [UIColor colorWithRed:0/255.0 green:122/255.0 blue:255/255.0 alpha:1.0];
-}
 #pragma mark ActionSheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
