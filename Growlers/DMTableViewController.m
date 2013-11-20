@@ -155,20 +155,16 @@ typedef enum {
 /* Lazy instantiation */
 - (NSMutableSet *)highlightedBeers
 {
-    if (_highlightedBeers) {
-        return _highlightedBeers;
-    } else {
-        return [NSMutableSet new];
-    }
+    if (!_highlightedBeers)
+        _highlightedBeers = [NSMutableSet new];
+    return _highlightedBeers;
 }
 
 - (NSMutableArray *)filteredBeers
 {
-    if (self.filteredBeers) {
-        return self.filteredBeers;
-    } else {
-        return [NSMutableArray new];
-    }
+    if (!self.filteredBeers)
+        self.filteredBeers = [NSMutableArray new];
+    return self.filteredBeers;
 }
 
 #pragma mark Implementation
