@@ -73,18 +73,20 @@
     for (NSDictionary *beer in newDatabaseContents) {
         Beer *newBeer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:self.managedContext];
 
-        newBeer.tap_id          = [NSNumber numberWithInt:[beer[@"tap_id"] intValue]];
-        newBeer.abv             = (beer[@"abv"] == [NSNull null]) ? @"" : beer[@"abv"];
-        newBeer.brewer          = beer[@"brewer"];
-        newBeer.brewerURL       = (beer[@"brew_url"] == [NSNull null]) ? @"" : beer[@"brew_url"];
-        newBeer.growlerPrice    = beer[@"growler"];
-        newBeer.growlettePrice  = beer[@"growlette"];
-        newBeer.ibu             = (beer[@"ibu"] == [NSNull null]) ? @"" : beer[@"ibu"];
-        newBeer.name            = beer[@"name"];
-        newBeer.style           = (beer[@"style"] == [NSNull null]) ? @"" : beer[@"style"];
-        newBeer.store           = beer[@"store"];
-        newBeer.city            = (beer[@"city"] == [NSNull null]) ? @"" : beer[@"city"];
-        newBeer.state           = (beer[@"state"] == [NSNull null]) ? @"" : beer[@"state"];
+        newBeer = [self applyDefaultValuesToEntityObject:newBeer withParameters:beer];
+        
+//        newBeer.tap_id          = [NSNumber numberWithInt:[beer[@"tap_id"] intValue]];
+//        newBeer.abv             = (beer[@"abv"] == [NSNull null]) ? @"" : beer[@"abv"];
+//        newBeer.brewer          = beer[@"brewer"];
+//        newBeer.brewerURL       = (beer[@"brew_url"] == [NSNull null]) ? @"" : beer[@"brew_url"];
+//        newBeer.growlerPrice    = beer[@"growler"];
+//        newBeer.growlettePrice  = beer[@"growlette"];
+//        newBeer.ibu             = (beer[@"ibu"] == [NSNull null]) ? @"" : beer[@"ibu"];
+//        newBeer.name            = beer[@"name"];
+//        newBeer.beer_style      = (beer[@"style"] == [NSNull null]) ? @"" : beer[@"style"];
+//        newBeer.store           = beer[@"store"];
+//        newBeer.city            = (beer[@"city"] == [NSNull null]) ? @"" : beer[@"city"];
+//        newBeer.state           = (beer[@"state"] == [NSNull null]) ? @"" : beer[@"state"];
     }
     if (![self.managedContext save:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -96,15 +98,16 @@
 - (void)favoriteBeer:(NSDictionary *)newBeerToFavorite
 {
     Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
-    favorite.tap_id     = (newBeerToFavorite[@"tap_id"] == [NSNull null]) ? 0 : [NSNumber numberWithInt:[newBeerToFavorite[@"tap_id"] intValue]];
-    favorite.name       = newBeerToFavorite[@"name"];
-    favorite.brewer     = newBeerToFavorite[@"brewer"];
-    favorite.abv        = (newBeerToFavorite[@"abv"] == [NSNull null]) ? @"" : newBeerToFavorite[@"abv"];
-    favorite.ibu        = (newBeerToFavorite[@"ibu"] == [NSNull null]) ? @"" : newBeerToFavorite[@"ibu"];
-    favorite.brewerURL  = (newBeerToFavorite[@"brew_url"]  == [NSNull null]) ? @"" : newBeerToFavorite[@"brew_url"];
-    favorite.store      = newBeerToFavorite[@"store"];
-    favorite.city       = (newBeerToFavorite[@"city"] == [NSNull null]) ? @"" : newBeerToFavorite[@"city"];
-    favorite.state      = (newBeerToFavorite[@"state"] == [NSNull null]) ? @"" : newBeerToFavorite[@"state"];
+    favorite = [self applyDefaultValuesToEntityObject:favorite withParameters:newBeerToFavorite];
+//    favorite.tap_id     = (newBeerToFavorite[@"tap_id"] == [NSNull null]) ? 0 : [NSNumber numberWithInt:[newBeerToFavorite[@"tap_id"] intValue]];
+//    favorite.name       = newBeerToFavorite[@"name"];
+//    favorite.brewer     = newBeerToFavorite[@"brewer"];
+//    favorite.abv        = (newBeerToFavorite[@"abv"] == [NSNull null]) ? @"" : newBeerToFavorite[@"abv"];
+//    favorite.ibu        = (newBeerToFavorite[@"ibu"] == [NSNull null]) ? @"" : newBeerToFavorite[@"ibu"];
+//    favorite.brewerURL  = (newBeerToFavorite[@"brew_url"]  == [NSNull null]) ? @"" : newBeerToFavorite[@"brew_url"];
+//    favorite.store      = newBeerToFavorite[@"store"];
+//    favorite.city       = (newBeerToFavorite[@"city"] == [NSNull null]) ? @"" : newBeerToFavorite[@"city"];
+//    favorite.state      = (newBeerToFavorite[@"state"] == [NSNull null]) ? @"" : newBeerToFavorite[@"state"];
     // store & brewer url
     
     NSError *coreDataErr = nil;
@@ -115,6 +118,7 @@
 
 - (void)unFavoriteBeer:(NSDictionary *)beerToUnfavorite
 {
+    NSLog(@"unfavorite - %@", beerToUnfavorite);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beerToUnfavorite[@"name"], beerToUnfavorite[@"brewer"]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
@@ -173,7 +177,7 @@
     NSString *city = (params[@"city"] == [NSNull null]) ? @"" : params[@"city"];
     NSString *state = (params[@"state"] == [NSNull null]) ? @"" : params[@"state"];
     // not set right now.
-    // NSString *style = (params[@"style"] == [NSNull null]) ? @"" : params[@"style"];
+    NSString *style = (params[@"beer_style"] == [NSNull null]) ? @"" : params[@"beer_style"];
     
     [entityObject setTap_id:tapID];
     [entityObject setName:params[@"name"]];
@@ -184,6 +188,7 @@
     [entityObject setStore:params[@"store"]];
     [entityObject setCity:city];
     [entityObject setState:state];
+    [entityObject setBeer_style:style];
  
     if ([entityObject isKindOfClass:[Beer class]]) {
         [entityObject setGrowlerPrice:params[@"growler"]];
