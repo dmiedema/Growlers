@@ -114,7 +114,14 @@ static NSString *contentTypeHeaderGET = @"Accept";
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
     
-    NSDictionary *data = @{@"message": @"Test Notification", @"udid": [DMDefaultsInterfaceConstants pushID]};
+    NSString *pushID;
+    if ([DMDefaultsInterfaceConstants pushID]) {
+        pushID = [DMDefaultsInterfaceConstants pushID];
+    } else {
+        pushID = [DMDefaultsInterfaceConstants generatedUDID];
+    }
+    
+    NSDictionary *data = @{@"message": @"Test Notification", @"udid": pushID};
     NSError *error = nil;
     
     request.HTTPMethod = @"POST";
