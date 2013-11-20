@@ -82,6 +82,9 @@ typedef enum {
     if([DMDefaultsInterfaceConstants multipleStoresEnabled])
         self.navigationItem.rightBarButtonItem = storeButton;
     
+    self.filteredBeers = [NSMutableArray new];
+    _highlightedBeers = [NSMutableSet new];
+    
     // Modify Search Controller
     self.searchDisplayController.delegate = self;
     self.searchDisplayController.searchBar.delegate = self;
@@ -149,22 +152,6 @@ typedef enum {
     } else {
         [self.tableView reloadData];
     }
-}
-
-#pragma mark Getter Overrides
-/* Lazy instantiation */
-- (NSMutableSet *)highlightedBeers
-{
-    if (!_highlightedBeers)
-        _highlightedBeers = [NSMutableSet new];
-    return _highlightedBeers;
-}
-
-- (NSMutableArray *)filteredBeers
-{
-    if (!self.filteredBeers)
-        self.filteredBeers = [NSMutableArray new];
-    return self.filteredBeers;
 }
 
 #pragma mark Implementation
