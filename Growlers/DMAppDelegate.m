@@ -145,7 +145,8 @@
 {
     NSLog(@"Remote Notification Received");
     NSLog(@"User Info - %@", userInfo);
-    if ([userInfo[@"alert"] isEqualToString:@"Test Notification"]) {
+    if ([userInfo[@"aps"][@"alert"] isEqualToString:@"Test Notification"]) {
+        NSLog(@"Alert was equal to 'Test Notification'");
         if (application.applicationState == UIApplicationStateActive ) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push Test"
                                                                 message:@"Was successful!"
@@ -161,9 +162,6 @@
             [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
         }
     } // not a test notification
-      // Get the current badge count and increment it so it doens't
-      // always just sit there and say 1
-    application.applicationIconBadgeNumber = [userInfo[@"badge"] integerValue];
 }
 
 #pragma mark - Handling URL Request
