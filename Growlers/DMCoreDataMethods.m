@@ -161,6 +161,8 @@
             NSLog(@"Results -\n%@", filteredAllBeers);
         }
         //[self unFavoriteBeer:beer];
+        // remove the default -- pretend beer
+        [self unFavoriteBeer:@{@"name": @"No Favorites!", @"brewer": @"Go Favorite some Beers!"}];
     } // end for
 }
 
