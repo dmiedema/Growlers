@@ -202,6 +202,7 @@ typedef enum {
             }
             [_showStoreSwitch setOn:[DMDefaultsInterfaceConstants showCurrentStoreOnTapList]];
             cell.accessoryView = _showStoreSwitch;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else {
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
@@ -290,8 +291,7 @@ typedef enum {
             break;
         }
         case 1: // 2: Show store name
-            [_showStoreSwitch setOn:!_showStoreSwitch.on animated:YES];
-            [self toggleShowStore];
+                // noop.
             break;
         case 2: {// 3:  @"Fix Favorites Names/Duplicates"
             [[DMGrowlerAPI sharedInstance] getBeersWithFlag:ALL forStore:@"all" andSuccess:^(id JSON) {
