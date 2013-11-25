@@ -193,9 +193,11 @@ typedef enum {
         // One off check to see if i should show store.
         // There has to be a better way.
         if (indexPath.section == ABOUT && (indexPath.row == 0 || indexPath.row == 3)) {
+            cell.accessoryView = nil;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.textColor = [UIColor blackColor];
-        } else if (indexPath.section == OTHER && indexPath.row == 1) {
+            //&& [cell.textLabel.text isEqualToString:self.content[3][1]]
+        } else if (indexPath.section == OTHER && indexPath.row == 1 ) {
             if(!_showStoreSwitch) {
                 _showStoreSwitch = [UISwitch new];
                 [_showStoreSwitch addTarget:self action:@selector(toggleShowStore) forControlEvents:UIControlEventValueChanged];
@@ -204,6 +206,7 @@ typedef enum {
             cell.accessoryView = _showStoreSwitch;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else {
+            cell.accessoryView = nil;
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
         return cell;
