@@ -162,7 +162,10 @@
         }
         //[self unFavoriteBeer:beer];
         // remove the default -- pretend beer
-        [self unFavoriteBeer:@{@"name": @"No Favorites!", @"brewer": @"Go Favorite some Beers!"}];
+        NSDictionary *pretendBeer = @{@"name": @"No Favorites!", @"brewer": @"Go Favorite some Beers!"};
+        if ([self checkForBeerInDatabase:pretendBeer]) {
+            [self unFavoriteBeer:pretendBeer];
+        }
     } // end for
 }
 
