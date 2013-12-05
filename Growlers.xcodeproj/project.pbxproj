@@ -88,6 +88,7 @@
 		C3477C0D17A56E6F008900B5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C349589917A774F500E45B3D /* Growlers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Growlers.entitlements; sourceTree = "<group>"; };
 		C349589C17A79FEA00E45B3D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Growlers/Settings.bundle; sourceTree = "<group>"; };
+		C3552B5C184DBEEC00DEFE87 /* DMAPIKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMAPIKeys.h; sourceTree = "<group>"; };
 		C356CBE917ED053A006CF711 /* DMDefaultsInterfaceConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMDefaultsInterfaceConstants.h; sourceTree = "<group>"; };
 		C356CBEA17ED053A006CF711 /* DMDefaultsInterfaceConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMDefaultsInterfaceConstants.m; sourceTree = "<group>"; };
 		C356CBEC17EF9300006CF711 /* DMSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMSettingsTableViewController.h; sourceTree = "<group>"; };
@@ -303,6 +304,7 @@
 				C3DD53DA17967D470086A7E2 /* InfoPlist.strings */,
 				C3DD53DD17967D470086A7E2 /* main.m */,
 				C3DD53DF17967D470086A7E2 /* Growlers-Prefix.pch */,
+				C3552B5C184DBEEC00DEFE87 /* DMAPIKeys.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
