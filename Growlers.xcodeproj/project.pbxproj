@@ -30,6 +30,8 @@
 		C3B14773182EE1730058DD78 /* GrowlersCoreDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B14772182EE1730058DD78 /* GrowlersCoreDataTests.m */; };
 		C3B14775182EE1870058DD78 /* GrowlersNSUserDefaultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B14774182EE1870058DD78 /* GrowlersNSUserDefaultsTests.m */; };
 		C3B14779182F60700058DD78 /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B14778182F60700058DD78 /* Tests.m */; };
+		C3B6D3431855C05E006551A5 /* DMDefaultsInterfaceConstants.h in Sources */ = {isa = PBXBuildFile; fileRef = C356CBE917ED053A006CF711 /* DMDefaultsInterfaceConstants.h */; };
+		C3B6D3441855C05E006551A5 /* DMDefaultsInterfaceConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = C356CBEA17ED053A006CF711 /* DMDefaultsInterfaceConstants.m */; };
 		C3DD53D217967D470086A7E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D117967D470086A7E2 /* Foundation.framework */; };
 		C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D317967D470086A7E2 /* CoreGraphics.framework */; };
 		C3DD53D617967D470086A7E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DD53D517967D470086A7E2 /* UIKit.framework */; };
@@ -533,6 +535,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3B6D3431855C05E006551A5 /* DMDefaultsInterfaceConstants.h in Sources */,
+				C3B6D3441855C05E006551A5 /* DMDefaultsInterfaceConstants.m in Sources */,
 				C3DD53FD17967D470086A7E2 /* GrowlersTests.m in Sources */,
 				C3B14779182F60700058DD78 /* Tests.m in Sources */,
 				C3B14773182EE1730058DD78 /* GrowlersCoreDataTests.m in Sources */,

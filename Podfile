@@ -4,11 +4,13 @@ pod 'GroundControl'
 #pod 'DerpKit'
 pod 'HockeySDK'
 pod 'CocoaLumberjack'
+pod 'UALogger'
 #pod 'SparkInspector'
 #pod 'NewRelicAgent'
 pod 'Tapstream'
 #pod 'GoogleAnalytics-iOS-SDK'
 #pod 'OHAttributedLabel'
+pod 'MessageBarManager'
 
 # Testing
 pod 'SDScreenshotCapture'
