@@ -10,11 +10,11 @@
 #import "DMTableViewController.h"
 // Remote config
 #import "NSUserDefaults+GroundControl.h"
-//#import <NewRelicAgent/NewRelicAgent.h>
 #import "AFNetworkActivityIndicatorManager.h"
 #import "TSTapstream.h"
 // google analytics
 //#import "GAI.h"
+//#import <NewRelicAgent/NewRelicAgent.h>
 // CoreDataMethods for URL handling
 #import "DMCoreDataMethods.h"
 #import "DMGrowlerAPI.h"

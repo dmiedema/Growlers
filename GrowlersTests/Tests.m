@@ -61,17 +61,14 @@
 
 - (void)testHelperMethods
 {
-    //[DMHelperMethods checkToday:<#(id)#>]
 }
 
 - (void)testCoreData
 {
-    
 }
 
 - (void)testNetwork
 {
-    
 }
 
 @end
