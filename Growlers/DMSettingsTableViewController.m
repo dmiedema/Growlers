@@ -221,7 +221,7 @@ typedef enum {
         if (indexPath.row < self.preferredStores.count) {
             cell.textLabel.text = @"Preferred Store";
             cell.textLabel.textColor = [UIColor blackColor];
-            cell.detailTextLabel.text = self.preferredStores[indexPath.row];
+            cell.detailTextLabel.text = [self.preferredStores[indexPath.row] capitalizedString];
         } else {
             cell.textLabel.text = @"Add Store";
             cell.detailTextLabel.text = @"";
@@ -471,18 +471,21 @@ typedef enum {
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     else if (buttonIndex == 0) {
-        store = @"All";
+        store = @"all";
         [DMDefaultsInterfaceConstants setPreferredStores:[NSArray arrayWithObject:store]];
         self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
         [self.tableView reloadData];
     }
     else {
         store = [actionSheet buttonTitleAtIndex:buttonIndex];
+        NSLog(@"store - %@", store);
+        NSLog(@"selectedStoreName - %@", self.selectedStoreName);
+        NSLog(@"selectedIndexPath - %@", self.selectedIndexPath);
         if ([self.preferredStores containsObject:store]) {
             return;
         }
         else if (self.selectedIndexPath && self.selectedStoreName) {
-            [DMDefaultsInterfaceConstants removePreferredStore:@"All"];
+            [DMDefaultsInterfaceConstants removePreferredStore:@"all"];
             [DMDefaultsInterfaceConstants removePreferredStore:self.selectedStoreName];
             [DMDefaultsInterfaceConstants addPreferredStore:store];
             self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
@@ -494,20 +497,21 @@ typedef enum {
             NSUInteger previousCount = self.preferredStores.count;
             [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.preferredStores.count - 1 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
             
-            [DMDefaultsInterfaceConstants removePreferredStore:@"All"];
+            [DMDefaultsInterfaceConstants removePreferredStore:@"all"];
             self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
             if (previousCount > self.preferredStores.count) {
                 [self.tableView reloadData];
             }
         }
         else {
-            [DMDefaultsInterfaceConstants removePreferredStore:@"All"];
+            [DMDefaultsInterfaceConstants removePreferredStore:@"all"];
             [DMDefaultsInterfaceConstants addPreferredStore:store];
             self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
             [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.preferredStores.count - 1 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
-
     }
+    NSLog(@"preferred stores - %@", [DMDefaultsInterfaceConstants preferredStores]);
+    NSLog(@"contains all? %hhd", [[DMDefaultsInterfaceConstants preferredStores] containsObject:@"all"]);
     [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
 }
 
