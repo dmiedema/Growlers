@@ -13,7 +13,12 @@
 //#import "GAI.h"
 //#import "GAIDictionaryBuilder.h"
 
+#if DEV
+static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/GrowlersAppPage-dev.php";
+#else
 static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/GrowlersAppPage.php";
+#endif
+
 
 static NSString *contentTypeValue = @"application/json";
 static NSString *contentTypeHeaderPOST = @"Content-Type";

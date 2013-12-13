@@ -27,7 +27,7 @@
 
     #import "DMDefaultsInterfaceConstants.h"
 
-#define TESTING 1
+#define DEV 1
 
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
