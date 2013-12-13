@@ -434,14 +434,13 @@ typedef enum {
     NSString *token = ([DMDefaultsInterfaceConstants pushID]) ? [DMDefaultsInterfaceConstants pushID] : [DMDefaultsInterfaceConstants generatedUDID];
     
     NSString *preferredStore = [[DMDefaultsInterfaceConstants preferredStore] lowercaseString];
-    NSString *style =(beer[@"beer_style"] == [NSNull null]) ? @"" : beer[@"beer_style"];
-    
-    NSLog(@"Beer  - %@", beer);
-    
+    NSArray *preferredStores = [DMDefaultsInterfaceConstants preferredStores];
+    NSString *style = (beer[@"beer_style"] == [NSNull null]) ? @"" : beer[@"beer_style"];
+
     NSMutableDictionary *beerToFavorite = [@{@"name": beer[@"name"],
                                             @"brewer": beer[@"brewer"],
                                             @"udid": token,
-                                            @"store": preferredStore,
+                                            @"store": preferredStores,
                                             @"beer_style": style}
                                            mutableCopy];
 
