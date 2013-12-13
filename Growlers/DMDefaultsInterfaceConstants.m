@@ -82,10 +82,10 @@ static NSString *anonymousUsage = @"anonymous_usage";
 + (NSArray *)preferredStores
 {
     NSArray *preferred = [[NSUserDefaults standardUserDefaults] objectForKey:preferredStores];
-    if (preferred)
+    if (preferred.count >= 1)
         return preferred;
     else
-        return [NSArray arrayWithObject:@"All"];
+        return [NSArray arrayWithObject:@"all"];
 }
 + (NSArray *)stores
 {
