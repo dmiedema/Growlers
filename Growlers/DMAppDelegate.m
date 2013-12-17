@@ -236,13 +236,15 @@
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    // Tell server we want to reset badge count.
+    [[DMGrowlerNetworkModel manager] resetBadgeCount];
     [self initializeGroundControl];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     if (![DMDefaultsInterfaceConstants preferredStoresSynced]) {
-        [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
+        [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants getValidUniqueID] withSuccess:^(id JSON) {
             [DMDefaultsInterfaceConstants setPreferredStoresSynced:YES];
         } andFailure:^(id JSON) {
             [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
