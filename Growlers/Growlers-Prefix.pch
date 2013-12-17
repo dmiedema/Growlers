@@ -23,13 +23,22 @@
     #import <AFNetworking/AFNetworking.h>
     #import <HockeySDK/HockeySDK.h>
 
-    #import "DDLog.h"
+    #import "UALogger.h"
+    #undef UALog
+    #define UALog( s, ... ) UALogFull( s, ##__VA_ARGS__ );
 
     #import "DMDefaultsInterfaceConstants.h"
 
 #define DEV 1
 
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+// Setup UALogger
+#if DEV
+#define UALOGGER_SWIZZLE_NSLOG
+#endif
+
+
+
+
 
 #define SYSTEM_VERSION_LESS_THAN(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
