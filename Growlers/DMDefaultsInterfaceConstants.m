@@ -30,16 +30,22 @@ static NSString *preferredStores = @"Growlers_Preferred_Stores";
 static NSString *multipleStoresKey = @"Growlers_Multiple_Stores";
 static NSString *availableStores = @"Growlers_Available_Stores";
 static NSString *syncedStores = @"Growlers_Preferred_Stores_Synced";
+static NSString *spamMeKey = @"Growlers_Subscribe_To_Mass_Messages";
 static NSString *mapsOfStores = @"Growlers_Dictionary_Of_Store_Locations";
 static NSString *showCurrentStore = @"Growlers_Show_Current_Store_As_Prompt";
 // Anonymouse
 static NSString *anonymousUsage = @"anonymous_usage";
+static NSString *badgeCountResetKey = @"Grolwers_Badge_Count_Reset";
 
 #pragma mark Getters
 // Anonymouse Usage
 + (BOOL)anonymousUsage
 {
     return [[NSUserDefaults standardUserDefaults] boolForKey:anonymousUsage];
+}
++ (BOOL)badgeCountReset
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:badgeCountResetKey];
 }
 // Social stuff
 + (BOOL)shareWithFacebookOnFavorite
@@ -95,6 +101,10 @@ static NSString *anonymousUsage = @"anonymous_usage";
     else
         return [NSArray arrayWithObject:@"Keizer"];
 }
++ (BOOL)subscribedToSpam
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:spamMeKey];
+}
 + (NSDictionary *)storeMapLocations
 {
     return [[NSUserDefaults standardUserDefaults] dictionaryForKey:mapsOfStores];
@@ -116,8 +126,15 @@ static NSString *anonymousUsage = @"anonymous_usage";
 {
     return [[NSUserDefaults standardUserDefaults] boolForKey:syncedStores];
 }
++ (NSString *)getValidUniqueID
+{
+    return [DMDefaultsInterfaceConstants pushID]
+    ? [DMDefaultsInterfaceConstants pushID]
+    : [DMDefaultsInterfaceConstants generatedUDID];
+}
+
 #pragma mark Setters
-// Anonymouse Usage
+
 // Social stuff
 + (void)shareWithFacebookOnFavorite:(BOOL)imSocial
 {
@@ -186,6 +203,11 @@ static NSString *anonymousUsage = @"anonymous_usage";
     [[NSUserDefaults standardUserDefaults] setBool:synced forKey:syncedStores];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
++ (void)setSubscribeToSpam:(BOOL)spamMe
+{
+    [[NSUserDefaults standardUserDefaults] setBool:spamMe forKey:spamMeKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 + (void)setShowCurrentStoreOnTapList:(BOOL)showStore
 {
     [[NSUserDefaults standardUserDefaults] setBool:showStore forKey:showCurrentStore];
@@ -200,6 +222,12 @@ static NSString *anonymousUsage = @"anonymous_usage";
 + (void)setGeneratedUDID:(NSString *)generated
 {
     [[NSUserDefaults standardUserDefaults] setValue:generated forKey:generatedUDID];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+// Anonymouse
++ (void)setBadgeCountReset:(BOOL)resetPlease
+{
+    [[NSUserDefaults standardUserDefaults] setBool:resetPlease forKey:badgeCountResetKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

@@ -26,11 +26,14 @@
 + (NSArray *)preferredStores;
 + (NSArray *)stores;
 + (BOOL)preferredStoresSynced;
++ (BOOL)subscribedToSpam;
 + (NSDictionary *)storeMapLocations;
 + (BOOL)showCurrentStoreOnTapList;
 // Anonymouse
 + (BOOL)anonymousUsage;
++ (BOOL)badgeCountReset;
 // Other
++ (NSString *)getValidUniqueID;
 
 
 //** Setters
@@ -52,8 +55,10 @@
 + (void)addPreferredStore:(NSString *)store;
 + (void)removePreferredStore:(NSString *)store;
 + (void)setPreferredStoresSynced:(BOOL)synced;
++ (void)setSubscribeToSpam:(BOOL)spamMe;
 + (void)setShowCurrentStoreOnTapList:(BOOL)showStore;
 // Anonymouse
++ (void)setBadgeCountReset:(BOOL)resetPlease;
 // Other
 + (void)batchUpdate:(NSArray *)updateValues;
 
