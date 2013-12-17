@@ -431,7 +431,7 @@ typedef enum {
         return;
     }
     
-    NSString *token = ([DMDefaultsInterfaceConstants pushID]) ? [DMDefaultsInterfaceConstants pushID] : [DMDefaultsInterfaceConstants generatedUDID];
+    NSString *token = [DMDefaultsInterfaceConstants getValidUniqueID];
     
     NSString *preferredStore = [[DMDefaultsInterfaceConstants preferredStore] lowercaseString];
     NSArray *preferredStores = [DMDefaultsInterfaceConstants preferredStores];
