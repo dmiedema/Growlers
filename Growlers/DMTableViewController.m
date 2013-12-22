@@ -118,13 +118,13 @@ typedef enum {
     // Load up the beers
     [self loadBeers];
     [self setNavigationBarPrompt];
+    // Set the tint color
+    [self setNavigationBarTint];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    // Set the tint color
-    [self setNavigationBarTint];
     // Set the title, because if user swipes back it can be wonky. Just make sure its right...
     self.navigationController.navigationBar.topItem.title = @"Growl Movement";
     // Create them gesture recognizers.
@@ -592,8 +592,9 @@ typedef enum {
 - (void)setNavigationBarPrompt
 {
     self.navigationItem.prompt =
-    ([DMDefaultsInterfaceConstants showCurrentStoreOnTapList]) ?
-         [DMDefaultsInterfaceConstants lastStore] : nil;
+    ([DMDefaultsInterfaceConstants showCurrentStoreOnTapList])
+        ? [DMDefaultsInterfaceConstants lastStore]
+        : nil;
 }
 
 #pragma mark Segment Control and Gestures Delegate
