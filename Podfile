@@ -10,10 +10,10 @@ pod 'UALogger'
 pod 'Tapstream'
 #pod 'GoogleAnalytics-iOS-SDK'
 #pod 'OHAttributedLabel'
-pod 'MessageBarManager'
+#pod 'MessageBarManager'
 
 # Testing
-pod 'SDScreenshotCapture'
+#pod 'SDScreenshotCapture'
 
 target :GrowlersTests, :exclusive => true do
   pod 'Kiwi/XCTest'
