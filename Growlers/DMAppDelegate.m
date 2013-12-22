@@ -237,7 +237,8 @@
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     // Tell server we want to reset badge count.
-    [[DMGrowlerNetworkModel manager] resetBadgeCount];
+    //[[DMGrowlerNetworkModel manager] resetBadgeCount];
+    [[DMGrowlerAPI sharedInstance] resetBadgeCount];
     [self initializeGroundControl];
 }
 

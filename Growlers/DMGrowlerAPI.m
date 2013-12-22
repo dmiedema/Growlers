@@ -157,7 +157,7 @@ static NSString *contentTypeHeaderGET = @"Accept";
     NSLog(@"Setting preferred stores for user");
     NSError *error = nil;
     if (!pushID) {
-        pushID = [DMDefaultsInterfaceConstants generatedUDID];
+        pushID = [DMDefaultsInterfaceConstants getValidUniqueID];
     }
     NSDictionary *data = @{@"stores": stores, @"udid": pushID};
     
@@ -185,6 +185,31 @@ static NSString *contentTypeHeaderGET = @"Accept";
         //                                                                   label:@""
         //                                                                   value:nil] build]];
     }
+}
+
+- (void)resetBadgeCount
+{
+    NSError *error = nil;
+    NSDictionary *data = @{
+                           @"udid": [DMDefaultsInterfaceConstants getValidUniqueID],
+                           @"reset-badge-count":@(YES)
+                           };
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:DMGrowlerAPIURLString]];
+    request.HTTPMethod = @"POST";
+    [request setValue:contentTypeValue forKey:contentTypeHeaderPOST];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:data options:kNilOptions error:&error];
+
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    // Commenting out for now -- may not be needed because if it succeeds for fails there isn't anything I can do here about it.
+    /*
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+     */
+    [operation start];
 }
 
 @end
