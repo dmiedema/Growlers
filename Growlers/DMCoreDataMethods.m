@@ -84,6 +84,7 @@
 #pragma mark Favoriting
 - (void)favoriteBeer:(NSDictionary *)newBeerToFavorite
 {
+    NSLog(@"Favorite - %@", newBeerToFavorite);
     Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
     favorite = [self applyDefaultValuesToEntityObject:favorite withParameters:newBeerToFavorite];
     
