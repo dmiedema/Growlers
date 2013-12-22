@@ -67,7 +67,8 @@ typedef enum {
           @[@"About Growl Movement", @"Operating Hours", @"Take me there!", @"What does everything mean?!"],
           @[@"Notification Preferrences"],
           @[@"Suggestion", @"Support"],
-          @[@"Test Push Notifications", @"Show Store Name", @"Get Announcements", @"Fix Favorites Names/Duplicates", @"Review App"]
+          //@[@"Test Push Notifications", @"Show Store Name", @"Get Announcements", @"Fix Favorites Names/Duplicates", @"Review App"]
+          @[@"Test Push Notifications", @"Show Store Name", @"Fix Favorites Names/Duplicates", @"Review App"]
       ];
 
     self.takeMeActionSheetDelegate = [[DMTakeMeActionSheetDelegate alloc] init];
@@ -200,7 +201,9 @@ typedef enum {
             //&& [cell.textLabel.text isEqualToString:self.content[3][1]]
         }
         else if(indexPath.section == OTHER &&
-                (indexPath.row == 1 || indexPath.row == 2)) {
+                (indexPath.row == 1
+//                 || indexPath.row == 2))
+                 )){
             UISwitch *accessoryView = (UISwitch *)cell.accessoryView;
             if (!accessoryView) {
                 accessoryView = [UISwitch new];
@@ -210,12 +213,13 @@ typedef enum {
                 [accessoryView setOn:[DMDefaultsInterfaceConstants showCurrentStoreOnTapList]];
                 _showStoreSwitch = accessoryView;
                 cell.accessoryView = _showStoreSwitch;
-            } else if (indexPath.row == 2) {
-                [accessoryView addTarget:self action:@selector(toggleSubscribeToSpam) forControlEvents:UIControlEventValueChanged];
-                [accessoryView setOn:[DMDefaultsInterfaceConstants subscribedToSpam]];
-                _spamSwitch = accessoryView;
-                cell.accessoryView = _spamSwitch;
             }
+//            else if (indexPath.row == 2) {
+//                [accessoryView addTarget:self action:@selector(toggleSubscribeToSpam) forControlEvents:UIControlEventValueChanged];
+//                [accessoryView setOn:[DMDefaultsInterfaceConstants subscribedToSpam]];
+//                _spamSwitch = accessoryView;
+//                cell.accessoryView = _spamSwitch;
+//            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else {
             cell.accessoryView = nil;
@@ -308,9 +312,9 @@ typedef enum {
         case 1: // 2: Show store name
                 // noop.
             break;
-        case 2: // 2: subscribe to announcements
-            break;
-        case 3: {// 3:  @"Fix Favorites Names/Duplicates"
+//        case 2: // 2: subscribe to announcements
+//            break;
+        case 2: {// 3:  @"Fix Favorites Names/Duplicates"
             [[DMGrowlerAPI sharedInstance] getBeersWithFlag:ALL forStore:@"all" andSuccess:^(id JSON) {
                 DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
                 [coreData reconcileFavoritesWithServer:JSON];
@@ -321,7 +325,7 @@ typedef enum {
             [alert show];
             break;
         }
-        case 4: // 4: Ask in prompt if user wants to review
+        case 3: // 4: Ask in prompt if user wants to review
             [self reviewApp];
             break;
         default:
