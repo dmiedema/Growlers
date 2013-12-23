@@ -6,31 +6,16 @@
 //  Copyright (c) 2013 Daniel Miedema. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
+#import "Kiwi.h"
 
-@interface GrowlersTests : XCTestCase
+SPEC_BEGIN(StandardSpec)
 
-@end
+describe(@"Math", ^{
+    it(@"is pretty cool", ^{
+        NSUInteger a = 16;
+        NSUInteger b = 26;
+        [[theValue(a + b) should] equal:theValue(42)];
+    });
+});
 
-@implementation GrowlersTests
-
-- (void)setUp
-{
-    [super setUp];
-    
-    // Set-up code here.
-}
-
-- (void)tearDown
-{
-    // Tear-down code here.
-    
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
-
-@end
+SPEC_END

@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "DMGrowlerAPI.h"
 
-@interface DMTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UIActionSheetDelegate>
+@interface DMTableViewController : UITableViewController <UISearchDisplayDelegate, UISearchBarDelegate, UIActionSheetDelegate>
 
+// Pass my context so I can intanciate my coreData methods object
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
-@property (nonatomic, strong) NSString *deviceToken;
-@property (nonatomic, strong) NSArray *growlMovementStores;
 
 @end

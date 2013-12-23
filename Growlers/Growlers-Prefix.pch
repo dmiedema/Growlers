@@ -23,18 +23,27 @@
     #import <AFNetworking/AFNetworking.h>
     #import <HockeySDK/HockeySDK.h>
 
-#define TESTING 1
+    #import "UALogger.h"
+    #undef UALog
+    #define UALog( s, ... ) UALogFull( s, ##__VA_ARGS__ );
+
+    #import "DMDefaultsInterfaceConstants.h"
+
+#define DEV 1
+
+// Setup UALogger
+#if DEV
+#define UALOGGER_SWIZZLE_NSLOG
+#endif
+
+
+
+
+
 #define SYSTEM_VERSION_LESS_THAN(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define IS_IPHONE_5 ( [ [ UIScreen mainScreen ] bounds ].size.height == 568 )
 
-#define kGrowler_UUID @"Growler-UUID"
-#define kGrowler_Push_ID @"Growlers-Push-ID"
-
-#define kGrowler_Last_Selected_Store @"Growlers-Last-Selected-Location"
-#define kGrowler_Stores @[@"Keizer"]
-
-#define kGrowler_Anonymous_Usage @"anonymous_usage"
-
+#define THE_APPS_NAME @"Growlers"
 
 #endif

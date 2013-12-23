@@ -23,4 +23,6 @@
 - (void)unFavoriteBeer:(NSDictionary *)beerToUnfavorite;
 - (BOOL)isBeerFavorited:(NSDictionary *)beer;
 - (NSArray *)getAllFavorites;
+
+- (void)reconcileFavoritesWithServer:(NSArray *)allBeers;
 @end

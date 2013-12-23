@@ -1,15 +1,23 @@
-platform :ios, '6.0'
-pod 'AFNetworking', '~> 1'
+platform :ios, '7.0'
+pod 'AFNetworking'
+pod 'GroundControl'
 #pod 'DerpKit'
-#pod 'TestFlightSDK'
 pod 'HockeySDK'
-#pod 'MYIntroduction', :git => 'https://github.com/MatthewYork/iPhone-IntroductionTutorial.git'
-
+pod 'CocoaLumberjack'
+pod 'UALogger'
 #pod 'SparkInspector'
-pod 'NewRelicAgent'
+#pod 'NewRelicAgent'
 pod 'Tapstream'
-pod 'GoogleAnalytics-iOS-SDK'
+#pod 'GoogleAnalytics-iOS-SDK'
 #pod 'OHAttributedLabel'
+#pod 'MessageBarManager'
+
+# Testing
+#pod 'SDScreenshotCapture'
+
+target :GrowlersTests, :exclusive => true do
+  pod 'Kiwi/XCTest'
+end
 
 post_install do | installer |
   require 'fileutils'

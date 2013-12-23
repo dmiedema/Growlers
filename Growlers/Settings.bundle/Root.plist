@@ -58,7 +58,7 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>Growlers can send anonymous usage reports to help us improve the app.</string>
+			<string>GM Taplist can send anonymous usage reports to help us improve the app.</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>

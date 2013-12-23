@@ -8,10 +8,20 @@
 
 #import "DMAppDelegate.h"
 #import "DMTableViewController.h"
-//#import <NewRelicAgent/NewRelicAgent.h>
+// Remote config
+#import "NSUserDefaults+GroundControl.h"
+#import "AFNetworkActivityIndicatorManager.h"
 #import "TSTapstream.h"
 // google analytics
 //#import "GAI.h"
+//#import <NewRelicAgent/NewRelicAgent.h>
+// CoreDataMethods for URL handling
+#import "DMCoreDataMethods.h"
+#import "DMGrowlerAPI.h"
+#import "DDTTYLogger.h"
+#import "DDFileLogger.h"
+
+//#import <SparkInspector/SparkInspector.h>
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
@@ -26,29 +36,43 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
+#pragma mark Implementation
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     _generatedUDID = [NSString string];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    _generatedUDID = [defaults objectForKey:kGrowler_UUID];
+    _generatedUDID = [DMDefaultsInterfaceConstants generatedUDID];
     if (_generatedUDID == nil) {
         _generatedUDID = [[NSUUID UUID] UUIDString];
-        [defaults setObject:_generatedUDID forKey:kGrowler_UUID];
-        [defaults synchronize];
+        [DMDefaultsInterfaceConstants setGeneratedUDID:_generatedUDID];
     }
     
     /* If we're sending anonymous usage reports */
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kGrowler_Anonymous_Usage]) {
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
         [self setupTracking];
     } else {
 //        [[GAI sharedInstance] setOptOut:YES];
     }
     
+    if(![DMDefaultsInterfaceConstants preferredStore])
+        [DMDefaultsInterfaceConstants setDefaultPreferredStore];
+    
+    /* Hockey Testing */
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"c4e28d986734b9f0c8b5716244112805" delegate:self];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    
+    /* Logging */
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
+    fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+    fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
+    [DDLog addLogger:fileLogger];
+    
     /* Push Notifications */
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
-    // Clear current notifications
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
+    /* Background stuff */
+//    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     /* Settings App Bundle */
     NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
@@ -63,6 +87,9 @@
     /* AFNetworking indicator */
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
+    /* Multiple Stores */
+    [DMDefaultsInterfaceConstants setMultipleStoresEnabled:YES];
+    
     /* Launch */
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     DMTableViewController *controller = (DMTableViewController *)navigationController.topViewController;
@@ -72,22 +99,26 @@
     return YES;
 }
 
+#pragma mark - BITUpdateManagerDelegate
+- (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
+    return _generatedUDID;
+}
+
+#pragma mark Statistics
 - (void)setupTracking
 {
-    
     /* NewRelic */
 //    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
     
     /* Auto submit crash reports to hockey */
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"eac2fa62b5ac25511d75922841177a8a" delegate:self];
     [BITHockeyManager sharedHockeyManager].crashManager.crashManagerStatus = BITCrashManagerStatusAutoSend;
     [[BITHockeyManager sharedHockeyManager] startManager];
     
     /* Tapstream */
     TSConfig *config = [TSConfig configWithDefaults];
-    [TSTapstream createWithAccountName:@"dmiedema" developerSecret:@"fjOF0VDGQ8iLcfFqnTyhlw" config:config];
     config.collectWifiMac = NO;
     config.idfa = _generatedUDID;
+    [TSTapstream createWithAccountName:@"dmiedema" developerSecret:@"fjOF0VDGQ8iLcfFqnTyhlw" config:config];
     
     /* Google Anayltics */
 //    [GAI sharedInstance].dispatchInterval = 20;
@@ -101,8 +132,7 @@
 {
     NSString *token = [deviceToken.description stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
-    [[NSUserDefaults standardUserDefaults] setObject:token forKey:kGrowler_Push_ID];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [DMDefaultsInterfaceConstants setPushID:token];
 	NSLog(@"My token is: %@", token);
 }
 
@@ -111,28 +141,116 @@
 	NSLog(@"Failed to get token, error: %@", error);
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    NSLog(@"Remote Notification Received");
+    NSLog(@"User Info - %@", userInfo);
+    if ([userInfo[@"aps"][@"alert"] isEqualToString:@"Test Notification"]) {
+        NSLog(@"Alert was equal to 'Test Notification'");
+        if (application.applicationState == UIApplicationStateActive ) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push Test"
+                                                                message:@"Was successful!"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"Awesome!"
+                                                      otherButtonTitles: nil];
+            [alertView show];
+        }
+        else {
+            UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+            localNotification.alertBody = @"GM Taplist Push Notifications are working!";
+            localNotification.applicationIconBadgeNumber = [userInfo[@"badge"] integerValue];
+            [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+        }
+    } // not a test notification
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application
+#pragma mark - Handling URL Request
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    // Make sure we have a valid URL scheme
+    if ([url.scheme isEqualToString:@"gmtaplist"]) {
+        NSArray *queryParameters = [url.query componentsSeparatedByString:@"&"];
+        NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithCapacity:queryParameters.count];
+        for (NSString *param in queryParameters) {
+            NSArray *args = [param componentsSeparatedByString:@"="];
+            [parameters setValue:[args[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] forKey:args[0]];
+        }
+        NSLog(@"parameters %@", parameters);
+        NSLog(@"Parameters keys %@", parameters.allKeys);
+        NSLog(@"contains name - %d", [parameters.allKeys containsObject:@"name"]);
+        NSLog(@"contains brewer - %d", [parameters.allKeys containsObject:@"brewer"]);        
+        // make sure beer & brewer are set
+        if([parameters.allKeys containsObject:@"name"] && [parameters.allKeys containsObject:@"brewer"]) {
+            DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedObjectContext];
+            if (parameters[@"store"] == [NSNull null]) {
+                [parameters setValue:[DMDefaultsInterfaceConstants preferredStore] forKey:@"store"];
+                NSLog(@"Store param set");
+            }
+            if (parameters[@"ibu"] == [NSNull null]) {
+                [parameters setValue:@"-" forKey:@"ibu"];
+                NSLog(@"ibu param set");
+            }
+            if (parameters[@"abv"] == [NSNull null]) {
+                [parameters setValue:@"-" forKey:@"abv"];
+                NSLog(@"abv param set");
+            }
+            
+            NSLog(@"%@", parameters);
+            if(![coreData isBeerFavorited:parameters]) {
+                [[DMGrowlerAPI sharedInstance] favoriteBeer:parameters
+                                                 withAction:FAVORITE
+                                                withSuccess:^(id JSON) {
+                                                    NSLog(@"favorited! %@", parameters);
+                                                    [coreData favoriteBeer:parameters];
+                }
+                                                 andFailure:nil
+                 ];
+            }
+            return YES;
+        }
+        return YES;
+    }
+    // url.scheme isn't gmtaplist
+    return NO;
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-}
+#pragma mark Background Fetch
+
+//- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+//{
+//    NSLog(@"Running background fetch");
+//    
+//    [[DMGrowlerAPI sharedInstance] getBeersWithFlag:ON_TAP forStore:[DMDefaultsInterfaceConstants lastStore] andSuccess:^(id JSON) {
+//        NSLog(@"%@", JSON);
+//    } andFailure:^(id JSON) {
+//        NSLog(@"%@", JSON);
+//    }];
+//    
+//
+//}
+
+#pragma mark Application Life cycle
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    // Tell server we want to reset badge count.
+    //[[DMGrowlerNetworkModel manager] resetBadgeCount];
+    [[DMGrowlerAPI sharedInstance] resetBadgeCount];
+    [self initializeGroundControl];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    if (![DMDefaultsInterfaceConstants preferredStoresSynced]) {
+        [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants getValidUniqueID] withSuccess:^(id JSON) {
+            [DMDefaultsInterfaceConstants setPreferredStoresSynced:YES];
+        } andFailure:^(id JSON) {
+            [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
+        }];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -141,7 +259,14 @@
     [self saveContext];
 }
 
+#pragma mark GroundControl
+- (void)initializeGroundControl
+{
+    NSURL *url = [NSURL URLWithString:@"http://www.growlmovement.com/_app/GrowlersStoreList.php"];
+    [[NSUserDefaults standardUserDefaults] registerDefaultsWithURL:url];
+}
 
+#pragma mark CoreData
 - (void)saveContext
 {
     NSError *error = nil;
@@ -162,7 +287,7 @@
     }
 }
 
-#pragma mark - Core Data stack
+#pragma mark - CoreData stack
 
 // Returns the managed object context for the application.
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
@@ -204,7 +329,13 @@
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    
+    // Migration
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+    // Setup persistent store with options for migrating.
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
          
