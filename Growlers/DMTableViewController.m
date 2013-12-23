@@ -35,7 +35,6 @@
 - (void)resetHighlightedBeers;
 - (void)setNavigationBarTint;
 
-- (NSInteger)getToday;
 - (void)setNavigationBarPrompt;
 
 // Private enums
