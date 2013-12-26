@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "DMGrowlerAPI.h"
+#import "DMGrowlerNetworkModel.h"
 
 @interface DMTableViewController : UITableViewController <UISearchDisplayDelegate, UISearchBarDelegate, UIActionSheetDelegate>
 

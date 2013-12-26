@@ -120,6 +120,8 @@ typedef enum {
     [self setNavigationBarPrompt];
     // Set the tint color
     [self setNavigationBarTint];
+    
+    [[DMGrowlerNetworkModel manager] resetBadgeCount];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -203,6 +205,70 @@ typedef enum {
         Not sure which I feel is a more elegant solution.
      */
     // forStore is ignored when SERVER_FLAG is set to all, but if its not I need it.
+    
+    
+    static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/GrowlersAppPage-dev.php";
+    NSString *path = nil;
+    if (action == ALL) {
+        path = [NSString stringWithFormat:@"%@?store=all", DMGrowlerAPIURLString];
+    }
+    else {
+        path = [NSString stringWithFormat:@"%@?store=%@", DMGrowlerAPIURLString, [[self.selectedStore lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSStringEncodingConversionAllowLossy]];
+    }
+    
+    [[DMGrowlerNetworkModel manager] GET:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"response - %@", responseObject);
+        self.beers = responseObject;
+        if (action == ON_TAP) {
+            // If we're looking at the current tap list, lets see if any are new since we last saw.
+            [self checkForNewBeers];
+        }
+        // Check if we're currently searching the list.
+        // Because if we are and I just reload the tableView.
+        // It goes boom.
+        if ([self.searchDisplayController isActive]) {
+            [self updateFilteredContentForSearchString:self.searchDisplayController.searchBar.text];
+            [self.searchDisplayController.searchResultsTableView reloadData];
+        } else {
+            [self.tableView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"failure - %@", error);
+    }];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+/* // AFNetworking 2.0 HTTPSessionManager implemetation
+    [[DMGrowlerNetworkModel manager] getBeersWithFlag:action forStore:self.selectedStore andSuccess:^(id JSON) {
+//        NSLog(@"Success -- %@", JSON);
+        self.beers = JSON;
+        if (action == ON_TAP) {
+            // If we're looking at the current tap list, lets see if any are new since we last saw.
+            [self checkForNewBeers];
+        }
+        // Check if we're currently searching the list.
+        // Because if we are and I just reload the tableView.
+        // It goes boom.
+        if ([self.searchDisplayController isActive]) {
+            [self updateFilteredContentForSearchString:self.searchDisplayController.searchBar.text];
+            [self.searchDisplayController.searchResultsTableView reloadData];
+        } else {
+            [self.tableView reloadData];
+        }
+    } andFailure:^(id JSON) {
+        NSLog(@"Failure - %@", JSON);
+    }];
+    
+*/
+/* // Original
     [[DMGrowlerAPI sharedInstance] getBeersWithFlag:action forStore:self.selectedStore andSuccess:^(id JSON) {
         self.beers = JSON;
         if (action == ON_TAP) {
@@ -223,6 +289,7 @@ typedef enum {
         // no network or call failed but for now we'll just log it out.
         NSLog(@"Error - %@", JSON);
     }];
+*/
 }
 
 - (void)loadFavorites

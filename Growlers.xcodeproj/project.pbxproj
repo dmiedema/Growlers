@@ -24,6 +24,7 @@
 		C356CBEE17EF9300006CF711 /* DMSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C356CBED17EF9300006CF711 /* DMSettingsTableViewController.m */; };
 		C3642F8217F381EE00096EED /* Tutorial-3_5.png in Resources */ = {isa = PBXBuildFile; fileRef = C3642F8017F381EE00096EED /* Tutorial-3_5.png */; };
 		C3642F8317F381EE00096EED /* Tutorial-4.png in Resources */ = {isa = PBXBuildFile; fileRef = C3642F8117F381EE00096EED /* Tutorial-4.png */; };
+		C378B298185EBFAF00AADF80 /* DMGrowlerNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C378B297185EBFAF00AADF80 /* DMGrowlerNetworkModel.m */; };
 		C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DD34C17A3AD6300EAC24A /* MapKit.framework */; };
 		C38285C717A4D0700058D304 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C617A4D0700058D304 /* MessageUI.framework */; };
 		C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C817A4D0930058D304 /* CoreLocation.framework */; };
@@ -97,6 +98,8 @@
 		C356CBED17EF9300006CF711 /* DMSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMSettingsTableViewController.m; sourceTree = "<group>"; };
 		C3642F8017F381EE00096EED /* Tutorial-3_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial-3_5.png"; sourceTree = "<group>"; };
 		C3642F8117F381EE00096EED /* Tutorial-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial-4.png"; sourceTree = "<group>"; };
+		C378B296185EBFAF00AADF80 /* DMGrowlerNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMGrowlerNetworkModel.h; sourceTree = "<group>"; };
+		C378B297185EBFAF00AADF80 /* DMGrowlerNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMGrowlerNetworkModel.m; sourceTree = "<group>"; };
 		C37DD34C17A3AD6300EAC24A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C38285C617A4D0700058D304 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		C38285C817A4D0930058D304 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -206,6 +209,8 @@
 			children = (
 				C33DAC96179F7D5C00F208AB /* DMGrowlerAPI.h */,
 				C33DAC97179F7D5C00F208AB /* DMGrowlerAPI.m */,
+				C378B296185EBFAF00AADF80 /* DMGrowlerNetworkModel.h */,
+				C378B297185EBFAF00AADF80 /* DMGrowlerNetworkModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -524,6 +529,7 @@
 				C356CBEE17EF9300006CF711 /* DMSettingsTableViewController.m in Sources */,
 				C3DD53E217967D470086A7E2 /* DMAppDelegate.m in Sources */,
 				C33DAC8C179C8FCB00F208AB /* GrowlerModel.xcdatamodeld in Sources */,
+				C378B298185EBFAF00AADF80 /* DMGrowlerNetworkModel.m in Sources */,
 				C3DD54151797B7EB0086A7E2 /* DMAboutViewController.m in Sources */,
 				C3015A4517F0E957002F7E18 /* DMHelperMethods.m in Sources */,
 				C33DAC98179F7D5C00F208AB /* DMGrowlerAPI.m in Sources */,
