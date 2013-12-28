@@ -119,8 +119,6 @@ typedef enum {
     [self setNavigationBarPrompt];
     // Set the tint color
     [self setNavigationBarTint];
-    
-    [[DMGrowlerNetworkModel manager] resetBadgeCount];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -204,7 +202,7 @@ typedef enum {
         Not sure which I feel is a more elegant solution.
      */
 
-    [[DMGrowlerNetworkModel manager] getBeersWithFlag:action forStore:self.selectedStore andSuccess:^(id JSON) {
+    [[DMGrowlerAPI sharedInstance] getBeersWithFlag:action forStore:self.selectedStore andSuccess:^(id JSON) {
         //        NSLog(@"Success -- %@", JSON);
         self.beers = JSON;
         if (action == ON_TAP) {
