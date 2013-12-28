@@ -30,7 +30,7 @@
     NSDictionary *lastStoresHours = [allStoreHours objectForKey:[DMDefaultsInterfaceConstants lastStore]];
     NSDictionary *currentDaysHours = [lastStoresHours objectForKey:[NSString stringWithFormat:@"%li", (long)weekday]];
     
-    return hour > [[currentDaysHours valueForKey:@"open"] integerValue] && hour < [[currentDaysHours valueForKey:@"close"] integerValue];
+    return hour >= [[currentDaysHours valueForKey:@"open"] integerValue] && hour < [[currentDaysHours valueForKey:@"close"] integerValue];
 
 }
 
