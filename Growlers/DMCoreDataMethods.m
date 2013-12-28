@@ -84,7 +84,7 @@
 #pragma mark Favoriting
 - (void)favoriteBeer:(NSDictionary *)newBeerToFavorite
 {
-    NSLog(@"Favorite - %@", newBeerToFavorite);
+    // NSLog(@"Favorite - %@", newBeerToFavorite);
     Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
     favorite = [self applyDefaultValuesToEntityObject:favorite withParameters:newBeerToFavorite];
     
@@ -96,7 +96,7 @@
 
 - (void)unFavoriteBeer:(NSDictionary *)beerToUnfavorite
 {
-    NSLog(@"unfavorite - %@", beerToUnfavorite);
+    // NSLog(@"unfavorite - %@", beerToUnfavorite);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Favorites"];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beerToUnfavorite[@"name"], beerToUnfavorite[@"brewer"]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];

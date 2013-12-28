@@ -7,6 +7,7 @@
 //
 
 #import "DMGrowlerNetworkModel.h"
+#import "TSTapstream.h"
 
 @interface DMGrowlerNetworkModel()
 @end
@@ -41,37 +42,116 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     return self;
 }
 
-- (void)getBeersWithFlag:(SERVER_FLAG)flag forStore:(NSString *)store andSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
-{
-    NSString *path = nil;
-    if (flag == ALL) {
-        path = [NSString stringWithFormat:@"%@?store=all", DMGrowlerAPIURLString];
-    }
-    else {
-        path = [NSString stringWithFormat:@"%@?store=%@", DMGrowlerAPIURLString, [[store lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSStringEncodingConversionAllowLossy]];
-    }
-    
-    NSLog(@"request url = %@", path);
+#pragma mark Implementation
 
-    [self GET:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-//        NSLog(@"response - %@", responseObject);
+- (void)getBeersForStore:(NSString *)store withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
+{
+    NSDictionary *params = @{@"store": [store stringByAddingPercentEscapesUsingEncoding:NSStringEncodingConversionAllowLossy]};
+    [self GET:DMGrowlerAPIURLString parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"failure - %@", error);
+        // error.code -999 means request was cancelled. Don't need to log cancelled request.
+        if (error.code == -999) {
+            return;
+        }
         failure(error);
     }];
-}
-- (void)favoriteBeer:(NSDictionary *)beer withAction:(BEER_ACTION)action withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
-{
     
+    /* Anonymouse Usage */
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
+        TSTapstream *tracker = [TSTapstream instance];
+        TSEvent *e = [TSEvent eventWithName:@"getBeers" oneTimeOnly:NO];
+        [e addValue:store forKey:@"store"];
+        [tracker fireEvent:e];
+    }
 }
+
+- (void)favoriteBeer:(NSDictionary *)beer withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
+{
+    if (beer[@"fav"] == nil || beer[@"fav"] == [NSNull null]) {
+        NSMutableDictionary *mutableBeer = [beer mutableCopy];
+        [mutableBeer setValue:@(YES) forKey:@"fav"];
+        beer = mutableBeer;
+    }
+    
+    [self POST:DMGrowlerAPIURLString parameters:beer success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+    /* Anonymouse Usage */
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
+        TSEvent *e = [TSEvent eventWithName:@"FavoriteBeer" oneTimeOnly:NO];
+        [[TSTapstream instance] fireEvent:e];
+
+    }
+}
+
+- (void)unFavoriteBeer:(NSDictionary *)beer withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
+{
+    if (beer[@"fav"] == nil || beer[@"fav"] == [NSNull null]) {
+        NSMutableDictionary *mutableBeer = [beer mutableCopy];
+        [mutableBeer setValue:@(NO) forKey:@"fav"];
+        beer = mutableBeer;
+    }
+    
+    [self POST:DMGrowlerAPIURLString parameters:beer success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+    /* Anonymouse Usage */
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
+        TSEvent *e = [TSEvent eventWithName:@"UnfavoriteBeer" oneTimeOnly:NO];
+        [[TSTapstream instance] fireEvent:e];
+    }
+}
+
 - (void)testPushNotifictaionsWithSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
 {
+    NSString *token = [DMDefaultsInterfaceConstants getValidUniqueID];
     
+    NSDictionary *data = @{@"message": @"Test Notification", @"udid": token};
+    
+    [self POST:DMGrowlerAPIURLString parameters:data success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        // Cocoa error -- parsing the response failes because of incorrectly formatted JSON
+        // and if that is the case, it's not a failute of the push test.
+        if (error.code == 3840) {
+            return;
+        }
+        failure(error);
+    }];
+    
+    /* Anonymouse Usage */
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
+        TSEvent *e = [TSEvent eventWithName:@"Test Push" oneTimeOnly:NO];
+        [[TSTapstream instance] fireEvent:e];
+    }
 }
-- (void)setPreferredStores:(NSArray *)stores forUser:(NSString *)pushID withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
+- (void)setPreferredStores:(NSArray *)stores forUser:(NSString *)token withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
 {
+    if (!token) {
+        token = [DMDefaultsInterfaceConstants getValidUniqueID];
+    }
+    NSDictionary *data = @{@"stores": stores, @"udid": token};
     
+    [self POST:DMGrowlerAPIURLString parameters:data success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
+    
+    /* Anonymoose Usage */
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
+        NSLog(@"Reset stores");
+        NSLog(@"%@", stores);
+        TSEvent *e = [TSEvent eventWithName:@"Reset Store Notifications" oneTimeOnly:NO];
+        [[TSTapstream instance] fireEvent:e];
+    }
 }
 
 - (void)setSubscribedToSpam
@@ -85,11 +165,22 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
+    
+    /* Anonymoose Usage */
+    if ([DMDefaultsInterfaceConstants anonymousUsage]) {
+        NSString *eventName = (subscribed)
+            ? @"Subscribe user to spam"
+            : @"Unsubscribe user from spam";
+        TSEvent *e = [TSEvent eventWithName:eventName oneTimeOnly:NO];
+        [[TSTapstream instance] fireEvent:e];
+    }
 }
 
 - (void)resetBadgeCount
 {
     NSString *token = [DMDefaultsInterfaceConstants getValidUniqueID];
+
+        NSLog(@"Tell server to reset badge count for %@", token);
     
     [self POST:DMGrowlerAPIURLString
     parameters:@{@"udid": token, @"key": @"reset-badge-count"}
@@ -100,7 +191,14 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     }];
 }
 
-
-
+- (void)cancelAllGETs
+{
+    for (NSURLSessionDataTask *task in self.tasks) {
+        NSURLRequest *originalRequest = task.originalRequest;
+        if ([originalRequest.HTTPMethod isEqualToString:@"GET"]) {
+            [task cancel];
+        }
+    }
+}
 
 @end

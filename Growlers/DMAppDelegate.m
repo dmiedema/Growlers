@@ -17,11 +17,16 @@
 //#import <NewRelicAgent/NewRelicAgent.h>
 // CoreDataMethods for URL handling
 #import "DMCoreDataMethods.h"
-#import "DMGrowlerAPI.h"
+//#import "DMGrowlerAPI.h"
+#import "DMGrowlerNetworkModel.h"
 #import "DDTTYLogger.h"
 #import "DDFileLogger.h"
 
+#if TAKE_SCREENSHOTS
+#import <SDScreenshotCapture/SDScreenshotCapture.h>
 //#import <SparkInspector/SparkInspector.h>
+#endif
+
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
@@ -74,6 +79,13 @@
     /* Background stuff */
 //    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
+    /* StatusMagic screen shot stuff */
+#if TAKE_SCREENSHOTS
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
+    tapGesture.numberOfTouchesRequired = 4;
+    [self.window addGestureRecognizer:tapGesture];
+#endif
+    
     /* Settings App Bundle */
     NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     [[NSUserDefaults standardUserDefaults] setObject:build forKey:@"build_preferences"];
@@ -98,6 +110,13 @@
     
     return YES;
 }
+
+#if TAKE_SCREENSHOTS
+- (void)tapGestureRecognized:(UITapGestureRecognizer *)tapGesture
+{
+    [SDScreenshotCapture takeScreenshotToActivityViewController];
+}
+#endif
 
 #pragma mark - BITUpdateManagerDelegate
 - (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
@@ -194,11 +213,11 @@
                 [parameters setValue:@"-" forKey:@"abv"];
                 NSLog(@"abv param set");
             }
+            [parameters setValue:@(YES) forKey:@"fav"];
             
             NSLog(@"%@", parameters);
             if(![coreData isBeerFavorited:parameters]) {
-                [[DMGrowlerAPI sharedInstance] favoriteBeer:parameters
-                                                 withAction:FAVORITE
+                [[DMGrowlerNetworkModel manager] favoriteBeer:parameters
                                                 withSuccess:^(id JSON) {
                                                     NSLog(@"favorited! %@", parameters);
                                                     [coreData favoriteBeer:parameters];
@@ -237,15 +256,14 @@
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     // Tell server we want to reset badge count.
-    //[[DMGrowlerNetworkModel manager] resetBadgeCount];
-    [[DMGrowlerAPI sharedInstance] resetBadgeCount];
+    [[DMGrowlerNetworkModel manager] resetBadgeCount];
     [self initializeGroundControl];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     if (![DMDefaultsInterfaceConstants preferredStoresSynced]) {
-        [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants getValidUniqueID] withSuccess:^(id JSON) {
+        [[DMGrowlerNetworkModel manager] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants getValidUniqueID] withSuccess:^(id JSON) {
             [DMDefaultsInterfaceConstants setPreferredStoresSynced:YES];
         } andFailure:^(id JSON) {
             [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
@@ -262,7 +280,11 @@
 #pragma mark GroundControl
 - (void)initializeGroundControl
 {
+#if DEV
+    NSURL *url = [NSURL URLWithString:@"http://www.growlmovement.com/_app/GrowlersStoreList-dev.php"];
+#else
     NSURL *url = [NSURL URLWithString:@"http://www.growlmovement.com/_app/GrowlersStoreList.php"];
+#endif
     [[NSUserDefaults standardUserDefaults] registerDefaultsWithURL:url];
 }
 
