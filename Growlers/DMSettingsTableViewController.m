@@ -8,6 +8,7 @@
 
 #import "DMSettingsTableViewController.h"
 #import "DMTakeMeActionSheetDelegate.h"
+#import "DMStoreHoursActionSheetDelegate.h"
 #import "DMAboutViewController.h"
 #import "DMCoreDataMethods.h"
 #import "DMGrowlerAPI.h"
@@ -26,6 +27,7 @@
 @property (nonatomic, strong) UISwitch *spamSwitch;
 
 @property (nonatomic) DMTakeMeActionSheetDelegate *takeMeActionSheetDelegate;
+@property (nonatomic) DMStoreHoursActionSheetDelegate *storeHoursActionSheetDelegate;
 
 - (void)handeStore:(NSInteger)index;
 - (void)showStoreNotificationChooser:(BOOL)showDestructiveOption;
@@ -71,7 +73,8 @@ typedef enum {
           @[@"Test Push Notifications", @"Show Store Name", @"Fix Favorites Names/Duplicates", @"Review App"]
       ];
 
-    self.takeMeActionSheetDelegate = [[DMTakeMeActionSheetDelegate alloc] init];
+    self.takeMeActionSheetDelegate      = [[DMTakeMeActionSheetDelegate alloc] init];
+    self.storeHoursActionSheetDelegate  = [[DMStoreHoursActionSheetDelegate alloc] init];
     
     // Setup .xibs
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"DMSettingsTableViewCell"];
@@ -434,12 +437,20 @@ typedef enum {
 
 - (void)showHours
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Hours"
-                                                        message:@"Sunday - Thurdsay: 12PM - 8PM\nFriday & Saturday: 11AM - 11PM"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Cool"
-                                              otherButtonTitles: nil];
-    [alertView show];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Yes, store determines hours"
+                                                             delegate:self.storeHoursActionSheetDelegate
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:nil];
+    
+    for (NSString *store in [DMDefaultsInterfaceConstants stores]) {
+        [actionSheet addButtonWithTitle:store];
+    }
+    [actionSheet addButtonWithTitle:@"Cancel"];
+    
+    actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
+    
+    [actionSheet showInView:self.view];
 }
 
 - (void)takeMe

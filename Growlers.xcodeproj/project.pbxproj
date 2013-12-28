@@ -27,6 +27,7 @@
 		C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DD34C17A3AD6300EAC24A /* MapKit.framework */; };
 		C38285C717A4D0700058D304 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C617A4D0700058D304 /* MessageUI.framework */; };
 		C38285C917A4D0930058D304 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38285C817A4D0930058D304 /* CoreLocation.framework */; };
+		C385E2A2186ED1A60081921A /* DMStoreHoursActionSheetDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C385E2A1186ED1A60081921A /* DMStoreHoursActionSheetDelegate.m */; };
 		C3B14773182EE1730058DD78 /* GrowlersCoreDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B14772182EE1730058DD78 /* GrowlersCoreDataTests.m */; };
 		C3B14775182EE1870058DD78 /* GrowlersNSUserDefaultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B14774182EE1870058DD78 /* GrowlersNSUserDefaultsTests.m */; };
 		C3B14779182F60700058DD78 /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B14778182F60700058DD78 /* Tests.m */; };
@@ -100,6 +101,8 @@
 		C37DD34C17A3AD6300EAC24A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C38285C617A4D0700058D304 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		C38285C817A4D0930058D304 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		C385E2A0186ED1A60081921A /* DMStoreHoursActionSheetDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMStoreHoursActionSheetDelegate.h; sourceTree = "<group>"; };
+		C385E2A1186ED1A60081921A /* DMStoreHoursActionSheetDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMStoreHoursActionSheetDelegate.m; sourceTree = "<group>"; };
 		C3963FEE181F5A3C00661F9B /* GrowlerModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GrowlerModel 2.xcdatamodel"; sourceTree = "<group>"; };
 		C3B14772182EE1730058DD78 /* GrowlersCoreDataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowlersCoreDataTests.m; sourceTree = "<group>"; };
 		C3B14774182EE1870058DD78 /* GrowlersNSUserDefaultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowlersNSUserDefaultsTests.m; sourceTree = "<group>"; };
@@ -183,6 +186,8 @@
 				C3015A4417F0E957002F7E18 /* DMHelperMethods.m */,
 				C3229FDE17F4B74B00C818C5 /* DMTakeMeActionSheetDelegate.h */,
 				C3229FDF17F4B74B00C818C5 /* DMTakeMeActionSheetDelegate.m */,
+				C385E2A0186ED1A60081921A /* DMStoreHoursActionSheetDelegate.h */,
+				C385E2A1186ED1A60081921A /* DMStoreHoursActionSheetDelegate.m */,
 			);
 			name = "Delegate/Helper Classes";
 			sourceTree = "<group>";
@@ -528,6 +533,7 @@
 				C3015A4517F0E957002F7E18 /* DMHelperMethods.m in Sources */,
 				C33DAC98179F7D5C00F208AB /* DMGrowlerAPI.m in Sources */,
 				C3341E82183C51B700E97A66 /* Beer.m in Sources */,
+				C385E2A2186ED1A60081921A /* DMStoreHoursActionSheetDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -544,6 +544,7 @@ typedef enum {
     if (actionSheet.cancelButtonIndex != buttonIndex) {
         self.selectedStore = [actionSheet buttonTitleAtIndex:buttonIndex];
         [DMDefaultsInterfaceConstants setLastStore:self.selectedStore];
+        [self setNavigationBarTint];
         [self loadBeers];
         [self setNavigationBarPrompt];
     }
