@@ -33,7 +33,7 @@
 
 - (NSString *)formatOperatingHoursAsString:(NSDictionary *)hours withKey:(NSString *)key
 {
-    NSInteger open = [hours[@"open"] integerValue] + 1;
+    NSInteger open = [hours[@"open"] integerValue];
     NSInteger close = [hours[@"close"] integerValue];
     
     return [NSString stringWithFormat:@"%@: %ld%@ - %ld%@", [self.numberToDayMap objectForKey:key], (long)open, [self getAMorPMModfierForTime:open], ((long)close % 12), [self getAMorPMModfierForTime:close]];
