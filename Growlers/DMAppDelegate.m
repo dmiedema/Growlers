@@ -262,7 +262,11 @@
 #pragma mark GroundControl
 - (void)initializeGroundControl
 {
+#if DEV
+    NSURL *url = [NSURL URLWithString:@"http://www.growlmovement.com/_app/GrowlersStoreList-dev.php"];
+#else
     NSURL *url = [NSURL URLWithString:@"http://www.growlmovement.com/_app/GrowlersStoreList.php"];
+#endif
     [[NSUserDefaults standardUserDefaults] registerDefaultsWithURL:url];
 }
 

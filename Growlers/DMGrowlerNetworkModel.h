@@ -30,4 +30,6 @@ typedef void (^JSONResponseBlock)(id JSON);
 - (void)setSubscribedToSpam;
 - (void)resetBadgeCount;
 
+- (void)cancelAllGETs;
+
 @end

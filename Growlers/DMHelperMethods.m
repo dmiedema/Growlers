@@ -14,7 +14,7 @@
 
 @implementation DMHelperMethods
 
-+(BOOL)checkIfOpen
++ (BOOL)checkIfOpen
 {
     // Get today
     NSDate *today = [NSDate date];

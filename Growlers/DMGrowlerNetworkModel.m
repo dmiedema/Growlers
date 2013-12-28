@@ -41,19 +41,19 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     return self;
 }
 
+#pragma mark Implementation
+
 - (void)getBeersWithFlag:(SERVER_FLAG)flag forStore:(NSString *)store andSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure
 {
-    NSString *path = nil;
+    NSDictionary *params;
     if (flag == ALL) {
-        path = [NSString stringWithFormat:@"%@?store=all", DMGrowlerAPIURLString];
+        params = @{@"store": @"all"};
     }
     else {
-        path = [NSString stringWithFormat:@"%@?store=%@", DMGrowlerAPIURLString, [[store lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSStringEncodingConversionAllowLossy]];
+        params = @{@"store": [store stringByAddingPercentEscapesUsingEncoding:NSStringEncodingConversionAllowLossy]};
     }
-    
-    NSLog(@"request url = %@", path);
 
-    [self GET:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [self GET:DMGrowlerAPIURLString parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
 //        NSLog(@"response - %@", responseObject);
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -100,7 +100,17 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     }];
 }
 
-
-
+- (void)cancelAllGETs
+{
+    NSLog(@"Cancelling all GET Requests");
+    for (NSURLSessionDataTask *task in self.dataTasks) {
+        NSLog(@"Task - %@", task);
+        NSURLRequest *originalRequest = task.originalRequest;
+        if ([originalRequest.HTTPMethod isEqualToString:@"GET"]) {
+            NSLog(@"Cancelling request - %@", task);
+            [task cancel];
+        }
+    }
+}
 
 @end
