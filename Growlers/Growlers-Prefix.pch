@@ -29,7 +29,7 @@
 
     #import "DMDefaultsInterfaceConstants.h"
 
-#define DEV 0
+#define DEV 1
 
 // Setup UALogger
 #if DEV
