@@ -14,7 +14,7 @@
 
 @implementation DMHelperMethods
 
-+(BOOL)checkIfOpen
++ (BOOL)checkIfOpen
 {
     // Get today
     NSDate *today = [NSDate date];
@@ -26,11 +26,12 @@
     NSInteger hour = [weekdayComponents hour];
     NSInteger weekday = [weekdayComponents weekday];
     
-    if (weekday < 5) { // If we're before Friday, noon - 8
-        return hour > 11 && hour < 20;
-    } else { // Friday and Saturday, 11 to 11
-        return hour > 10 && hour < 23;
-    }
+    NSDictionary *allStoreHours = [DMDefaultsInterfaceConstants storeHours];
+    NSDictionary *lastStoresHours = [allStoreHours objectForKey:[DMDefaultsInterfaceConstants lastStore]];
+    NSDictionary *currentDaysHours = [lastStoresHours objectForKey:[NSString stringWithFormat:@"%li", (long)weekday]];
+    
+    return hour > [[currentDaysHours valueForKey:@"open"] integerValue] && hour < [[currentDaysHours valueForKey:@"close"] integerValue];
+
 }
 
 + (BOOL)checkLastDateOfMonth
