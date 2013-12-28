@@ -35,7 +35,6 @@
 - (void)resetHighlightedBeers;
 - (void)setNavigationBarTint;
 
-- (void)clearNavigationBarPrompt;
 - (void)setNavigationBarPrompt;
 
 // Private enums
@@ -612,6 +611,7 @@ typedef enum {
     if (actionSheet.cancelButtonIndex != buttonIndex) {
         self.selectedStore = [actionSheet buttonTitleAtIndex:buttonIndex];
         [DMDefaultsInterfaceConstants setLastStore:self.selectedStore];
+        [self setNavigationBarTint];
         [self loadBeers];
         [self setNavigationBarPrompt];
     }

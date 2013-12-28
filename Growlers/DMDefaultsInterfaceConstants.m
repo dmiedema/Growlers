@@ -32,6 +32,7 @@ static NSString *availableStores = @"Growlers_Available_Stores";
 static NSString *syncedStores = @"Growlers_Preferred_Stores_Synced";
 static NSString *spamMeKey = @"Growlers_Subscribe_To_Mass_Messages";
 static NSString *mapsOfStores = @"Growlers_Dictionary_Of_Store_Locations";
+static NSString *storeHours = @"Growlers_Dictionary_Of_Store_Hours";
 static NSString *showCurrentStore = @"Growlers_Show_Current_Store_As_Prompt";
 // Anonymouse
 static NSString *anonymousUsage = @"anonymous_usage";
@@ -108,6 +109,10 @@ static NSString *badgeCountResetKey = @"Grolwers_Badge_Count_Reset";
 + (NSDictionary *)storeMapLocations
 {
     return [[NSUserDefaults standardUserDefaults] dictionaryForKey:mapsOfStores];
+}
++ (NSDictionary *)storeHours
+{
+    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:storeHours];
 }
 + (BOOL)showCurrentStoreOnTapList
 {

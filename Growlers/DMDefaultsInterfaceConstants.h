@@ -28,6 +28,7 @@
 + (BOOL)preferredStoresSynced;
 + (BOOL)subscribedToSpam;
 + (NSDictionary *)storeMapLocations;
++ (NSDictionary *)storeHours;
 + (BOOL)showCurrentStoreOnTapList;
 // Anonymouse
 + (BOOL)anonymousUsage;
