@@ -13,7 +13,7 @@ pod 'Tapstream'
 #pod 'MessageBarManager'
 
 # Testing
-#pod 'SDScreenshotCapture'
+pod 'SDScreenshotCapture'
 
 target :GrowlersTests, :exclusive => true do
   pod 'Kiwi/XCTest'

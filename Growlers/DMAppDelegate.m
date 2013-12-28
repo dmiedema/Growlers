@@ -21,7 +21,11 @@
 #import "DDTTYLogger.h"
 #import "DDFileLogger.h"
 
+#if DEV
+#import <SDScreenshotCapture/SDScreenshotCapture.h>
 //#import <SparkInspector/SparkInspector.h>
+#endif
+
 
 @interface DMAppDelegate ()
 @property (nonatomic, strong) NSString *generatedUDID;
@@ -74,6 +78,13 @@
     /* Background stuff */
 //    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
+    /* StatusMagic screen shot stuff */
+#if DEV
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
+    tapGesture.numberOfTouchesRequired = 4;
+    [self.window addGestureRecognizer:tapGesture];
+#endif
+    
     /* Settings App Bundle */
     NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     [[NSUserDefaults standardUserDefaults] setObject:build forKey:@"build_preferences"];
@@ -98,6 +109,13 @@
     
     return YES;
 }
+
+#if DEV
+- (void)tapGestureRecognized:(UITapGestureRecognizer *)tapGesture
+{
+    [SDScreenshotCapture takeScreenshotToActivityViewController];
+}
+#endif
 
 #pragma mark - BITUpdateManagerDelegate
 - (NSString *)customDeviceIdentifierForUpdateManager:(BITUpdateManager *)updateManager {
