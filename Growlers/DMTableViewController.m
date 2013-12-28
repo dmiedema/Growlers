@@ -195,7 +195,10 @@ typedef enum {
     }
     
     // check segment control to see what action I should perform
-    SERVER_FLAG action = (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) ? ON_TAP : ALL;
+    NSString *store =
+        (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap)
+        ? [self.selectedStore lowercaseString]
+        : @"all";
     
     /* I could probably abstract self.selected store out and use NSUserDefaults for all of it
         But i don't know if thats bad reliability wise
@@ -203,12 +206,10 @@ typedef enum {
         to tell my TableViewController that the selected store changed.
         Not sure which I feel is a more elegant solution.
      */
-    // forStore is ignored when SERVER_FLAG is set to all, but if its not I need it.
     
-    
-    [[DMGrowlerNetworkModel manager] getBeersWithFlag:action forStore:[self.selectedStore lowercaseString] andSuccess:^(id JSON) {
+    [[DMGrowlerNetworkModel manager] getBeersForStore:store withSuccess:^(id JSON) {
         self.beers = JSON;
-        if (action == ON_TAP) {
+        if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) {
              // If we're looking at the current tap list, lets see if any are new since we last saw.
             [self checkForNewBeers];
         }
@@ -452,15 +453,16 @@ typedef enum {
         // Selected beer is a favorite so we want to tell the server
         // we want to unfavorite it. So lets put that in our dictionary we send
         [beerToFavorite setValue:@NO forKey:@"fav"];
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:beerToFavorite withAction:UNFAVORITE withSuccess:^(id JSON) {
-            // CoreData Save
+        [[DMGrowlerNetworkModel manager] unFavoriteBeer:beerToFavorite withSuccess:^(id JSON) {
+            NSLog(@"Beer UNFavorited");
+            // CoreData save
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = preferredStore;
             [_coreData unFavoriteBeer:favBeer];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.favoriteMarker.backgroundColor = [UIColor clearColor];
         } andFailure:^(id JSON) {
-            // Handle failure
+            // should handle it but i'll just log for now
             NSLog(@"unfavoriting failed: %@", JSON);
         }];
     }
@@ -468,7 +470,8 @@ typedef enum {
         // Beer isn't a favorite so let's tell the server we would like to
         // favorite it.
         [beerToFavorite setValue:@YES forKey:@"fav"];
-        [[DMGrowlerAPI sharedInstance] favoriteBeer:beerToFavorite withAction:FAVORITE withSuccess:^(id JSON) {
+        [[DMGrowlerNetworkModel manager] favoriteBeer:beerToFavorite withSuccess:^(id JSON) {
+            NSLog(@"Beer Favorited");
             // CoreData save
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = preferredStore;

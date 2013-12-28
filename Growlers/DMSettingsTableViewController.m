@@ -11,7 +11,8 @@
 #import "DMStoreHoursActionSheetDelegate.h"
 #import "DMAboutViewController.h"
 #import "DMCoreDataMethods.h"
-#import "DMGrowlerAPI.h"
+//#import "DMGrowlerAPI.h"
+#import "DMGrowlerNetworkModel.h"
 #import <MessageUI/MessageUI.h>
 #import <MapKit/MapKit.h>
 
@@ -103,7 +104,7 @@ typedef enum {
     NSLog(@"View disappearing");
     // if we're out of sync -- sync
     if (![DMDefaultsInterfaceConstants preferredStoresSynced]) {
-        [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
+        [[DMGrowlerNetworkModel manager] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
             NSLog(@"%@", JSON);
             [DMDefaultsInterfaceConstants setPreferredStoresSynced:YES];
         } andFailure:^(id JSON) {
@@ -299,7 +300,7 @@ typedef enum {
                                                           otherButtonTitles:nil];
             [pushTestAlert show];
             [self performSelector:@selector(dismissAlertView:) withObject:pushTestAlert afterDelay:5.0];
-            [[DMGrowlerAPI sharedInstance] testPushNotifictaionsWithSuccess:^(id JSON) {
+            [[DMGrowlerNetworkModel manager] testPushNotifictaionsWithSuccess:^(id JSON) {
                 NSLog(@"Success - %@", JSON);
             } andFailure:^(id JSON) {
                 UIAlertView *failureAlertView = [[UIAlertView alloc] initWithTitle:@"Push Failed!"
@@ -318,7 +319,7 @@ typedef enum {
 //        case 2: // 2: subscribe to announcements
 //            break;
         case 2: {// 3:  @"Fix Favorites Names/Duplicates"
-            [[DMGrowlerAPI sharedInstance] getBeersWithFlag:ALL forStore:@"all" andSuccess:^(id JSON) {
+            [[DMGrowlerNetworkModel manager] getBeersForStore:@"all" withSuccess:^(id JSON) {
                 DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
                 [coreData reconcileFavoritesWithServer:JSON];
             } andFailure:^(id JSON) {
@@ -326,6 +327,7 @@ typedef enum {
             }];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fixing..." message:@"Reconciling favorites, please give me just a moment." delegate:nil cancelButtonTitle:@"okay" otherButtonTitles: nil];
             [alert show];
+            [self performSelector:@selector(dismissAlertView:) withObject:alert afterDelay:5.0];
             break;
         }
         case 3: // 4: Ask in prompt if user wants to review

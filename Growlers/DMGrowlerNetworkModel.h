@@ -7,7 +7,7 @@
 //
 
 #import "AFHTTPSessionManager.h"
-#import "DMGrowlerAPI.h"
+//#import "DMGrowlerAPI.h"
 
 @interface DMGrowlerNetworkModel : AFHTTPSessionManager
 
@@ -23,13 +23,15 @@ typedef void (^JSONResponseBlock)(id JSON);
 //    ON_TAP
 //} SERVER_FLAG;
 
-- (void)getBeersWithFlag:(SERVER_FLAG)flag forStore:(NSString *)store andSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
-- (void)favoriteBeer:(NSDictionary *)beer withAction:(BEER_ACTION)action withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
+- (void)getBeersForStore:(NSString *)store withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
+- (void)favoriteBeer:(NSDictionary *)beer withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
+- (void)unFavoriteBeer:(NSDictionary *)beer withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
+
 - (void)testPushNotifictaionsWithSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
 - (void)setPreferredStores:(NSArray *)stores forUser:(NSString *)pushID withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
+
 - (void)setSubscribedToSpam;
 - (void)resetBadgeCount;
-
 - (void)cancelAllGETs;
 
 @end

@@ -17,7 +17,8 @@
 //#import <NewRelicAgent/NewRelicAgent.h>
 // CoreDataMethods for URL handling
 #import "DMCoreDataMethods.h"
-#import "DMGrowlerAPI.h"
+//#import "DMGrowlerAPI.h"
+#import "DMGrowlerNetworkModel.h"
 #import "DDTTYLogger.h"
 #import "DDFileLogger.h"
 
@@ -212,11 +213,11 @@
                 [parameters setValue:@"-" forKey:@"abv"];
                 NSLog(@"abv param set");
             }
+            [parameters setValue:@(YES) forKey:@"fav"];
             
             NSLog(@"%@", parameters);
             if(![coreData isBeerFavorited:parameters]) {
-                [[DMGrowlerAPI sharedInstance] favoriteBeer:parameters
-                                                 withAction:FAVORITE
+                [[DMGrowlerNetworkModel manager] favoriteBeer:parameters
                                                 withSuccess:^(id JSON) {
                                                     NSLog(@"favorited! %@", parameters);
                                                     [coreData favoriteBeer:parameters];
@@ -255,15 +256,14 @@
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     // Tell server we want to reset badge count.
-    //[[DMGrowlerNetworkModel manager] resetBadgeCount];
-    [[DMGrowlerAPI sharedInstance] resetBadgeCount];
+    [[DMGrowlerNetworkModel manager] resetBadgeCount];
     [self initializeGroundControl];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     if (![DMDefaultsInterfaceConstants preferredStoresSynced]) {
-        [[DMGrowlerAPI sharedInstance] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants getValidUniqueID] withSuccess:^(id JSON) {
+        [[DMGrowlerNetworkModel manager] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants getValidUniqueID] withSuccess:^(id JSON) {
             [DMDefaultsInterfaceConstants setPreferredStoresSynced:YES];
         } andFailure:^(id JSON) {
             [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
