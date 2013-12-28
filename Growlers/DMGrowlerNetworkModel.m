@@ -57,6 +57,10 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
 //        NSLog(@"response - %@", responseObject);
         success(responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        // "cancelled" code == -999
+        if (error.code == -999) {
+            return;
+        }
         NSLog(@"failure - %@", error);
         failure(error);
     }];
@@ -102,12 +106,9 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
 
 - (void)cancelAllGETs
 {
-    NSLog(@"Cancelling all GET Requests");
-    for (NSURLSessionDataTask *task in self.dataTasks) {
-        NSLog(@"Task - %@", task);
+    for (NSURLSessionDataTask *task in self.tasks) {
         NSURLRequest *originalRequest = task.originalRequest;
         if ([originalRequest.HTTPMethod isEqualToString:@"GET"]) {
-            NSLog(@"Cancelling request - %@", task);
             [task cancel];
         }
     }

@@ -21,7 +21,7 @@
 #import "DDTTYLogger.h"
 #import "DDFileLogger.h"
 
-#if DEV
+#if TAKE_SCREENSHOTS
 #import <SDScreenshotCapture/SDScreenshotCapture.h>
 //#import <SparkInspector/SparkInspector.h>
 #endif
@@ -79,7 +79,7 @@
 //    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     /* StatusMagic screen shot stuff */
-#if DEV
+#if TAKE_SCREENSHOTS
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
     tapGesture.numberOfTouchesRequired = 4;
     [self.window addGestureRecognizer:tapGesture];
@@ -110,7 +110,7 @@
     return YES;
 }
 
-#if DEV
+#if TAKE_SCREENSHOTS
 - (void)tapGestureRecognized:(UITapGestureRecognizer *)tapGesture
 {
     [SDScreenshotCapture takeScreenshotToActivityViewController];
