@@ -89,7 +89,7 @@ static NSString *badgeCountResetKey = @"Grolwers_Badge_Count_Reset";
 + (NSArray *)preferredStores
 {
     NSArray *preferred = [[NSUserDefaults standardUserDefaults] objectForKey:preferredStores];
-    if (preferred.count)
+    if (preferred)
         return preferred;
     else
         return [NSArray arrayWithObject:@"all"];
