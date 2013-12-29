@@ -119,6 +119,8 @@ typedef enum {
     [self setNavigationBarPrompt];
     // Set the tint color
     [self setNavigationBarTint];
+    
+    [[DMGrowlerNetworkModel manager] resetBadgeCount];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -204,9 +206,27 @@ typedef enum {
         to tell my TableViewController that the selected store changed.
         Not sure which I feel is a more elegant solution.
      */
+    
     [[DMGrowlerNetworkModel manager] getBeersForStore:store withSuccess:^(id JSON) {
+        self.beers = JSON;
         if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) {
              // If we're looking at the current tap list, lets see if any are new since we last saw.
+            [self checkForNewBeers];
+        }
+        // Check if we're currently searching the list.
+        // Because if we are and I just reload the tableView.
+        // It goes boom.
+        if ([self.searchDisplayController isActive]) {
+            [self updateFilteredContentForSearchString:self.searchDisplayController.searchBar.text];
+            [self.searchDisplayController.searchResultsTableView reloadData];
+        } else {
+            [self.tableView reloadData];
+        }
+    } andFailure:^(id JSON) {
+        // Should probably do some real error handling like an alert or view to say
+        // no network or call failed but for now we'll just log it out.
+        NSLog(@"Error - %@", JSON);
+    }];
 
 }
 
