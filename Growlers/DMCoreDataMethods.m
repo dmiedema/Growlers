@@ -105,8 +105,10 @@
     NSError *error = nil;
     NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
     
-    for (id beer in matches) {
-        [self.managedContext deleteObject:beer];
+    if (!error) {
+        for (id beer in matches) {
+            [self.managedContext deleteObject:beer];
+        }
     }
     
     if (![self.managedContext save:&error]){
