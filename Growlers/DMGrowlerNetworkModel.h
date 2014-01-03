@@ -7,21 +7,10 @@
 //
 
 #import "AFHTTPSessionManager.h"
-//#import "DMGrowlerAPI.h"
 
 @interface DMGrowlerNetworkModel : AFHTTPSessionManager
 
 typedef void (^JSONResponseBlock)(id JSON);
-
-//typedef enum {
-//    FAVORITE,
-//    UNFAVORITE
-//} BEER_ACTION;
-//
-//typedef enum {
-//    ALL,
-//    ON_TAP
-//} SERVER_FLAG;
 
 - (void)getBeersForStore:(NSString *)store withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
 - (void)favoriteBeer:(NSDictionary *)beer withSuccess:(JSONResponseBlock)success andFailure:(JSONResponseBlock)failure;
