@@ -352,10 +352,12 @@ typedef enum {
     }
     
     // Get ID and check for today == tap.id and highlight
+    // Make sure we're looking at Keizer too
     // OR if the last day of month, all tap_ids >= day number
     // are on sale.
     // And that gives us this horrible if statement.
     if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap &&
+        [self.selectedStore isEqualToString:@"Keizer"] && // "Keizer" is only store that gets this perk.
         ([DMHelperMethods checkToday:beer[@"tap_id"]] ||
          ([DMHelperMethods checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= [DMHelperMethods getToday] )
          )

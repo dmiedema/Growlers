@@ -28,7 +28,7 @@
 - (BOOL)checkForBeerInDatabase:(NSDictionary *)beer
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Beer"];
-    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@", beer[@"name"], beer[@"brewer"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ and brewer = %@ and store = %@", beer[@"name"], beer[@"brewer"], beer[@"store"]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
     request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     
@@ -62,8 +62,10 @@
     NSArray *allCurrentBeers = [self.managedContext executeFetchRequest:request error:&error];
 
     if (allCurrentBeers.count > 0) {
-        for (NSManagedObject *beer in allCurrentBeers) {
-            [self.managedContext deleteObject:beer];
+        for (Beer *beer in allCurrentBeers) {
+            if ([beer.store isEqualToString:[DMDefaultsInterfaceConstants lastStore]]) {
+                [self.managedContext deleteObject:beer];
+            }
         }
         if(![self.managedContext save:&error]) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
