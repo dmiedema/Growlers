@@ -357,7 +357,7 @@ typedef enum {
     // are on sale.
     // And that gives us this horrible if statement.
     if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap &&
-        [self.selectedStore isEqualToString:@"Keizer"] &&
+        [self.selectedStore isEqualToString:@"Keizer"] && // "Keizer" is only store that gets this perk.
         ([DMHelperMethods checkToday:beer[@"tap_id"]] ||
          ([DMHelperMethods checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= [DMHelperMethods getToday] )
          )
