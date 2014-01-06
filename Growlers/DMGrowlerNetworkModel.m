@@ -185,9 +185,10 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     [self POST:DMGrowlerAPIURLString
     parameters:@{@"udid": token, @"key": @"reset-badge-count"}
        success:^(NSURLSessionDataTask *task, id responseObject) {
-        
+           NSLog(@"Reset badge count success");
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+           NSLog(@"Reset badge count failed");
+        NSLog(@"error - %@", error);
     }];
 }
 

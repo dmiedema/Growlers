@@ -29,7 +29,7 @@
 
     #import "DMDefaultsInterfaceConstants.h"
 
-#define DEV 1
+#define DEV 0
 #define TAKE_SCREENSHOTS 0
 
 // Setup UALogger
