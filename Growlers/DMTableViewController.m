@@ -69,8 +69,8 @@ typedef enum {
     // Load up .xib for search results table view
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
     
-//    _logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"launch-Image"]];
-//    self.tableView.backgroundView = _logoImageView;
+    _logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"launch-Image"]];
+    self.tableView.backgroundView = _logoImageView;
     
     // Setup Navigation Bar button Items
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings:)];
@@ -362,7 +362,7 @@ typedef enum {
          ([DMHelperMethods checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= [DMHelperMethods getToday] )
          )
         )
-    {
+    { // We're looking at keizer AND this tap is the special today
         cell.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.35];
         cell.beerName.textColor = [UIColor whiteColor];
         cell.brewery.textColor = [UIColor whiteColor];
@@ -373,6 +373,21 @@ typedef enum {
         cell.beerName.textColor = [UIColor blackColor];
         cell.brewery.textColor = [UIColor blackColor];
         cell.beerInfo.textColor = [UIColor darkGrayColor];
+        
+        // Give all the text a white 1px 'glow' to make it more readable
+        // when over the table background.
+        cell.beerName.layer.shadowColor = [[UIColor whiteColor] CGColor];
+        cell.beerName.layer.shadowOffset = CGSizeZero;
+        cell.beerName.layer.shadowOpacity = 1.0;
+        cell.beerName.layer.shadowRadius = 1.0f;
+        cell.brewery.layer.shadowColor = [[UIColor whiteColor] CGColor];
+        cell.brewery.layer.shadowOffset = CGSizeZero;
+        cell.brewery.layer.shadowOpacity = 1.0;
+        cell.brewery.layer.shadowRadius = 1.0f;
+        cell.beerInfo.layer.shadowColor = [[UIColor whiteColor] CGColor];
+        cell.beerInfo.layer.shadowOffset = CGSizeZero;
+        cell.beerInfo.layer.shadowOpacity = 1.0;
+        cell.beerInfo.layer.shadowRadius = 1.0f;
     } else {
         // If I don't set them back explicitly, after scrolling weird stuff happens.
         cell.backgroundColor = [UIColor colorWithWhite:1 alpha:0.80];
