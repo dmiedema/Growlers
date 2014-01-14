@@ -191,6 +191,7 @@ typedef enum {
     
     // if we're on favorites, we shouldn't be here. Bail.
     if (self.headerSegmentControl.selectedSegmentIndex == ShowFavorites) {
+        [self loadFavorites];
         return;
     }
     
