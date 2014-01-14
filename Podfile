@@ -5,7 +5,6 @@ pod 'GroundControl'
 pod 'HockeySDK'
 pod 'CocoaLumberjack'
 pod 'UALogger'
-#pod 'SparkInspector'
 #pod 'NewRelicAgent'
 pod 'Tapstream'
 #pod 'GoogleAnalytics-iOS-SDK'
@@ -14,6 +13,7 @@ pod 'Tapstream'
 
 # Testing
 pod 'SDScreenshotCapture'
+pod 'SparkInspector'
 
 target :GrowlersTests, :exclusive => true do
   pod 'Kiwi/XCTest'
