@@ -12,6 +12,8 @@
 
 @end
 
+
+
 @implementation DMDefaultsInterfaceConstants
 #pragma mark Static NSStrings for UserDefaults Keys
 // Social
@@ -38,45 +40,60 @@ static NSString *showCurrentStore = @"Growlers_Show_Current_Store_As_Prompt";
 static NSString *anonymousUsage = @"anonymous_usage";
 static NSString *badgeCountResetKey = @"Grolwers_Badge_Count_Reset";
 
+
+#define SI static inline
+
+SI NSUserDefaults *defaults()
+{
+    return [NSUserDefaults standardUserDefaults];
+}
+
+SI void __defaults_save()
+{
+    [defaults() synchronize];
+}
+
+#undef SI
+
 #pragma mark Getters
 // Anonymouse Usage
 + (BOOL)anonymousUsage
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:anonymousUsage];
+    return [defaults() boolForKey:anonymousUsage];
 }
 + (BOOL)badgeCountReset
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:badgeCountResetKey];
+    return [defaults() boolForKey:badgeCountResetKey];
 }
 // Social stuff
 + (BOOL)shareWithFacebookOnFavorite
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:shareWithFacebook];
+    return [defaults() boolForKey:shareWithFacebook];
 }
 + (BOOL)shareWithTwitterOnFavorite
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:shareWithTwitter];
+    return [defaults() boolForKey:shareWithTwitter];
 }
 + (BOOL)askedAboutSharing
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:askedAboutSharing];
+    return [defaults() boolForKey:askedAboutSharing];
 }
 + (NSString *)facebookOAuthKey
 {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:facebookOAuthDefaultsKey];
+    return [defaults() stringForKey:facebookOAuthDefaultsKey];
 }
 + (NSString *)twitterOAuthKey
 {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:twitterOAuthDefaultsKey];
+    return [defaults() stringForKey:twitterOAuthDefaultsKey];
 }
 // Store
 + (BOOL)multipleStoresEnabled
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:multipleStoresKey];
+    return [defaults() boolForKey:multipleStoresKey];
 }
 + (NSString *)lastStore
 {
-    NSString *lastStore = [[NSUserDefaults standardUserDefaults] stringForKey:lastSelectedStore];
+    NSString *lastStore = [defaults() stringForKey:lastSelectedStore];
     if (lastStore)
         return lastStore;
     else
@@ -84,11 +101,11 @@ static NSString *badgeCountResetKey = @"Grolwers_Badge_Count_Reset";
 }
 + (NSString *)preferredStore
 {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:preferredStore];
+    return [defaults() stringForKey:preferredStore];
 }
 + (NSArray *)preferredStores
 {
-    NSArray *preferred = [[NSUserDefaults standardUserDefaults] objectForKey:preferredStores];
+    NSArray *preferred = [defaults() objectForKey:preferredStores];
     if (preferred)
         return preferred;
     else
@@ -96,7 +113,7 @@ static NSString *badgeCountResetKey = @"Grolwers_Badge_Count_Reset";
 }
 + (NSArray *)stores
 {
-    NSArray *stores = [[NSUserDefaults standardUserDefaults] objectForKey:availableStores];
+    NSArray *stores = [defaults() objectForKey:availableStores];
     if (stores)
         return stores;
     else
@@ -104,32 +121,32 @@ static NSString *badgeCountResetKey = @"Grolwers_Badge_Count_Reset";
 }
 + (BOOL)subscribedToSpam
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:spamMeKey];
+    return [defaults() boolForKey:spamMeKey];
 }
 + (NSDictionary *)storeMapLocations
 {
-    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:mapsOfStores];
+    return [defaults() dictionaryForKey:mapsOfStores];
 }
 + (NSDictionary *)storeHours
 {
-    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:storeHours];
+    return [defaults() dictionaryForKey:storeHours];
 }
 + (BOOL)showCurrentStoreOnTapList
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:showCurrentStore];
+    return [defaults() boolForKey:showCurrentStore];
 }
 // Push/UDID
 + (NSString *)pushID
 {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:pushID];
+    return [defaults() stringForKey:pushID];
 }
 + (NSString *)generatedUDID
 {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:generatedUDID];
+    return [defaults() stringForKey:generatedUDID];
 }
 + (BOOL)preferredStoresSynced
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:syncedStores];
+    return [defaults() boolForKey:syncedStores];
 }
 + (NSString *)getValidUniqueID
 {
@@ -143,49 +160,49 @@ static NSString *badgeCountResetKey = @"Grolwers_Badge_Count_Reset";
 // Social stuff
 + (void)shareWithFacebookOnFavorite:(BOOL)imSocial
 {
-    [[NSUserDefaults standardUserDefaults] setBool:imSocial forKey:shareWithFacebook];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setBool:imSocial forKey:shareWithFacebook];
+    __defaults_save();
 }
 + (void)shareWithTwitterOnFavorite:(BOOL)imSocial
 {
-    [[NSUserDefaults standardUserDefaults] setBool:imSocial forKey:shareWithTwitter];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setBool:imSocial forKey:shareWithTwitter];
+    __defaults_save();
 }
 + (void)askedAboutSharing:(BOOL)imSocial
 {
-    [[NSUserDefaults standardUserDefaults] setBool:imSocial forKey:askedAboutSharing];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setBool:imSocial forKey:askedAboutSharing];
+    __defaults_save();
 }
 + (void)setFacebookOAuthKey:(NSString *)facebookKey
 {
-    [[NSUserDefaults standardUserDefaults] setValue:facebookKey forKey:facebookOAuthDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setValue:facebookKey forKey:facebookOAuthDefaultsKey];
+    __defaults_save();
 }
 + (void)setTwitterOAuthKey:(NSString *)twitterKey
 {
-    [[NSUserDefaults standardUserDefaults] setValue:twitterKey forKey:twitterOAuthDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setValue:twitterKey forKey:twitterOAuthDefaultsKey];
+    __defaults_save();
 }
 // Store
 + (void)setMultipleStoresEnabled:(BOOL)weBallin
 {
-    [[NSUserDefaults standardUserDefaults] setBool:weBallin forKey:multipleStoresKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setBool:weBallin forKey:multipleStoresKey];
+    __defaults_save();
 }
 + (void)setLastStore:(NSString *)lastStore
 {
-    [[NSUserDefaults standardUserDefaults] setValue:lastStore forKey:lastSelectedStore];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setValue:lastStore forKey:lastSelectedStore];
+    __defaults_save();
 }
 + (void)setPreferredStore:(NSString *)preferred
 {
-    [[NSUserDefaults standardUserDefaults] setValue:preferred forKey:preferredStore];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setValue:preferred forKey:preferredStore];
+    __defaults_save();
 }
 + (void)setPreferredStores:(NSArray *)stores
 {
-    [[NSUserDefaults standardUserDefaults] setObject:stores forKey:preferredStores];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setObject:stores forKey:preferredStores];
+    __defaults_save();
 }
 + (void)addPreferredStore:(NSString *)store
 {
@@ -205,43 +222,43 @@ static NSString *badgeCountResetKey = @"Grolwers_Badge_Count_Reset";
 }
 + (void)setPreferredStoresSynced:(BOOL)synced
 {
-    [[NSUserDefaults standardUserDefaults] setBool:synced forKey:syncedStores];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setBool:synced forKey:syncedStores];
+    __defaults_save();
 }
 + (void)setSubscribeToSpam:(BOOL)spamMe
 {
-    [[NSUserDefaults standardUserDefaults] setBool:spamMe forKey:spamMeKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setBool:spamMe forKey:spamMeKey];
+    __defaults_save();
 }
 + (void)setShowCurrentStoreOnTapList:(BOOL)showStore
 {
-    [[NSUserDefaults standardUserDefaults] setBool:showStore forKey:showCurrentStore];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setBool:showStore forKey:showCurrentStore];
+    __defaults_save();
 }
 // Push/UDID
 + (void)setPushID:(NSString *)push
 {
-    [[NSUserDefaults standardUserDefaults] setValue:push forKey:pushID];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setValue:push forKey:pushID];
+    __defaults_save();
 }
 + (void)setGeneratedUDID:(NSString *)generated
 {
-    [[NSUserDefaults standardUserDefaults] setValue:generated forKey:generatedUDID];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setValue:generated forKey:generatedUDID];
+    __defaults_save();
 }
 // Anonymouse
 + (void)setBadgeCountReset:(BOOL)resetPlease
 {
-    [[NSUserDefaults standardUserDefaults] setBool:resetPlease forKey:badgeCountResetKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults() setBool:resetPlease forKey:badgeCountResetKey];
+    __defaults_save();
 }
 
 #pragma mark Batch
 + (void)batchUpdate:(NSArray *)updateValues
 {
     for (NSDictionary *dict in updateValues) {
-        [[NSUserDefaults standardUserDefaults] setValue:dict.allValues.lastObject forKey:dict.allKeys.lastObject];
+        [defaults() setValue:dict.allValues.lastObject forKey:dict.allKeys.lastObject];
     }
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    __defaults_save();
 }
 @end
