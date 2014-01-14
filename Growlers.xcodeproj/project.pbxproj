@@ -349,6 +349,7 @@
 				C3DD53CB17967D470086A7E2 /* Frameworks */,
 				C3DD53CC17967D470086A7E2 /* Resources */,
 				69FF23395AD54E6092E5E5BD /* Copy Pods Resources */,
+				C3AE93351885015500B064BF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -511,6 +512,19 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		C3AE93351885015500B064BF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "####\n# XcodeBuildUpdate\n# Created by Daniel Miedema\n# MIT License\n####\n\n# Variables -- change as needed\nPROD_BRANCH=\"master\"\nBUILD=\"0\"\n\nCURRENT_BRANCH=$(git branch | grep \"*\" | cut -d ' ' -f 2)\nCOMMIT_COUNT=$(git rev-list HEAD --count)\nCOMMIT_SHA=$(git rev-list --max-count=1 HEAD | cut -c1-6)\n\nif [[ $PROD_BRANCH == $CURRENT_BRANCH ]]; then\nBUILD=\"$COMMIT_COUNT\"\nelse\nBUILD=\"$COMMIT_SHA\"\nfi\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD\" \"$INFOPLIST_FILE\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
