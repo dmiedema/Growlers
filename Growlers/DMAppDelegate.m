@@ -85,7 +85,17 @@
     tapGesture.numberOfTouchesRequired = 4;
     [self.window addGestureRecognizer:tapGesture];
 #endif
-        
+    
+    /* Settings App Bundle */
+//    NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+//    [[NSUserDefaults standardUserDefaults] setObject:build forKey:@"build_preferences"];
+//    
+//    NSString *verison = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+//    [[NSUserDefaults standardUserDefaults] setObject:verison forKey:@"version_preferences"];
+//    
+//    NSString *madeBy = @"";
+//    [[NSUserDefaults standardUserDefaults] setObject:madeBy forKey:@"made_by"];
+    
     /* AFNetworking indicator */
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     

@@ -524,7 +524,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "####\n# XcodeBuildUpdate\n# Created by Daniel Miedema\n# MIT License\n####\n\n# Variables -- change as needed\nPROD_BRANCH=\"master\"\nBUILD=\"0\"\n\nCURRENT_BRANCH=$(git branch | grep \"*\" | cut -d ' ' -f 2)\nCOMMIT_COUNT=$(git rev-list HEAD --count)\nCOMMIT_SHA=$(git rev-list --max-count=1 HEAD | cut -c1-6)\n\nif [[ $PROD_BRANCH == $CURRENT_BRANCH ]]; then\nBUILD=\"$COMMIT_COUNT\"\nelse\nBUILD=\"$COMMIT_SHA\"\nfi\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD\" \"$INFOPLIST_FILE\"";
+			shellScript = "####\n# XcodeBuildUpdate\n# Created by Daniel Miedema\n# MIT License\n####\n\n# Variables -- change as needed\nPROD_BRANCH=\"master\"\nBUILD=\"0\"\n\nCURRENT_BRANCH=$(git branch | grep \"*\" | cut -d ' ' -f 2)\nCOMMIT_COUNT=$(git rev-list HEAD --count)\nCOMMIT_SHA=$(git rev-list --max-count=1 HEAD | cut -c1-6)\n\nif [[ $PROD_BRANCH == $CURRENT_BRANCH ]]; then\nBUILD=\"$COMMIT_COUNT\"\nelse\nBUILD=\"$COMMIT_SHA\"\nfi\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD\" \"$INFOPLIST_FILE\"\n\nVERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\n\nPATH=\"$SRCROOT/$PROJECT_NAME/Settings.bundle/Root.plist\"\n\n/usr/libexec/PlistBuddy -c \"Set PreferenceSpecifiers:1:DefaultValue $VERSION\" \"$PATH\"\n/usr/libexec/PlistBuddy -c \"Set PreferenceSpecifiers:2:DefaultValue $BUILD\" \"$PATH\"\n\nexit 0";
 		};
 /* End PBXShellScriptBuildPhase section */
 
