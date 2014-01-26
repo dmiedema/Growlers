@@ -18,9 +18,9 @@
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
 {
     self = [super init];
-    if (!self) { return nil; }
-    
-    self.managedContext = context;
+    if (self) {
+        self.managedContext = context;
+    }
     return self;
 }
 
