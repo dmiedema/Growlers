@@ -19,6 +19,8 @@
 #import "DMCoreDataMethods.h"
 #import "DMGrowlerNetworkModel.h"
 
+#import "DMAPIKeys.h"
+
 #import "DDTTYLogger.h"
 #import "DDFileLogger.h"
 
@@ -61,7 +63,14 @@
         [DMDefaultsInterfaceConstants setDefaultPreferredStore];
     
     /* Hockey Testing */
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"c4e28d986734b9f0c8b5716244112805" delegate:self];
+    NSString *hockeyIdentifier = nil;
+#if DEV
+     hockeyIdentifier = @"c4e28d986734b9f0c8b5716244112805";
+#else
+    hockeyIdentifier = kGrowlers_HockeyApp_Production_API_Key;
+#endif
+    
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:hockeyIdentifier delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
     
     /* Logging */
@@ -127,10 +136,12 @@
     /* NewRelic */
 #if DEV
     [NRLogger setLogLevels:NRLogLevelALL];
+    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
 #else
     [NRLogger setLogLevels:NRLogLevelWarning];
+    [NewRelicAgent startWithApplicationToken:kGrowlers_NewRelic_Production_API_Key];
 #endif
-    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
+    
     
     /* Auto submit crash reports to hockey */
     [BITHockeyManager sharedHockeyManager].crashManager.crashManagerStatus = BITCrashManagerStatusAutoSend;
