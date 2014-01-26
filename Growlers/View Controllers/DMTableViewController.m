@@ -183,6 +183,9 @@ typedef enum {
 //    if (self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) {
 //        [self resetHighlightedBeers];
 //    }
+    
+    // Set the tine when I go to load beers
+    [self setNavigationBarTint];
     // if we're spinnin' and refreshin'
     // ... stop it.
     if (self.refreshControl.refreshing) {
@@ -214,6 +217,11 @@ typedef enum {
         if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) {
              // If we're looking at the current tap list, lets see if any are new since we last saw.
             [self checkForNewBeers];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            });
         }
         // Check if we're currently searching the list.
         // Because if we are and I just reload the tableView.
@@ -559,7 +567,6 @@ typedef enum {
     if (actionSheet.cancelButtonIndex != buttonIndex) {
         self.selectedStore = [actionSheet buttonTitleAtIndex:buttonIndex];
         [DMDefaultsInterfaceConstants setLastStore:self.selectedStore];
-        [self setNavigationBarTint];
         [self loadBeers];
         [self setNavigationBarPrompt];
     }
