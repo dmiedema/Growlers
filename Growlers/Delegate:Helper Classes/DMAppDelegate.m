@@ -13,8 +13,8 @@
 #import "AFNetworkActivityIndicatorManager.h"
 // analytics
 #import "TSTapstream.h"
+#import <NewRelicAgent/NewRelicAgent.h>
 // #import "GAI.h"
-//#import <NewRelicAgent/NewRelicAgent.h>
 // CoreDataMethods for URL handling
 #import "DMCoreDataMethods.h"
 #import "DMGrowlerNetworkModel.h"
@@ -125,7 +125,12 @@
 - (void)setupTracking
 {
     /* NewRelic */
-//    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
+#if DEV
+    [NRLogger setLogLevels:NRLogLevelALL];
+#else
+    [NRLogger setLogLevels:NRLogLevelWarning];
+#endif
+    [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
     
     /* Auto submit crash reports to hockey */
     [BITHockeyManager sharedHockeyManager].crashManager.crashManagerStatus = BITCrashManagerStatusAutoSend;

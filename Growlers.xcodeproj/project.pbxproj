@@ -683,6 +683,10 @@
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Daniel Miedema (86S6946F3E)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Growlers/Supporting Files/Growlers-Prefix.pch";
 				INFOPLIST_FILE = "Growlers/Supporting Files/Growlers-Info.plist";
@@ -703,6 +707,10 @@
 				CODE_SIGN_ENTITLEMENTS = Growlers/Growlers.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Daniel Miedema (86S6946F3E)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Growlers/Supporting Files/Growlers-Prefix.pch";
 				INFOPLIST_FILE = "Growlers/Supporting Files/Growlers-Info.plist";
