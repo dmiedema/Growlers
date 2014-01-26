@@ -68,9 +68,10 @@ typedef enum {
     [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
     // Load up .xib for search results table view
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
-    
-    _logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"launch-Image"]];
-    self.tableView.backgroundView = _logoImageView;
+
+    // Static logo image behind table view -- makes things really hard to read.
+//    _logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"launch-Image"]];
+//    self.tableView.backgroundView = _logoImageView;
     
     // Setup Navigation Bar button Items
     UIBarButtonItem *info = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings:)];
@@ -374,21 +375,6 @@ typedef enum {
         cell.beerName.textColor = [UIColor blackColor];
         cell.brewery.textColor = [UIColor blackColor];
         cell.beerInfo.textColor = [UIColor darkGrayColor];
-        
-        // Give all the text a white 1px 'glow' to make it more readable
-        // when over the table background.
-        cell.beerName.layer.shadowColor = [[UIColor whiteColor] CGColor];
-        cell.beerName.layer.shadowOffset = CGSizeZero;
-        cell.beerName.layer.shadowOpacity = 1.0;
-        cell.beerName.layer.shadowRadius = 1.0f;
-        cell.brewery.layer.shadowColor = [[UIColor whiteColor] CGColor];
-        cell.brewery.layer.shadowOffset = CGSizeZero;
-        cell.brewery.layer.shadowOpacity = 1.0;
-        cell.brewery.layer.shadowRadius = 1.0f;
-        cell.beerInfo.layer.shadowColor = [[UIColor whiteColor] CGColor];
-        cell.beerInfo.layer.shadowOffset = CGSizeZero;
-        cell.beerInfo.layer.shadowOpacity = 1.0;
-        cell.beerInfo.layer.shadowRadius = 1.0f;
     } else {
         // If I don't set them back explicitly, after scrolling weird stuff happens.
         cell.backgroundColor = [UIColor colorWithWhite:1 alpha:0.80];
@@ -398,12 +384,14 @@ typedef enum {
     }
     
     // check if beer is favorite
-    // If it is it gets a yellow dot.
+    // If it is it layer opacity is set to 1
     if ([_coreData isBeerFavorited:beer]) {
-        cell.favoriteMarker.backgroundColor = [DMHelperMethods growlersYellowColor:AlphaBeerFavorites];
+        [cell.favoriteMarker.layer setOpacity:1.0];
     } else {
-        cell.favoriteMarker.backgroundColor = [UIColor clearColor];
+        [cell.favoriteMarker.layer setOpacity:0.0];
     }
+    // Set background to the yellow I want
+    cell.favoriteMarker.backgroundColor = [DMHelperMethods growlersYellowColor:AlphaBeerFavorites];
     // square dots aren't dots... they're squares.
     cell.favoriteMarker.layer.masksToBounds = YES;
     cell.favoriteMarker.layer.cornerRadius = cell.favoriteMarker.bounds.size.width / 2.0;
@@ -478,7 +466,7 @@ typedef enum {
             favBeer[@"store"] = preferredStore;
             [_coreData unFavoriteBeer:favBeer];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-            cell.favoriteMarker.backgroundColor = [UIColor clearColor];
+            [DMHelperMethods animateOpacityForLayer:cell.favoriteMarker.layer to:[NSNumber numberWithFloat:0.0] from:[NSNumber numberWithFloat:1.0] duration:[NSNumber numberWithFloat:0.25]];
         } andFailure:^(id JSON) {
             // should handle it but i'll just log for now
             NSLog(@"unfavoriting failed: %@", JSON);
@@ -495,7 +483,8 @@ typedef enum {
             favBeer[@"store"] = preferredStore;
             [_coreData favoriteBeer:favBeer];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-            cell.favoriteMarker.backgroundColor = [DMHelperMethods growlersYellowColor:AlphaBeerFavorites];
+            
+            [DMHelperMethods animateOpacityForLayer:cell.favoriteMarker.layer to:[NSNumber numberWithFloat:1.0] from:[NSNumber numberWithFloat:0.0] duration:[NSNumber numberWithFloat:0.25]];
         } andFailure:^(id JSON) {
             // Handle failure
             // But for now, just log.
