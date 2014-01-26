@@ -13,7 +13,7 @@
 #import "AFNetworkActivityIndicatorManager.h"
 // analytics
 #import "TSTapstream.h"
-#import "GAI.h"
+// #import "GAI.h"
 //#import <NewRelicAgent/NewRelicAgent.h>
 // CoreDataMethods for URL handling
 #import "DMCoreDataMethods.h"
@@ -47,7 +47,7 @@
 {
     _generatedUDID = [NSString string];
     _generatedUDID = [DMDefaultsInterfaceConstants generatedUDID];
-    if (_generatedUDID == nil) {
+    if (!_generatedUDID) {
         _generatedUDID = [[NSUUID UUID] UUIDString];
         [DMDefaultsInterfaceConstants setGeneratedUDID:_generatedUDID];
     }
@@ -55,8 +55,6 @@
     /* If we're sending anonymous usage reports */
     if ([DMDefaultsInterfaceConstants anonymousUsage]) {
         [self setupTracking];
-    } else {
-//        [[GAI sharedInstance] setOptOut:YES];
     }
     
     if(![DMDefaultsInterfaceConstants preferredStore])
@@ -87,14 +85,14 @@
 #endif
     
     /* Settings App Bundle */
-//    NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-//    [[NSUserDefaults standardUserDefaults] setObject:build forKey:@"build_preferences"];
-//    
-//    NSString *verison = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-//    [[NSUserDefaults standardUserDefaults] setObject:verison forKey:@"version_preferences"];
-//    
-//    NSString *madeBy = @"";
-//    [[NSUserDefaults standardUserDefaults] setObject:madeBy forKey:@"made_by"];
+    NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:build forKey:@"build_preferences"];
+    
+    NSString *verison = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [[NSUserDefaults standardUserDefaults] setObject:verison forKey:@"version_preferences"];
+    
+    NSString *madeBy = @"";
+    [[NSUserDefaults standardUserDefaults] setObject:madeBy forKey:@"made_by"];
     
     /* AFNetworking indicator */
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;

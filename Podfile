@@ -10,6 +10,7 @@ pod 'Tapstream'
 #pod 'GoogleAnalytics-iOS-SDK'
 #pod 'OHAttributedLabel'
 #pod 'MessageBarManager'
+#pod 'WCFastCell'
 
 # Testing
 pod 'SDScreenshotCapture'
