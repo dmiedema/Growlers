@@ -14,6 +14,7 @@
 // analytics
 #import "TSTapstream.h"
 #import <NewRelicAgent/NewRelicAgent.h>
+#import <Crashlytics/Crashlytics.h>
 // #import "GAI.h"
 // CoreDataMethods for URL handling
 #import "DMCoreDataMethods.h"
@@ -24,7 +25,7 @@
 #import "DDTTYLogger.h"
 #import "DDFileLogger.h"
 
-#if TAKE_SCREENSHOTS
+#if TAKE_SCREENSHOTS == 1
 #import <SDScreenshotCapture/SDScreenshotCapture.h>
 #import <SparkInspector/SparkInspector.h>
 #endif
@@ -64,7 +65,7 @@
     
     /* Hockey Testing */
     NSString *hockeyIdentifier = nil;
-#if DEV
+#if DEV == 1
      hockeyIdentifier = @"c4e28d986734b9f0c8b5716244112805";
 #else
     hockeyIdentifier = kGrowlers_HockeyApp_Production_API_Key;
@@ -72,6 +73,10 @@
     
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:hockeyIdentifier delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
+    
+    /* Crashlytics */
+    [Crashlytics startWithAPIKey:kGrowlers_Crashlytics_API_Key];
+    
     
     /* Logging */
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
@@ -87,7 +92,7 @@
 //    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     /* StatusMagic screen shot stuff */
-#if TAKE_SCREENSHOTS
+#if TAKE_SCREENSHOTS == 1
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
     tapGesture.numberOfTouchesRequired = 4;
     [self.window addGestureRecognizer:tapGesture];
@@ -118,7 +123,7 @@
     return YES;
 }
 
-#if TAKE_SCREENSHOTS
+#if TAKE_SCREENSHOTS == 1
 - (void)tapGestureRecognized:(UITapGestureRecognizer *)tapGesture
 {
     [SDScreenshotCapture takeScreenshotToActivityViewController];
@@ -134,8 +139,8 @@
 - (void)setupTracking
 {
     /* NewRelic */
-#if DEV
-    [NRLogger setLogLevels:NRLogLevelALL];
+#if DEV == 1
+//    [NRLogger setLogLevels:NRLogLevelALL];
     [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
 #else
     [NRLogger setLogLevels:NRLogLevelWarning];

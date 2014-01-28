@@ -327,7 +327,7 @@ typedef enum {
             } else {
                 asprintf(&beerInfoText, "IBU: %s  ABV: %s", [beer[@"ibu"] UTF8String], [beer[@"abv"] UTF8String]);
             }
-            
+    
             break;
     }
     cell.beerName.text = [NSString stringWithCString:beerNameText encoding:NSUTF8StringEncoding];

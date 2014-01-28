@@ -12,6 +12,7 @@
 		C33DAC84179C5FD400F208AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC83179C5FD400F208AB /* QuartzCore.framework */; };
 		C33DAC8E179C8FF200F208AB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DAC8D179C8FF200F208AB /* CoreData.framework */; };
 		C33DACA617A2619700F208AB /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DACA517A2619700F208AB /* CoreText.framework */; };
+		C33FFAB31897750D003AC029 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33FFAB21897750D003AC029 /* Crashlytics.framework */; };
 		C3477C0E17A56E6F008900B5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3477C0D17A56E6F008900B5 /* Default-568h@2x.png */; };
 		C349589D17A79FEA00E45B3D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C349589C17A79FEA00E45B3D /* Settings.bundle */; };
 		C3642F8217F381EE00096EED /* Tutorial-3_5.png in Resources */ = {isa = PBXBuildFile; fileRef = C3642F8017F381EE00096EED /* Tutorial-3_5.png */; };
@@ -75,6 +76,7 @@
 		C33DAC83179C5FD400F208AB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C33DAC8D179C8FF200F208AB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C33DACA517A2619700F208AB /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		C33FFAB21897750D003AC029 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		C3477C0D17A56E6F008900B5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C349589917A774F500E45B3D /* Growlers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Growlers.entitlements; sourceTree = "<group>"; };
 		C349589C17A79FEA00E45B3D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Growlers/Settings.bundle; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				C37DD34D17A3AD6300EAC24A /* MapKit.framework in Frameworks */,
 				C38285C717A4D0700058D304 /* MessageUI.framework in Frameworks */,
 				C33DACA617A2619700F208AB /* CoreText.framework in Frameworks */,
+				C33FFAB31897750D003AC029 /* Crashlytics.framework in Frameworks */,
 				C3DD53D417967D470086A7E2 /* CoreGraphics.framework in Frameworks */,
 				C33DAC8E179C8FF200F208AB /* CoreData.framework in Frameworks */,
 				C3DD54191797BA620086A7E2 /* SystemConfiguration.framework in Frameworks */,
@@ -263,6 +266,7 @@
 		C3DD53D017967D470086A7E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C33FFAB21897750D003AC029 /* Crashlytics.framework */,
 				C3015A4017F0212D002F7E18 /* Twitter.framework */,
 				C3015A3E17F02124002F7E18 /* Social.framework */,
 				C3E5DE1817BC6A03006DE900 /* CoreImage.framework */,
@@ -349,6 +353,7 @@
 				C3DD53CC17967D470086A7E2 /* Resources */,
 				69FF23395AD54E6092E5E5BD /* Copy Pods Resources */,
 				C3AE93341884FE1E00B064BF /* ShellScript */,
+				C33FFAB1189774E2003AC029 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -512,6 +517,19 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		C33FFAB1189774E2003AC029 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run a4e8e7fb0fbbc4484daebe40cef16e5ebafd98d0";
 		};
 		C3AE93341884FE1E00B064BF /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
