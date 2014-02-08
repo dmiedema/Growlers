@@ -100,4 +100,32 @@
     return [UIColor colorWithRed:0/255.0 green:122/255.0 blue:255/255.0 alpha:1.0];
 }
 
++ (void)animateOpacityForLayer:(CALayer *)layer to:(NSNumber *)to from:(NSNumber *)from duration:(NSNumber *)duration
+{
+    /*
+     [cell.favoriteMarker.layer setOpacity:0.0];
+     cell.favoriteMarker.backgroundColor = [DMHelperMethods growlersYellowColor:AlphaBeerFavorites];
+     
+     CABasicAnimation *basicAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+     basicAnimation.fromValue = [NSNumber numberWithFloat:0.0];
+     basicAnimation.toValue = [NSNumber numberWithFloat:1.0];
+     basicAnimation.duration = 0.25;
+     
+     [cell.favoriteMarker.layer addAnimation:basicAnimation forKey:@"opacity"];
+     [cell.favoriteMarker.layer setOpacity:1.0];
+     */
+    // Make sure we're on the main queue
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [layer setOpacity:from.floatValue];
+        
+        CABasicAnimation *basicAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        basicAnimation.fromValue = from;
+        basicAnimation.toValue = to;
+        basicAnimation.duration = duration.doubleValue;
+        
+        [layer addAnimation:basicAnimation forKey:@"opacity"];
+        
+        [layer setOpacity:to.floatValue];
+    });
+}
 @end

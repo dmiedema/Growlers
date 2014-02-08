@@ -68,7 +68,8 @@ typedef enum {
     [self.tableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
     // Load up .xib for search results table view
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"DMGrowlerTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"growlerCell"];
-    
+
+    // Static logo image behind table view -- makes things really hard to read.
 //    _logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"launch-Image"]];
 //    self.tableView.backgroundView = _logoImageView;
     
@@ -119,6 +120,16 @@ typedef enum {
     [self setNavigationBarPrompt];
     // Set the tint color
     [self setNavigationBarTint];
+    
+    if (![DMDefaultsInterfaceConstants favoritesEverReconciled]) {
+        NSLog(@"RECONCILING!!!!");
+        [[DMGrowlerNetworkModel manager] getBeersForStore:@"all" withSuccess:^(id JSON) {
+            DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
+            [coreData reconcileFavoritesWithServer:JSON];
+        } andFailure:^(id JSON) {
+            NSLog(@"Failure Getting all beers");
+        }];
+    }
     
     [[DMGrowlerNetworkModel manager] resetBadgeCount];
 }
@@ -182,6 +193,9 @@ typedef enum {
 //    if (self.refreshControl.refreshing && self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) {
 //        [self resetHighlightedBeers];
 //    }
+    
+    // Set the tine when I go to load beers
+    [self setNavigationBarTint];
     // if we're spinnin' and refreshin'
     // ... stop it.
     if (self.refreshControl.refreshing) {
@@ -191,6 +205,7 @@ typedef enum {
     
     // if we're on favorites, we shouldn't be here. Bail.
     if (self.headerSegmentControl.selectedSegmentIndex == ShowFavorites) {
+        [self loadFavorites];
         return;
     }
     
@@ -212,6 +227,11 @@ typedef enum {
         if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) {
              // If we're looking at the current tap list, lets see if any are new since we last saw.
             [self checkForNewBeers];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            });
         }
         // Check if we're currently searching the list.
         // Because if we are and I just reload the tableView.
@@ -317,7 +337,7 @@ typedef enum {
             } else {
                 asprintf(&beerInfoText, "IBU: %s  ABV: %s", [beer[@"ibu"] UTF8String], [beer[@"abv"] UTF8String]);
             }
-            
+    
             break;
     }
     cell.beerName.text = [NSString stringWithCString:beerNameText encoding:NSUTF8StringEncoding];
@@ -362,7 +382,7 @@ typedef enum {
          ([DMHelperMethods checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= [DMHelperMethods getToday] )
          )
         )
-    {
+    { // We're looking at keizer AND this tap is the special today
         cell.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.35];
         cell.beerName.textColor = [UIColor whiteColor];
         cell.brewery.textColor = [UIColor whiteColor];
@@ -382,12 +402,14 @@ typedef enum {
     }
     
     // check if beer is favorite
-    // If it is it gets a yellow dot.
+    // If it is it layer opacity is set to 1
     if ([_coreData isBeerFavorited:beer]) {
-        cell.favoriteMarker.backgroundColor = [DMHelperMethods growlersYellowColor:AlphaBeerFavorites];
+        [cell.favoriteMarker.layer setOpacity:1.0];
     } else {
-        cell.favoriteMarker.backgroundColor = [UIColor clearColor];
+        [cell.favoriteMarker.layer setOpacity:0.0];
     }
+    // Set background to the yellow I want
+    cell.favoriteMarker.backgroundColor = [DMHelperMethods growlersYellowColor:AlphaBeerFavorites];
     // square dots aren't dots... they're squares.
     cell.favoriteMarker.layer.masksToBounds = YES;
     cell.favoriteMarker.layer.cornerRadius = cell.favoriteMarker.bounds.size.width / 2.0;
@@ -462,7 +484,7 @@ typedef enum {
             favBeer[@"store"] = preferredStore;
             [_coreData unFavoriteBeer:favBeer];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-            cell.favoriteMarker.backgroundColor = [UIColor clearColor];
+            [DMHelperMethods animateOpacityForLayer:cell.favoriteMarker.layer to:[NSNumber numberWithFloat:0.0] from:[NSNumber numberWithFloat:1.0] duration:[NSNumber numberWithFloat:0.25]];
         } andFailure:^(id JSON) {
             // should handle it but i'll just log for now
             NSLog(@"unfavoriting failed: %@", JSON);
@@ -479,7 +501,8 @@ typedef enum {
             favBeer[@"store"] = preferredStore;
             [_coreData favoriteBeer:favBeer];
             DMGrowlerTableViewCell *cell = (DMGrowlerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-            cell.favoriteMarker.backgroundColor = [DMHelperMethods growlersYellowColor:AlphaBeerFavorites];
+            
+            [DMHelperMethods animateOpacityForLayer:cell.favoriteMarker.layer to:[NSNumber numberWithFloat:1.0] from:[NSNumber numberWithFloat:0.0] duration:[NSNumber numberWithFloat:0.25]];
         } andFailure:^(id JSON) {
             // Handle failure
             // But for now, just log.
@@ -554,7 +577,6 @@ typedef enum {
     if (actionSheet.cancelButtonIndex != buttonIndex) {
         self.selectedStore = [actionSheet buttonTitleAtIndex:buttonIndex];
         [DMDefaultsInterfaceConstants setLastStore:self.selectedStore];
-        [self setNavigationBarTint];
         [self loadBeers];
         [self setNavigationBarPrompt];
     }

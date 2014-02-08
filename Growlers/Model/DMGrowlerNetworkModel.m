@@ -9,10 +9,10 @@
 #import "DMGrowlerNetworkModel.h"
 #import "TSTapstream.h"
 
-@interface DMGrowlerNetworkModel()
+@interface DMGrowlerNetworkModel() <NSURLSessionDownloadDelegate>
 @end
 
-#if DEV
+#if DEV == 1
 static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/GrowlersAppPage-dev.php";
 #else
 static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/GrowlersAppPage.php";
@@ -38,6 +38,11 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     if (self) {
         self.responseSerializer = [AFJSONResponseSerializer serializer];
         self.requestSerializer = [AFJSONRequestSerializer serializer];
+        
+        [self setDataTaskDidReceiveDataBlock:^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
+            NSLog(@"Total Expected to Receive - %lli", dataTask.countOfBytesExpectedToReceive);
+            NSLog(@"Received - %lli", dataTask.countOfBytesReceived);
+        }];
     }
     return self;
 }

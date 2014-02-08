@@ -5,74 +5,74 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>About</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>0.12.0</string>
-			<key>Type</key>
-			<string>PSTitleValueSpecifier</string>
-			<key>Title</key>
-			<string>Version</string>
+			<string>Bean &amp; Cheese</string>
 			<key>Key</key>
 			<string>version_preferences</string>
+			<key>Title</key>
+			<string>Version</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>0</string>
-			<key>Type</key>
-			<string>PSTitleValueSpecifier</string>
-			<key>Title</key>
-			<string>Build</string>
+			<string>83c706</string>
 			<key>Key</key>
 			<string>build_preferences</string>
+			<key>Title</key>
+			<string>Build</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
 			<string>Legal Stuff</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-			<key>Title</key>
-			<string>Acknowledgements</string>
 			<key>File</key>
 			<string>Acknowledgements</string>
+			<key>Title</key>
+			<string>Acknowledgements</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>Other</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
 			<string> </string>
-			<key>Type</key>
-			<string>PSTitleValueSpecifier</string>
-			<key>Title</key>
-			<string>Made with Love by Daniel Miedema</string>
 			<key>Key</key>
 			<string>made_by</string>
+			<key>Title</key>
+			<string>Made with Love by Daniel Miedema</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
 		</dict>
 		<dict>
 			<key>FooterText</key>
 			<string>GM Taplist can send anonymous usage reports to help us improve the app.</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>Anonymous Usage Reports</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Send Usage Reports</string>
-			<key>Key</key>
-			<string>anonymous_usage</string>
 			<key>DefaultValue</key>
 			<true/>
+			<key>Key</key>
+			<string>anonymous_usage</string>
+			<key>Title</key>
+			<string>Send Usage Reports</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>
