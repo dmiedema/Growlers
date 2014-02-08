@@ -35,6 +35,7 @@
 + (BOOL)badgeCountReset;
 // Other
 + (NSString *)getValidUniqueID;
++ (BOOL)favoritesEverReconciled;
 
 
 //** Setters
@@ -60,6 +61,7 @@
 + (void)setShowCurrentStoreOnTapList:(BOOL)showStore;
 // Anonymouse
 + (void)setBadgeCountReset:(BOOL)resetPlease;
++ (void)setFavoritesEverReconciled:(BOOL)reconciled;
 // Other
 + (void)batchUpdate:(NSArray *)updateValues;
 

@@ -39,7 +39,8 @@ static NSString *showCurrentStore = @"Growlers_Show_Current_Store_As_Prompt";
 // Anonymouse
 static NSString *anonymousUsage = @"anonymous_usage";
 static NSString *badgeCountResetKey = @"Grolwers_Badge_Count_Reset";
-
+// Other
+static NSString *favoritesEverReconciledKey = @"Grolwers_Favorites_Ever_Reconciled";
 
 #define SI static inline
 
@@ -133,7 +134,11 @@ SI void __defaults_save()
 }
 + (BOOL)showCurrentStoreOnTapList
 {
-    return [defaults() boolForKey:showCurrentStore];
+    if ([defaults() objectForKey:showCurrentStore] == nil) {
+        return YES;
+    } else {
+        return [defaults() boolForKey:showCurrentStore];
+    }
 }
 // Push/UDID
 + (NSString *)pushID
@@ -154,6 +159,12 @@ SI void __defaults_save()
     ? [DMDefaultsInterfaceConstants pushID]
     : [DMDefaultsInterfaceConstants generatedUDID];
 }
+
+// Other
++ (BOOL)favoritesEverReconciled {
+    return ([defaults() objectForKey:favoritesEverReconciledKey] == nil) ? NO : [defaults() boolForKey:favoritesEverReconciledKey];
+}
+
 
 #pragma mark Setters
 
@@ -250,6 +261,11 @@ SI void __defaults_save()
 + (void)setBadgeCountReset:(BOOL)resetPlease
 {
     [defaults() setBool:resetPlease forKey:badgeCountResetKey];
+    __defaults_save();
+}
+// Other
++ (void)setFavoritesEverReconciled:(BOOL)reconciled {
+    [defaults() setBool:reconciled forKey:favoritesEverReconciledKey];
     __defaults_save();
 }
 
