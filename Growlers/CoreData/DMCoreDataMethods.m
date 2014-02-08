@@ -47,7 +47,7 @@
     NSArray *results = [self.managedContext executeFetchRequest:request error:&error];
     
     if (error) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         return nil;
     }
     return results;
@@ -68,7 +68,7 @@
             }
         }
         if(![self.managedContext save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         }
     }
     
@@ -78,7 +78,7 @@
         newBeer = [self applyDefaultValuesToEntityObject:newBeer withParameters:beer];
     }
     if (![self.managedContext save:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
 }
 
@@ -145,7 +145,7 @@
     NSArray *allFavorites = [self.managedContext executeFetchRequest:request error:&error];
     
     if (error) {
-        NSLog(@"Error - %@", error);
+//        NSLog(@"Error - %@", error);
         return nil;
     }
     return allFavorites;
@@ -153,20 +153,20 @@
 
 - (void)reconcileFavoritesWithServer:(NSArray *)allBeers
 {
-    NSLog(@"Reconsiling...");
+//    NSLog(@"Reconsiling...");
     NSArray *allFavorites = [self getAllFavorites];
-    NSLog(@"All favorites - %@", allFavorites);
+//    NSLog(@"All favorites - %@", allFavorites);
     for (NSDictionary *beer in allFavorites) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@ and brewer contains[cd] %@", beer[@"name"], beer[@"brewer"]];
         NSArray *filteredAllBeers = [allBeers filteredArrayUsingPredicate:predicate];
-        NSLog(@"Results after predicate search\n%@", filteredAllBeers);
+//        NSLog(@"Results after predicate search\n%@", filteredAllBeers);
         if (filteredAllBeers.count == 1) {
-            NSLog(@"Count of results was 1\nUnfavoriting & Favoriting");
+//            NSLog(@"Count of results was 1\nUnfavoriting & Favoriting");
             [self unFavoriteBeer:beer];
             [self favoriteBeer:[filteredAllBeers lastObject]];
         } else {
-            NSLog(@"Count was not == 1");
-            NSLog(@"Results -\n%@", filteredAllBeers);
+//            NSLog(@"Count was not == 1");
+//            NSLog(@"Results -\n%@", filteredAllBeers);
         }
         //[self unFavoriteBeer:beer];
         // remove the default -- pretend beer

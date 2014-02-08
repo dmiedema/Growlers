@@ -28,6 +28,7 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     dispatch_once(&onceToken, ^{
         NSURL *DMGrowlerAPIURL = [NSURL URLWithString:DMGrowlerAPIURLString];
         sharedClient = [[DMGrowlerNetworkModel alloc] initWithBaseURL:DMGrowlerAPIURL];
+//        NSLog(@"%@", DMGrowlerAPIURLString);
     });
     return sharedClient;
 }
@@ -40,8 +41,8 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
         self.requestSerializer = [AFJSONRequestSerializer serializer];
         
         [self setDataTaskDidReceiveDataBlock:^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSData *data) {
-            NSLog(@"Total Expected to Receive - %lli", dataTask.countOfBytesExpectedToReceive);
-            NSLog(@"Received - %lli", dataTask.countOfBytesReceived);
+//            NSLog(@"Total Expected to Receive - %lli", dataTask.countOfBytesExpectedToReceive);
+//            NSLog(@"Received - %lli", dataTask.countOfBytesReceived);
         }];
     }
     return self;
@@ -152,8 +153,8 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
     
     /* Anonymoose Usage */
     if ([DMDefaultsInterfaceConstants anonymousUsage]) {
-        NSLog(@"Reset stores");
-        NSLog(@"%@", stores);
+//        NSLog(@"Reset stores");
+//        NSLog(@"%@", stores);
         TSEvent *e = [TSEvent eventWithName:@"Reset Store Notifications" oneTimeOnly:NO];
         [[TSTapstream instance] fireEvent:e];
     }
@@ -185,15 +186,15 @@ static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/Gr
 {
     NSString *token = [DMDefaultsInterfaceConstants getValidUniqueID];
 
-        NSLog(@"Tell server to reset badge count for %@", token);
+//        NSLog(@"Tell server to reset badge count for %@", token);
     
     [self POST:DMGrowlerAPIURLString
     parameters:@{@"udid": token, @"key": @"reset-badge-count"}
        success:^(NSURLSessionDataTask *task, id responseObject) {
-           NSLog(@"Reset badge count success");
+//           NSLog(@"Reset badge count success");
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-           NSLog(@"Reset badge count failed");
-        NSLog(@"error - %@", error);
+//           NSLog(@"Reset badge count failed");
+//        NSLog(@"error - %@", error);
     }];
 }
 

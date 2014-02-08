@@ -122,12 +122,12 @@ typedef enum {
     [self setNavigationBarTint];
     
     if (![DMDefaultsInterfaceConstants favoritesEverReconciled]) {
-        NSLog(@"RECONCILING!!!!");
+//        NSLog(@"RECONCILING!!!!");
         [[DMGrowlerNetworkModel manager] getBeersForStore:@"all" withSuccess:^(id JSON) {
             DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
             [coreData reconcileFavoritesWithServer:JSON];
         } andFailure:^(id JSON) {
-            NSLog(@"Failure Getting all beers");
+//            NSLog(@"Failure Getting all beers");
         }];
     }
     
@@ -245,7 +245,7 @@ typedef enum {
     } andFailure:^(id JSON) {
         // Should probably do some real error handling like an alert or view to say
         // no network or call failed but for now we'll just log it out.
-        NSLog(@"Error - %@", JSON);
+//        NSLog(@"Error - %@", JSON);
     }];
 
 }
@@ -478,7 +478,7 @@ typedef enum {
         // we want to unfavorite it. So lets put that in our dictionary we send
         [beerToFavorite setValue:@NO forKey:@"fav"];
         [[DMGrowlerNetworkModel manager] unFavoriteBeer:beerToFavorite withSuccess:^(id JSON) {
-            NSLog(@"Beer UNFavorited");
+//            NSLog(@"Beer UNFavorited");
             // CoreData save
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = preferredStore;
@@ -487,7 +487,7 @@ typedef enum {
             [DMHelperMethods animateOpacityForLayer:cell.favoriteMarker.layer to:[NSNumber numberWithFloat:0.0] from:[NSNumber numberWithFloat:1.0] duration:[NSNumber numberWithFloat:0.25]];
         } andFailure:^(id JSON) {
             // should handle it but i'll just log for now
-            NSLog(@"unfavoriting failed: %@", JSON);
+//            NSLog(@"unfavoriting failed: %@", JSON);
         }];
     }
     else {
@@ -495,7 +495,7 @@ typedef enum {
         // favorite it.
         [beerToFavorite setValue:@YES forKey:@"fav"];
         [[DMGrowlerNetworkModel manager] favoriteBeer:beerToFavorite withSuccess:^(id JSON) {
-            NSLog(@"Beer Favorited");
+//            NSLog(@"Beer Favorited");
             // CoreData save
             NSMutableDictionary *favBeer = [beer mutableCopy];
             favBeer[@"store"] = preferredStore;
@@ -506,7 +506,7 @@ typedef enum {
         } andFailure:^(id JSON) {
             // Handle failure
             // But for now, just log.
-            NSLog(@"Favoriting failed: %@", JSON);
+//            NSLog(@"Favoriting failed: %@", JSON);
         }];
     }
 

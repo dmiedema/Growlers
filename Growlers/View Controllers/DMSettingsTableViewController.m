@@ -101,15 +101,15 @@ typedef enum {
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    NSLog(@"View disappearing");
+//    NSLog(@"View disappearing");
     // if we're out of sync -- sync
     if (![DMDefaultsInterfaceConstants preferredStoresSynced]) {
         [[DMGrowlerNetworkModel manager] setPreferredStores:[DMDefaultsInterfaceConstants preferredStores] forUser:[DMDefaultsInterfaceConstants pushID] withSuccess:^(id JSON) {
-            NSLog(@"%@", JSON);
+//            NSLog(@"%@", JSON);
             [DMDefaultsInterfaceConstants setPreferredStoresSynced:YES];
         } andFailure:^(id JSON) {
             [DMDefaultsInterfaceConstants setPreferredStoresSynced:NO];
-            NSLog(@"%@", JSON);
+//            NSLog(@"%@", JSON);
         }];
     }
     [super viewWillDisappear:animated];
@@ -301,7 +301,7 @@ typedef enum {
             [pushTestAlert show];
             [self performSelector:@selector(dismissAlertView:) withObject:pushTestAlert afterDelay:5.0];
             [[DMGrowlerNetworkModel manager] testPushNotifictaionsWithSuccess:^(id JSON) {
-                NSLog(@"Success - %@", JSON);
+//                NSLog(@"Success - %@", JSON);
             } andFailure:^(id JSON) {
                 UIAlertView *failureAlertView = [[UIAlertView alloc] initWithTitle:@"Push Failed!"
                                                                            message:@"Looks like the test failed. Please make sure you're connected to the internet and try again later\nFeel free to contact support about this."
@@ -309,7 +309,7 @@ typedef enum {
                                                                  cancelButtonTitle:@"Okay"
                                                                  otherButtonTitles:nil];
                 [failureAlertView show];
-                NSLog(@"Failure - %@", JSON);
+//                NSLog(@"Failure - %@", JSON);
             }];
             break;
         }
@@ -323,7 +323,7 @@ typedef enum {
                 DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
                 [coreData reconcileFavoritesWithServer:JSON];
             } andFailure:^(id JSON) {
-                NSLog(@"Failure Getting all beers");
+//                NSLog(@"Failure Getting all beers");
             }];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fixing..." message:@"Reconciling favorites, please give me just a moment." delegate:nil cancelButtonTitle:@"okay" otherButtonTitles: nil];
             [alert show];
@@ -502,7 +502,7 @@ typedef enum {
         return;
     }
     else if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        NSLog(@"DESTRUCTIVE!!!");
+//        NSLog(@"DESTRUCTIVE!!!");
         [DMDefaultsInterfaceConstants removePreferredStore:self.selectedStoreName];
         self.preferredStores = [DMDefaultsInterfaceConstants preferredStores];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -552,16 +552,16 @@ typedef enum {
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
     switch (result) {
         case MFMailComposeResultCancelled:
-            NSLog(@"Mail cancelled");
+//            NSLog(@"Mail cancelled");
             break;
         case MFMailComposeResultFailed:
-            NSLog(@"Mail failed");
+//            NSLog(@"Mail failed");
             break;
         case MFMailComposeResultSaved:
-            NSLog(@"Mail saved for later");
+//            NSLog(@"Mail saved for later");
             break;
         case MFMailComposeResultSent:
-            NSLog(@"Mail sent");
+//            NSLog(@"Mail sent");
             break;
         default:
             break;

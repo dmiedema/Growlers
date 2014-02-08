@@ -171,20 +171,20 @@
     NSString *token = [deviceToken.description stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
     [DMDefaultsInterfaceConstants setPushID:token];
-	NSLog(@"My token is: %@", token);
+//	NSLog(@"My token is: %@", token);
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
-	NSLog(@"Failed to get token, error: %@", error);
+//	NSLog(@"Failed to get token, error: %@", error);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"Remote Notification Received");
-    NSLog(@"User Info - %@", userInfo);
+//    NSLog(@"Remote Notification Received");
+//    NSLog(@"User Info - %@", userInfo);
     if ([userInfo[@"aps"][@"alert"] isEqualToString:@"Test Notification"]) {
-        NSLog(@"Alert was equal to 'Test Notification'");
+//        NSLog(@"Alert was equal to 'Test Notification'");
         if (application.applicationState == UIApplicationStateActive ) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push Test"
                                                                 message:@"Was successful!"
@@ -213,32 +213,32 @@
             NSArray *args = [param componentsSeparatedByString:@"="];
             [parameters setValue:[args[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] forKey:args[0]];
         }
-        NSLog(@"parameters %@", parameters);
-        NSLog(@"Parameters keys %@", parameters.allKeys);
-        NSLog(@"contains name - %d", [parameters.allKeys containsObject:@"name"]);
-        NSLog(@"contains brewer - %d", [parameters.allKeys containsObject:@"brewer"]);        
+//        NSLog(@"parameters %@", parameters);
+//        NSLog(@"Parameters keys %@", parameters.allKeys);
+//        NSLog(@"contains name - %d", [parameters.allKeys containsObject:@"name"]);
+//        NSLog(@"contains brewer - %d", [parameters.allKeys containsObject:@"brewer"]);        
         // make sure beer & brewer are set
         if([parameters.allKeys containsObject:@"name"] && [parameters.allKeys containsObject:@"brewer"]) {
             DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedObjectContext];
             if (parameters[@"store"] == [NSNull null]) {
                 [parameters setValue:[DMDefaultsInterfaceConstants preferredStore] forKey:@"store"];
-                NSLog(@"Store param set");
+//                NSLog(@"Store param set");
             }
             if (parameters[@"ibu"] == [NSNull null]) {
                 [parameters setValue:@"-" forKey:@"ibu"];
-                NSLog(@"ibu param set");
+//                NSLog(@"ibu param set");
             }
             if (parameters[@"abv"] == [NSNull null]) {
                 [parameters setValue:@"-" forKey:@"abv"];
-                NSLog(@"abv param set");
+//                NSLog(@"abv param set");
             }
             [parameters setValue:@(YES) forKey:@"fav"];
             
-            NSLog(@"%@", parameters);
+//            NSLog(@"%@", parameters);
             if(![coreData isBeerFavorited:parameters]) {
                 [[DMGrowlerNetworkModel manager] favoriteBeer:parameters
                                                 withSuccess:^(id JSON) {
-                                                    NSLog(@"favorited! %@", parameters);
+//                                                    NSLog(@"favorited! %@", parameters);
                                                     [coreData favoriteBeer:parameters];
                 }
                                                  andFailure:nil
@@ -316,7 +316,7 @@
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
             // Replace this implementation with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoa! Something went wrong"
                                                                 message:@"Don't worry it's not your fault! I messed up and I'm sorry. But if you could email\nappsupport@growlmovement.com\nand reference\nError Code: cats-meow\nThat'd be great! Thanks! I'm going to close now :("
                                                                delegate:nil
@@ -400,7 +400,7 @@
          Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
          
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoa! Something went wrong"
                                                             message:@"Don't worry it's not your fault! I messed up and I'm sorry. But if you could email\nappsupport@growlmovement.com\nand reference\nError Code: dog-bark\nThat'd be great! Thanks! I'm going to close now :("
                                                            delegate:nil
