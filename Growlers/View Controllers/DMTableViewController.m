@@ -121,6 +121,16 @@ typedef enum {
     // Set the tint color
     [self setNavigationBarTint];
     
+    if (![DMDefaultsInterfaceConstants favoritesEverReconciled]) {
+        NSLog(@"RECONCILING!!!!");
+        [[DMGrowlerNetworkModel manager] getBeersForStore:@"all" withSuccess:^(id JSON) {
+            DMCoreDataMethods *coreData = [[DMCoreDataMethods alloc] initWithManagedObjectContext:self.managedContext];
+            [coreData reconcileFavoritesWithServer:JSON];
+        } andFailure:^(id JSON) {
+            NSLog(@"Failure Getting all beers");
+        }];
+    }
+    
     [[DMGrowlerNetworkModel manager] resetBadgeCount];
 }
 

@@ -175,6 +175,7 @@
     if ([self checkForBeerInDatabase:pretendBeer]) {
         [self unFavoriteBeer:pretendBeer];
     }
+    [DMDefaultsInterfaceConstants setFavoritesEverReconciled:YES];
 }
 
 
