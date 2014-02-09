@@ -22,7 +22,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>576</string>
+			<string>577</string>
 			<key>Key</key>
 			<string>build_preferences</string>
 			<key>Title</key>

@@ -24,10 +24,6 @@
     #import <AFNetworking/AFNetworking.h>
     #import <HockeySDK/HockeySDK.h>
 
-    #import "UALogger.h"
-    #undef UALog
-    #define UALog( s, ... ) UALogFull( s, ##__VA_ARGS__ );
-
     #import "DMDefaultsInterfaceConstants.h"
 
 #define DEV 0
