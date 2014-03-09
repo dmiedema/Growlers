@@ -223,7 +223,7 @@ typedef enum {
      */
     
     [[DMGrowlerNetworkModel manager] getBeersForStore:store withSuccess:^(id JSON) {
-        self.beers = JSON;
+        self.beers = [DMHelperMethods sanitzedBeerInformation:JSON];
         if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) {
              // If we're looking at the current tap list, lets see if any are new since we last saw.
             [self checkForNewBeers];
@@ -320,6 +320,7 @@ typedef enum {
     } else {
         beer = self.beers[indexPath.row];
     }
+
     // Configure the cell...
     char *beerNameText;
     char *beerInfoText;

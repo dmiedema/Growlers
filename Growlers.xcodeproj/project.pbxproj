@@ -240,6 +240,13 @@
 			name = "View Controllers";
 			sourceTree = "<group>";
 		};
+		C37D79E518CD07D800317C19 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		C3DD53C517967D470086A7E2 = {
 			isa = PBXGroup;
 			children = (
@@ -293,6 +300,7 @@
 			children = (
 				C349589917A774F500E45B3D /* Growlers.entitlements */,
 				C3015A4217F0E922002F7E18 /* Delegate/Helper Classes */,
+				C37D79E518CD07D800317C19 /* Categories */,
 				C3DD53E317967D470086A7E2 /* Main.storyboard */,
 				C33DAC9B179F7D7000F208AB /* View Controllers */,
 				C33DAC92179C91AD00F208AB /* CoreData */,

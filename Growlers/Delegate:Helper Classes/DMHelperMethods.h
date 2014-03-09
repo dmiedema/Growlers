@@ -22,4 +22,6 @@ typedef enum {
 + (UIColor *)growlersYellowColor:(GrowlersYellowAlpha)alpha;
 + (UIColor *)systemBlueColor;
 + (void)animateOpacityForLayer:(CALayer *)layer to:(NSNumber *)to from:(NSNumber *)from duration:(NSNumber *)duration;
+
++ (NSArray *)sanitzedBeerInformation:(NSArray *)array;
 @end
