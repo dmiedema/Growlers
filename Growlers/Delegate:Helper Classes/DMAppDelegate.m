@@ -13,7 +13,7 @@
 #import "AFNetworkActivityIndicatorManager.h"
 // analytics
 #import "TSTapstream.h"
-#import <NewRelicAgent/NewRelicAgent.h>
+#import <NewRelicAgent/NewRelic.h>
 #import <Crashlytics/Crashlytics.h>
 // #import "GAI.h"
 // CoreDataMethods for URL handling
@@ -21,9 +21,6 @@
 #import "DMGrowlerNetworkModel.h"
 
 #import "DMAPIKeys.h"
-
-#import "DDTTYLogger.h"
-#import "DDFileLogger.h"
 
 #if TAKE_SCREENSHOTS == 1
 #import <SDScreenshotCapture/SDScreenshotCapture.h>
@@ -76,14 +73,6 @@
     
     /* Crashlytics */
     [Crashlytics startWithAPIKey:kGrowlers_Crashlytics_API_Key];
-    
-    
-    /* Logging */
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
-    DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
-    fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-    fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-    [DDLog addLogger:fileLogger];
     
     /* Push Notifications */
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
