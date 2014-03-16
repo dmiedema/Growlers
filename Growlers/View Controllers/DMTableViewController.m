@@ -229,8 +229,9 @@ typedef enum {
             [self checkForNewBeers];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
-                [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//                NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+//                [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
             });
         }
         // Check if we're currently searching the list.
