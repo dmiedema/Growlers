@@ -14,10 +14,6 @@ pod 'Tapstream'
 pod 'SDScreenshotCapture'
 pod 'SparkInspector'
 
-target :GrowlersTests, :exclusive => true do
-  pod 'Kiwi/XCTest'
-end
-
 post_install do | installer |
   require 'fileutils'
   FileUtils.cp_r('Pods/Pods-acknowledgements.plist', 'Growlers/Settings.bundle/Acknowledgements.plist', :remove_destination => true)

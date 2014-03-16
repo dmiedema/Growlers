@@ -12,6 +12,14 @@
 
 @end
 
+id ObjectOrNull(id obj) {
+    if (obj == [NSNull null] || !obj) {
+        return nil;
+    }
+    return obj;
+}
+
+
 @implementation DMHelperMethods
 
 + (BOOL)checkIfOpen
