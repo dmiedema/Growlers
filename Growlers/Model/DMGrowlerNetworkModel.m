@@ -12,7 +12,7 @@
 @interface DMGrowlerNetworkModel() <NSURLSessionDownloadDelegate>
 @end
 
-#if DEV == 1
+#if DEBUG
 static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/GrowlersAppPage-dev.php";
 #else
 static NSString *DMGrowlerAPIURLString  = @"http://www.growlmovement.com/_app/GrowlersAppPage.php";

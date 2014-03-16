@@ -62,7 +62,7 @@
     
     /* Hockey Testing */
     NSString *hockeyIdentifier = nil;
-#if DEV == 1
+#if DEBUG
      hockeyIdentifier = @"c4e28d986734b9f0c8b5716244112805";
 #else
     hockeyIdentifier = kGrowlers_HockeyApp_Production_API_Key;
@@ -128,7 +128,7 @@
 - (void)setupTracking
 {
     /* NewRelic */
-#if DEV == 1
+#if DEBUG
 //    [NRLogger setLogLevels:NRLogLevelALL];
     [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
 #else
@@ -288,7 +288,7 @@
 #pragma mark GroundControl
 - (void)initializeGroundControl
 {
-#if DEV
+#if DEBUG
     NSURL *url = [NSURL URLWithString:@"http://www.growlmovement.com/_app/GrowlersStoreList-dev.php"];
 #else
     NSURL *url = [NSURL URLWithString:@"http://www.growlmovement.com/_app/GrowlersStoreList.php"];

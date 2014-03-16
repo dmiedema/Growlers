@@ -12,7 +12,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>Bean &amp; Cheese</string>
+			<string>Kittens Mittens</string>
 			<key>Key</key>
 			<string>version_preferences</string>
 			<key>Title</key>
@@ -22,7 +22,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>daa1b5</string>
+			<string>cfd5e3</string>
 			<key>Key</key>
 			<string>build_preferences</string>
 			<key>Title</key>
