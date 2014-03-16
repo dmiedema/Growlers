@@ -13,6 +13,13 @@ typedef enum {
     AlphaBeerFavorites
 } GrowlersYellowAlpha;
 
+id ObjectOrNull(id obj) {
+    if (obj == [NSNull null] || !obj) {
+        return nil;
+    }
+    return obj;
+}
+
 @interface DMHelperMethods : NSObject
 + (BOOL)checkIfOpen;
 + (BOOL)checkLastDateOfMonth;
