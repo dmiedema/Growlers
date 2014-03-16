@@ -326,13 +326,13 @@ typedef enum {
     char *beerInfoText;
     
     NSString *tapId, *beername, *ibu, *abv, *growlerPrice, *growlettePrice, *style;
-    tapId = (ObjectOrNull(beer[@"tap_id"])) ?: @" ";
-    beername = (ObjectOrNull(beer[@"name"])) ?: @" ";
-    ibu = ObjectOrNull(beer[@"ibu"]) ?: @" ";
-    abv = ObjectOrNull(beer[@"abv"]) ?: @" ";
-    growlerPrice = ObjectOrNull(beer[@"growler"]) ?: @" ";
-    growlettePrice = ObjectOrNull(beer[@"growlette"]) ?: @" ";
-    style = ObjectOrNull(beer[@"beer_style"]) ?: @" ";
+    tapId           = (ObjectOrNull(beer[@"tap_id"]))     ?: @" ";
+    beername        = (ObjectOrNull(beer[@"name"]))       ?: @" ";
+    ibu             = (ObjectOrNull(beer[@"ibu"]))        ?: @" ";
+    abv             = (ObjectOrNull(beer[@"abv"]))        ?: @" ";
+    growlerPrice    = (ObjectOrNull(beer[@"growler"]))    ?: @" ";
+    growlettePrice  = (ObjectOrNull(beer[@"growlette"]))  ?: @" ";
+    style           = (ObjectOrNull(beer[@"beer_style"])) ?: @" ";
     
     
     switch (self.headerSegmentControl.selectedSegmentIndex) {
