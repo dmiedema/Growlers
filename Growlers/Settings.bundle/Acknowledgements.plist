@@ -202,8 +202,8 @@ SFHFKeychainUtils is licensed as follows:
 			<key>FooterText</key>
 			<string>----------------------------------------------------------------
 
-This product includes 'Apple Reachability' (http://developer.apple.com/library/ios/#samplecode/Reachability/Introduction/Intro.html), which is released under the following license(s):
-    Apple Reachability &lt;http://developer.apple.com/library/ios/#samplecode/Reachability/Listings/Classes_Reachability_m.html&gt;
+This product includes 'Apple Reachability' (https://developer.apple.com/library/ios/samplecode/reachability/listings/Reachability_Reachability_h.html), which is released under the following license(s):
+    Apple Reachability &lt;https://developer.apple.com/library/ios/samplecode/reachability/listings/Reachability_Reachability_h.html&gt;
 
 ----------------------------------------------------------------
 
@@ -212,8 +212,13 @@ This product includes 'Base64' (https://github.com/nicklockwood/Base64), which i
 
 ----------------------------------------------------------------
 
+This product includes 'NSURLConnectionVCR' (https://bitbucket.org/martijnthe/nsurlconnectionvcr), which is released under the following license(s):
+    BSD 2-Clause &lt;http://opensource.org/licenses/BSD-2-Clause&gt;
+
+----------------------------------------------------------------
+
 This product includes 'OCMock' (http://ocmock.org/), which is released under the following license(s):
-    OCMock &lt;https://github.com/erikdoe/ocmock/blob/master/Source/License.txt&gt;
+    MIT &lt;http://opensource.org/licenses/mit-license.html&gt;
 
 ----------------------------------------------------------------
 
@@ -222,7 +227,7 @@ This product includes 'SecureUDID' (http://www.secureudid.org/), which is releas
 
 ----------------------------------------------------------------
 
-All other components of this product are: Copyright (c) 2010-2013 New Relic, Inc. All rights reserved.
+All other components of this product are: Copyright (c) 2010-2014 New Relic, Inc. All rights reserved.
 
 Certain inventions disclosed in this file may be claimed within patents owned or patent applications
 filed by New Relic, Inc. or third parties. Subject to the terms of this notice, New Relic grants you
