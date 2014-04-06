@@ -26,23 +26,11 @@
 
     #import "DMDefaultsInterfaceConstants.h"
 
-#define DEV 0
-#define TAKE_SCREENSHOTS 0
-
-// Setup UALogger
-#if DEV
-#define UALOGGER_SWIZZLE_NSLOG
-#endif
-
-
-
-
-
 #define SYSTEM_VERSION_LESS_THAN(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define IS_IPHONE_5 ( [ [ UIScreen mainScreen ] bounds ].size.height == 568 )
 
-#if DEV == 1
+#if DEBUG
 #define THE_APPS_NAME @"Growlers"
 #else
 #define THE_APPS_NAME @"GM Taplist"

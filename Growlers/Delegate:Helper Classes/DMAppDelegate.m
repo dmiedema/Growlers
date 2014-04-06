@@ -13,7 +13,7 @@
 #import "AFNetworkActivityIndicatorManager.h"
 // analytics
 #import "TSTapstream.h"
-#import <NewRelicAgent/NewRelicAgent.h>
+#import <NewRelicAgent/NewRelic.h>
 #import <Crashlytics/Crashlytics.h>
 // #import "GAI.h"
 // CoreDataMethods for URL handling
@@ -21,9 +21,6 @@
 #import "DMGrowlerNetworkModel.h"
 
 #import "DMAPIKeys.h"
-
-#import "DDTTYLogger.h"
-#import "DDFileLogger.h"
 
 #if TAKE_SCREENSHOTS == 1
 #import <SDScreenshotCapture/SDScreenshotCapture.h>
@@ -65,7 +62,7 @@
     
     /* Hockey Testing */
     NSString *hockeyIdentifier = nil;
-#if DEV == 1
+#if DEBUG
      hockeyIdentifier = @"c4e28d986734b9f0c8b5716244112805";
 #else
     hockeyIdentifier = kGrowlers_HockeyApp_Production_API_Key;
@@ -76,14 +73,6 @@
     
     /* Crashlytics */
     [Crashlytics startWithAPIKey:kGrowlers_Crashlytics_API_Key];
-    
-    
-    /* Logging */
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
-    DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
-    fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-    fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-    [DDLog addLogger:fileLogger];
     
     /* Push Notifications */
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
@@ -139,7 +128,7 @@
 - (void)setupTracking
 {
     /* NewRelic */
-#if DEV == 1
+#if DEBUG
 //    [NRLogger setLogLevels:NRLogLevelALL];
     [NewRelicAgent startWithApplicationToken:@"AAbd1c55627f8053291cf5ed818186d742c337ac42"];
 #else
@@ -299,7 +288,7 @@
 #pragma mark GroundControl
 - (void)initializeGroundControl
 {
-#if DEV
+#if DEBUG
     NSURL *url = [NSURL URLWithString:@"http://www.growlmovement.com/_app/GrowlersStoreList-dev.php"];
 #else
     NSURL *url = [NSURL URLWithString:@"http://www.growlmovement.com/_app/GrowlersStoreList.php"];

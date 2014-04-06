@@ -75,7 +75,7 @@
     for (NSDictionary *beer in newDatabaseContents) {
         Beer *newBeer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:self.managedContext];
 
-        newBeer = [self applyDefaultValuesToEntityObject:newBeer withParameters:beer];
+        [self applyDefaultValuesToEntityObject:newBeer withParameters:beer];
     }
     if (![self.managedContext save:&error]) {
 //        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -88,7 +88,7 @@
 {
     // NSLog(@"Favorite - %@", newBeerToFavorite);
     Favorites *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"Favorites" inManagedObjectContext:self.managedContext];
-    favorite = [self applyDefaultValuesToEntityObject:favorite withParameters:newBeerToFavorite];
+    [self applyDefaultValuesToEntityObject:favorite withParameters:newBeerToFavorite];
     
     NSError *coreDataErr = nil;
     if (![self.managedContext save:&coreDataErr]) {

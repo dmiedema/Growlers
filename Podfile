@@ -3,8 +3,6 @@ pod 'AFNetworking'
 pod 'GroundControl'
 #pod 'DerpKit'
 pod 'HockeySDK'
-pod 'CocoaLumberjack'
-#pod 'UALogger'
 pod 'NewRelicAgent'
 pod 'Tapstream'
 #pod 'GoogleAnalytics-iOS-SDK'
@@ -15,10 +13,6 @@ pod 'Tapstream'
 # Testing
 #pod 'SDScreenshotCapture'
 #pod 'SparkInspector'
-
-target :GrowlersTests, :exclusive => true do
-  pod 'Kiwi/XCTest'
-end
 
 post_install do | installer |
   require 'fileutils'

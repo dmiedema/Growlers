@@ -12,6 +12,14 @@
 
 @end
 
+id ObjectOrNull(id obj) {
+    if (obj == [NSNull null] || !obj) {
+        return nil;
+    }
+    return obj;
+}
+
+
 @implementation DMHelperMethods
 
 + (BOOL)checkIfOpen
@@ -127,5 +135,23 @@
         
         [layer setOpacity:to.floatValue];
     });
+}
+
++ (NSArray *)sanitzedBeerInformation:(NSArray *)array {
+    NSMutableArray *sanitzed = [NSMutableArray array];
+    
+    for (NSDictionary *unsafe in array) {
+        NSMutableDictionary *safe = [NSMutableDictionary dictionaryWithDictionary:unsafe];
+        
+        for (id value in [safe allKeys]) {
+            if (!safe[value] || safe[value] == [NSNull null]) {
+                safe[value] = @"";
+            }
+        }
+        
+        [sanitzed addObject:safe];
+    }
+    
+    return sanitzed;
 }
 @end

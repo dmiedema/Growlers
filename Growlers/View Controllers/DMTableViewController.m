@@ -223,14 +223,15 @@ typedef enum {
      */
     
     [[DMGrowlerNetworkModel manager] getBeersForStore:store withSuccess:^(id JSON) {
-        self.beers = JSON;
+        self.beers = [DMHelperMethods sanitzedBeerInformation:JSON];
         if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap) {
              // If we're looking at the current tap list, lets see if any are new since we last saw.
             [self checkForNewBeers];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
-                [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//                NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+//                [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
             });
         }
         // Check if we're currently searching the list.
@@ -320,23 +321,31 @@ typedef enum {
     } else {
         beer = self.beers[indexPath.row];
     }
+
     // Configure the cell...
-    char *beerNameText;
+    char *beerNameText; // c strings
     char *beerInfoText;
+    
+    NSString *tapId, *beername, *ibu, *abv, *growlerPrice, *growlettePrice, *style;
+    tapId           = (ObjectOrNull(beer[@"tap_id"]))     ?: @" ";
+    beername        = (ObjectOrNull(beer[@"name"]))       ?: @" ";
+    ibu             = (ObjectOrNull(beer[@"ibu"]))        ?: @" ";
+    abv             = (ObjectOrNull(beer[@"abv"]))        ?: @" ";
+    growlerPrice    = (ObjectOrNull(beer[@"growler"]))    ?: @" ";
+    growlettePrice  = (ObjectOrNull(beer[@"growlette"]))  ?: @" ";
+    style           = (ObjectOrNull(beer[@"beer_style"])) ?: @" ";
+    
+    
     switch (self.headerSegmentControl.selectedSegmentIndex) {
             // If we're showing on tap, show prices.
         case ShowOnTap:
-            asprintf(&beerNameText, "%s. %s", [beer[@"tap_id"] UTF8String], [beer[@"name"] UTF8String]);
+            asprintf(&beerNameText, "%s. %s", [tapId UTF8String], [beername UTF8String]);
             asprintf(&beerInfoText, "IBU: %s  ABV: %s  Growler: $%s  Growlette: $%s", 
-                [beer[@"ibu"] UTF8String], [beer[@"abv"] UTF8String], [beer[@"growler"] UTF8String], [beer[@"growlette"] UTF8String]);
+                [ibu UTF8String], [abv UTF8String], [growlerPrice UTF8String], [growlettePrice UTF8String]);
             break;
         default:
-            asprintf(&beerNameText, "%s", [beer[@"name"] UTF8String]);
-            if (beer[@"beer_style"] != [NSNull null]) {
-                asprintf(&beerInfoText, "IBU: %s  ABV: %s  Style: %s", [beer[@"ibu"] UTF8String], [beer[@"abv"] UTF8String], [beer[@"beer_style"] UTF8String]);
-            } else {
-                asprintf(&beerInfoText, "IBU: %s  ABV: %s", [beer[@"ibu"] UTF8String], [beer[@"abv"] UTF8String]);
-            }
+            asprintf(&beerNameText, "%s", [beername UTF8String]);
+            asprintf(&beerInfoText, "IBU: %s  ABV: %s  Style: %s", [ibu UTF8String], [abv UTF8String], [style UTF8String]);
     
             break;
     }
@@ -345,14 +354,15 @@ typedef enum {
     free(beerNameText);
     free(beerInfoText);
     // Get city and state as strings for string based operations
-    NSString *city = beer[@"city"];
-    NSString *state = beer[@"state"];
+    NSString *city = ObjectOrNull(beer[@"city"]) ?: @" ";
+    NSString *state = ObjectOrNull(beer[@"state"]) ?: @" ";
+    NSString *brewerString = ObjectOrNull(beer[@"brewer"]) ?: @" ";
     // Make sure they exist (length > 0), if they don't
     // Show different text.
     if (city.length > 1 && state.length > 1) {
         // Create inital string that will not be italicized.
         // Need it to be mutableAttributedString so I can append to it though
-        NSMutableAttributedString *brewer = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ - ", beer[@"brewer"]]];
+        NSMutableAttributedString *brewer = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ - ", brewerString]];
         // Create city & state string with italic font
         UIFontDescriptor *fontDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline];
         fontDescriptor = [fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
@@ -368,7 +378,7 @@ typedef enum {
         fontDescriptor = nil;
         cityState = nil;
     } else {
-        cell.brewery.text  = beer[@"brewer"];
+        cell.brewery.text  = brewerString;
     }
     
     // Get ID and check for today == tap.id and highlight
@@ -378,8 +388,8 @@ typedef enum {
     // And that gives us this horrible if statement.
     if (self.headerSegmentControl.selectedSegmentIndex == ShowOnTap &&
         [self.selectedStore isEqualToString:@"Keizer"] && // "Keizer" is only store that gets this perk.
-        ([DMHelperMethods checkToday:beer[@"tap_id"]] ||
-         ([DMHelperMethods checkLastDateOfMonth] && [beer[@"tap_id"] intValue] >= [DMHelperMethods getToday] )
+        ([DMHelperMethods checkToday:tapId] ||
+         ([DMHelperMethods checkLastDateOfMonth] && [tapId integerValue] >= [DMHelperMethods getToday] )
          )
         )
     { // We're looking at keizer AND this tap is the special today
