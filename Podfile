@@ -11,8 +11,8 @@ pod 'Tapstream'
 #pod 'WCFastCell'
 
 # Testing
-pod 'SDScreenshotCapture'
-pod 'SparkInspector'
+# pod 'SDScreenshotCapture'
+# pod 'SparkInspector'
 
 post_install do | installer |
   require 'fileutils'
