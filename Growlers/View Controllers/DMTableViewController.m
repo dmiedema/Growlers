@@ -328,6 +328,9 @@ typedef enum {
     
     NSString *tapId, *beername, *ibu, *abv, *growlerPrice, *growlettePrice, *style;
     tapId           = (ObjectOrNull(beer[@"tap_id"]))     ?: @" ";
+    if ([tapId isKindOfClass:NSNumber.class]) {
+        tapId = [NSString stringWithFormat:@"%@", tapId];
+    }
     beername        = (ObjectOrNull(beer[@"name"]))       ?: @" ";
     ibu             = (ObjectOrNull(beer[@"ibu"]))        ?: @" ";
     abv             = (ObjectOrNull(beer[@"abv"]))        ?: @" ";
@@ -339,7 +342,7 @@ typedef enum {
     switch (self.headerSegmentControl.selectedSegmentIndex) {
             // If we're showing on tap, show prices.
         case ShowOnTap:
-            asprintf(&beerNameText, "%s. %s", [tapId UTF8String], [beername UTF8String]);
+            asprintf(&beerNameText, "%s. %s", [(NSString *)tapId UTF8String], [beername UTF8String]);
             asprintf(&beerInfoText, "IBU: %s  ABV: %s  Growler: $%s  Growlette: $%s", 
                 [ibu UTF8String], [abv UTF8String], [growlerPrice UTF8String], [growlettePrice UTF8String]);
             break;
